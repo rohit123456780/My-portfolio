@@ -11,8 +11,8 @@ export default {
     extend: {
       fontFamily: {
         body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
-        code: ['monospace'],
+        headline: ['Space Grotesk', 'sans-serif'],
+        code: ['Source Code Pro', 'monospace'],
       },
       colors: {
         background: 'hsl(var(--background))',
@@ -88,10 +88,18 @@ export default {
             height: '0',
           },
         },
+        'glitch-skew': {
+          '0%, 100%': { transform: 'skew(0deg)' },
+          '20%': { transform: 'skew(-5deg)' },
+          '40%': { transform: 'skew(5deg)' },
+          '60%': { transform: 'skew(-2deg)' },
+          '80%': { transform: 'skew(2deg)' },
+        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'glitch': 'glitch-skew 1s infinite linear alternate-reverse',
       },
     },
   },
