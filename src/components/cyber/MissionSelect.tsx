@@ -1,8 +1,9 @@
+
 "use client";
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Zap, Terminal, Code, Database, Mail, Activity, Info, X } from 'lucide-react';
+import { Shield, Zap, Terminal, Code, Database, Mail, Activity, Info, X, Eye, Lock, Globe, Cpu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface Project {
@@ -13,109 +14,149 @@ interface Project {
   tools: string[];
   impact: string;
   details: string;
-  category: 'Infrastructure' | 'Database' | 'Lab' | 'Web Sec' | 'Tools' | 'Crypto';
+  category: 'Infrastructure' | 'Database' | 'Lab' | 'Web Sec' | 'Tools' | 'Crypto' | 'Monitoring';
 }
 
 const PROJECTS: Project[] = [
   {
-    title: "SquaredUp MSS Dashboard",
+    title: "SquaredUp MSS Dashboard Project",
     org: "Radian Generation",
     period: "Feb 2026 – Present",
-    description: "Built and validated site-level security dashboards integrating Zendesk and Splunk data.",
-    tools: ["Splunk", "Zendesk", "SquaredUp", "Data Ingestion"],
-    impact: "Improved visibility into security monitoring and enhanced incident detection reliability.",
+    description: "Build and validate site-level security and operations dashboards providing real-time visibility for MSS customers.",
+    tools: ["Splunk", "Zendesk", "SquaredUp", "Data Ingestion", "Telemetry Mapping"],
+    impact: "Supports administrative cybersecurity by ensuring accurate security monitoring and reliable incident visibility.",
     category: "Infrastructure",
-    details: "Built site-level security and operations dashboards. Ensured accurate data ingestion, applied site mappings, and coordinated with teams to resolve telemetry gaps."
+    details: "Built site-level dashboards integrating Zendesk and Splunk data. Tasks include verifying data ingestion, applying filters/mappings, and troubleshooting telemetry gaps due to configuration issues."
   },
   {
     title: "Baserow Database Transition",
     org: "Radian Generation",
     period: "Jan 2026 – Present",
-    description: "Led the transformation of spreadsheet-based Ops Lists into a structured, role-based database.",
-    tools: ["Baserow", "Database Normalization", "Security Roles"],
-    impact: "Centralized system of record supporting MSS/MCS operations and compliance tracking.",
+    description: "Driving administrative cybersecurity migration, transforming spreadsheet-based Ops Lists into role-based systems.",
+    tools: ["Baserow", "Database Normalization", "Security Roles", "Access Management"],
+    impact: "Created a reliable system of record supporting MSS/MCS operations and compliance tracking.",
     category: "Database",
-    details: "Led the migration from spreadsheets to a normalized database system. Linked contacts, assigned cybersecurity roles, and eliminated data duplicates."
+    details: "Normalizing site data and assigning cybersecurity roles (Forwarder, Compliance, O&M). Linking contacts to entities and sites while eliminating duplicates to ensure data integrity."
   },
   {
-    title: "Secure Mail Infrastructure",
+    title: "Secure Mail Infrastructure & Hardening",
     org: "Tech Trek Events",
     period: "Jun 2025 – Aug 2025",
-    description: "Designed and configured domain-based email infrastructure with Outlook hardening.",
-    tools: ["cPanel", "Outlook", "SSL/TLS", "SMTP/IMAP"],
-    impact: "Ensured secure and reliable communication systems through port and SSL hardening.",
+    description: "Designed and configured domain-based email infrastructure with Microsoft Outlook hardening.",
+    tools: ["cPanel", "Outlook", "IMAP/SMTP", "SSL/TLS (Ports 465/587)"],
+    impact: "Ensured smooth and secure email communication through hardening and protocol troubleshooting.",
     category: "Infrastructure",
-    details: "Implemented secure IMAP/SMTP configurations (ports 465/587). Resolved authentication and certificate issues for mission-critical email systems."
+    details: "Configured professional email accounts with manual Outlook setup. Handled troubleshooting for authentication failures and SSL configurations for mission-critical comms."
   },
   {
-    title: "Cyber Ops & Threat Analysis Lab",
+    title: "Cybersecurity Ops & Threat Analysis Lab",
     org: "Independent / Springboard",
     period: "Mar 2023 – Dec 2023",
-    description: "Built a full cybersecurity lab simulating real-world attack and defense scenarios.",
-    tools: ["Python", "PowerShell", "SOC Labs", "Forensics"],
-    impact: "Developed automation scripts and gained hands-on experience in defensive security.",
+    description: "10-month hands-on lab environment focusing on security operations and threat detection.",
+    tools: ["Python", "PowerShell", "Forensics Tools", "SOC Simulation", "IDS/IPS"],
+    impact: "Gained practical experience in incident response and defensive security by replicating real-world attack scenarios.",
     category: "Lab",
-    details: "Conducted vulnerability assessments, incident response simulations, and digital forensic analysis in a custom lab environment."
+    details: "Built secure virtual infrastructures. Performed technical security assessments and remediation of web flaws. Established a digital forensics lab for investigating compromised systems."
   },
   {
-    title: "AI-Based XSS Detection",
+    title: "AI-Based XSS Detection System",
     org: "Sturtle Security",
     period: "May 2024 – Jul 2024",
-    description: "Designed a machine learning-based system to detect XSS vulnerabilities.",
-    tools: ["Machine Learning", "Python", "Payload Analysis"],
-    impact: "Produced model insights to differentiate malicious inputs with high accuracy.",
+    description: "Machine learning-based system to detect cross-site scripting (XSS) with high accuracy.",
+    tools: ["Machine Learning", "Python", "Labeled Payloads", "Payload Classification"],
+    impact: "Integrated ML models to distinguish malicious from benign inputs in real time.",
     category: "Web Sec",
-    details: "Trained ML models using labeled payloads to detect cross-site scripting. Produced technical documentation for model deployment."
+    details: "Designed classification models trained on extensive payload datasets. Produced detailed methodology reports for high-accuracy detection deployment."
   },
   {
     title: "Web Pentest – OWASP Juice Shop",
     org: "Sturtle Security",
     period: "May 2024 – Jul 2024",
-    description: "Full web application security assessment identifying critical vulnerabilities.",
-    tools: ["Burp Suite", "OWASP ZAP", "CVSS", "XSS/SQLi"],
-    impact: "Delivered detailed reports with CVSS ratings and remediation strategies.",
+    description: "Thorough penetration testing on OWASP Juice Shop to identify critical vulnerabilities.",
+    tools: ["OWASP ZAP", "Burp Suite", "CVSS", "XSS/SQLi", "IDOR"],
+    impact: "Produced detailed findings reports with risk ratings and remediation recommendations.",
     category: "Web Sec",
-    details: "Identified XSS, SQLi, IDOR, and Broken Authentication. Delivered PoC exploits and hardened remediation strategies."
+    details: "Identified XSS, SQL Injection, IDOR, and Broken Authentication. Delivered PoC exploits and hardened remediation strategies based on CVSS scores."
   },
   {
     title: "Web Vulnerability Scanner",
     org: "Independent",
     period: "Jun 2024 – Jul 2024",
-    description: "Developed a Python-based automated vulnerability scanner.",
-    tools: ["Python", "Fuzzing", "Payload Dev"],
-    impact: "Automated the detection of XSS, SQLi, and IDOR vulnerabilities.",
+    description: "Automated scanner for crawling and testing web applications for common vulnerabilities.",
+    tools: ["Python", "Fuzzing Techniques", "IDOR Detection", "XSS/SQLi Scans"],
+    impact: "Automated the detection process for common web flaws with configurable depth.",
     category: "Tools",
-    details: "Implemented fuzzing techniques for automated vulnerability discovery. Provided configurable scan depth and reporting outputs."
+    details: "Developed a custom scanner in Python implementing fuzzing for vulnerability discovery. Provided formatted output documentation for easy analysis."
   },
   {
-    title: "Network Packet Analyzer",
+    title: "Network Packet Analyzer & Sniffer",
     org: "Msinterface Technologies",
     period: "Jun 2024 – Jul 2024",
-    description: "Built a Python tool to capture and analyze live network traffic.",
-    tools: ["Python", "Networking", "Scapy", "Sniffing"],
-    impact: "Enabled real-time security analysis of network behavior and protocol headers.",
+    description: "Python-based tool to capture and analyze live network traffic for security auditing.",
+    tools: ["Python", "Scapy", "Network Protocols", "Traffic Sniffing"],
+    impact: "Enabled real-time security analysis of network behavior and protocol breakdowns.",
     category: "Tools",
-    details: "Extracted and displayed packet data including IP addresses, protocols, and payload information for live security monitoring."
+    details: "Built a packet sniffer and analyzer to extract IP addresses, protocols, and payload information. Critical for monitoring suspicious network activities."
   },
   {
-    title: "Image Pixel Encryption",
+    title: "Image Encryption (Pixel XOR)",
     org: "Msinterface Technologies",
     period: "Jun 2024 – Jul 2024",
-    description: "Developed encryption system using pixel-level XOR manipulation.",
-    tools: ["Cryptography", "Python", "Image Processing"],
-    impact: "Ensured secure image storage through reversible encryption methods.",
+    description: "Encryption system using pixel-level XOR operations to secure visual data.",
+    tools: ["Python", "Cryptography", "Symmetric Encryption", "Image Processing"],
+    impact: "Demonstrated practical application of symmetric cryptography for secure visual storage.",
     category: "Crypto",
-    details: "Developed a system to securely store image data using XOR-based pixel manipulation techniques."
+    details: "Developed a reversible decryption system using pixel manipulation techniques. Focus on ensuring secure image storage and transmission."
   },
   {
-    title: "Secure Login Page",
+    title: "Caesar Cipher Encryption Tool",
+    org: "Msinterface Technologies",
+    period: "Jun 2024 – Jul 2024",
+    description: "Python tool for text encryption/decryption using classical substitution ciphers.",
+    tools: ["Python", "Classical Cryptography", "Substitution Ciphers"],
+    impact: "Educational tool demonstrating foundational cryptographic principles.",
+    category: "Crypto",
+    details: "Created a customizable tool for text security using the Caesar algorithm. Allows user-defined shift values for learning-based encryption tests."
+  },
+  {
+    title: "Password Complexity Checker",
+    org: "Msinterface Technologies",
+    period: "Jun 2024 – Jul 2024",
+    description: "Evaluates password strength based on entropy, diversity, and length.",
+    tools: ["Python", "Entropy Calculation", "Heuristics", "Visual Feedback"],
+    impact: "Helps users understand and improve their password security practices through visual metrics.",
+    category: "Tools",
+    details: "Built a tool checking for special characters, character variety, and length. Integrated visual strength indicators for better user awareness."
+  },
+  {
+    title: "Secure Login Page Development",
     org: "Trimbak Infotech",
     period: "Jul 2024",
-    description: "Built a secure authentication system with bcrypt hashing.",
-    tools: ["Bcrypt", "Input Validation", "Rate Limiting"],
-    impact: "Hardened systems against SQLi, XSS, and brute force attacks.",
+    description: "Authentication system with input validation and bcrypt password hashing.",
+    tools: ["Bcrypt", "PHP/SQL", "Input Validation", "Session Hardening"],
+    impact: "Protected systems against SQL Injection, XSS, and brute force attacks.",
     category: "Web Sec",
-    details: "Implemented protections against major OWASP threats, including secure session management and cookie handling."
+    details: "Implemented rate limiting, secure cookie handling, and robust session management to prevent common OWASP authentication threats."
+  },
+  {
+    title: "Metasploit Payload Development",
+    org: "Trimbak Infotech",
+    period: "Jul 2024",
+    description: "Developed and tested custom payloads in controlled lab environments.",
+    tools: ["Metasploit", "Payload Dev", "Detection Signatures", "Evasion"],
+    impact: "Documented detection signatures and defensive recommendations for security teams.",
+    category: "Lab",
+    details: "Authorized lab testing of custom payloads. Focused on analyzing behavior and identifying how detection systems flag malicious activities."
+  },
+  {
+    title: "Network Security Monitor",
+    org: "Independent",
+    period: "Jun 2024",
+    description: "IDS/IPS monitoring systems set up to detect suspicious traffic patterns.",
+    tools: ["IDS/IPS", "Alert Configuration", "Traffic Simulation", "Suricata/Snort"],
+    impact: "Validated detection capabilities against simulated attack traffic.",
+    category: "Monitoring",
+    details: "Configured alert rules and tested them against simulated attacks to ensure robust monitoring and intrusion detection."
   }
 ];
 
@@ -134,7 +175,7 @@ export default function MissionSelect() {
             MISSION <span className="text-primary/50">SELECT</span>
           </h2>
           <p className="text-[10px] font-code text-primary/40 uppercase max-w-md">
-            Execute detailed project analysis. Access technical narratives and impact reports for major deployments.
+            Tracing {PROJECTS.length} major deployments. Access technical narratives and impact reports for the complete project dataset.
           </p>
         </div>
       </div>
@@ -146,7 +187,7 @@ export default function MissionSelect() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: idx * 0.1 }}
+            transition={{ delay: idx * 0.05 }}
             onClick={() => setSelectedProject(proj)}
             className="group relative cyber-glass p-6 border border-primary/10 hover:border-primary transition-all cursor-pointer overflow-hidden"
           >
@@ -157,18 +198,19 @@ export default function MissionSelect() {
                 {proj.category === 'Lab' && <Terminal className="w-5 h-5 text-primary group-hover:text-accent" />}
                 {proj.category === 'Web Sec' && <Code className="w-5 h-5 text-primary group-hover:text-accent" />}
                 {proj.category === 'Tools' && <Zap className="w-5 h-5 text-primary group-hover:text-accent" />}
-                {proj.category === 'Crypto' && <Terminal className="w-5 h-5 text-primary group-hover:text-accent" />}
+                {proj.category === 'Crypto' && <Lock className="w-5 h-5 text-primary group-hover:text-accent" />}
+                {proj.category === 'Monitoring' && <Eye className="w-5 h-5 text-primary group-hover:text-accent" />}
               </div>
               <span className="text-[8px] font-code text-primary/40 uppercase tracking-widest">{proj.period}</span>
             </div>
 
             <div className="space-y-3">
-              <h3 className="text-lg font-headline group-hover:text-glow transition-all">{proj.title}</h3>
-              <p className="text-[11px] font-code text-primary/70 line-clamp-2">{proj.description}</p>
+              <h3 className="text-sm font-headline group-hover:text-glow transition-all leading-tight">{proj.title}</h3>
+              <p className="text-[10px] font-code text-primary/70 line-clamp-2">{proj.description}</p>
               
               <div className="flex flex-wrap gap-1 pt-2">
                 {proj.tools.slice(0, 3).map(tool => (
-                  <span key={tool} className="px-2 py-0.5 bg-primary/5 border border-primary/10 text-[8px] font-code text-primary/60">
+                  <span key={tool} className="px-2 py-0.5 bg-primary/5 border border-primary/10 text-[7px] font-code text-primary/60">
                     {tool}
                   </span>
                 ))}
@@ -176,7 +218,7 @@ export default function MissionSelect() {
             </div>
 
             <div className="mt-6 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity">
-              <span className="text-[8px] font-code text-accent uppercase">View Mission Specs</span>
+              <span className="text-[8px] font-code text-accent uppercase tracking-tighter">View Mission Specs</span>
               <Info className="w-3 h-3 text-accent" />
             </div>
           </motion.div>
