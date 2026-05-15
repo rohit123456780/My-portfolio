@@ -69,7 +69,7 @@ export default function BootSequence() {
         <div className="h-24 overflow-hidden text-xs space-y-1 opacity-70">
           {logs.slice(0, currentLog + 1).map((log, i) => (
             <div key={i} className="flex gap-2">
-              <span className="text-accent">>></span>
+              <span className="text-accent">{">>"}</span>
               <span>{log}</span>
             </div>
           ))}

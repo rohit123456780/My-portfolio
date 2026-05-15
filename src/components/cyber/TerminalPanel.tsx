@@ -16,18 +16,22 @@ const storyLogs = [
 ];
 
 export default function TerminalPanel() {
-  const [visibleLogs, setVisibleLogs] = useState<string[]>([]);
+  const [visibleLogs, setVisibleLogs] = useState<{ text: string, time: string }[]>([]);
+  const [mounted, setMounted] = useState(false);
   const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
 
   useEffect(() => {
+    setMounted(true);
     let index = 0;
     const interval = setInterval(() => {
       if (index < storyLogs.length) {
-        setVisibleLogs(prev => [...prev, storyLogs[index]]);
+        setVisibleLogs(prev => [
+          ...prev, 
+          { 
+            text: storyLogs[index], 
+            time: new Date().toLocaleTimeString() 
+          }
+        ]);
         index++;
       } else {
         clearInterval(interval);
@@ -35,6 +39,8 @@ export default function TerminalPanel() {
     }, 150);
     return () => clearInterval(interval);
   }, []);
+
+  if (!mounted) return null;
 
   return (
     <div ref={containerRef} className="w-full max-w-2xl mx-auto font-code text-sm cyber-glass p-6 border-glow">
@@ -53,8 +59,8 @@ export default function TerminalPanel() {
             animate={{ opacity: 1, x: 0 }}
             className="flex gap-3"
           >
-            <span className="text-primary/30">[{new Date().toLocaleTimeString()}]</span>
-            <span className={i === 0 ? "text-accent" : "text-foreground"}>{log}</span>
+            <span className="text-primary/30">[{log.time}]</span>
+            <span className={i === 0 ? "text-accent" : "text-foreground"}>{log.text}</span>
           </motion.div>
         ))}
         <motion.div 
