@@ -1,0 +1,27 @@
+
+{
+  "entities": {
+    "Certification": {
+      "title": "Certification",
+      "description": "A professional certification or credential.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "issuer": { "type": "string" },
+        "category": { "type": "string" },
+        "featured": { "type": "boolean" },
+        "date": { "type": "string", "format": "date" }
+      },
+      "required": ["name", "issuer", "category"]
+    }
+  },
+  "auth": {
+    "providers": ["google"]
+  },
+  "firestore": {
+    "/certifications/{certId}": {
+      "schema": "#/backend/entities/Certification",
+      "description": "Collection of professional certifications."
+    }
+  }
+}

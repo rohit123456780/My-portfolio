@@ -1,6 +1,7 @@
+
 "use client";
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUIStore } from '@/lib/store';
 import BootSequence from '@/components/cyber/BootSequence';
@@ -8,6 +9,7 @@ import HeroScene from '@/components/cyber/HeroScene';
 import TerminalPanel from '@/components/cyber/TerminalPanel';
 import MissionLogs from '@/components/cyber/MissionLogs';
 import CommandPalette from '@/components/cyber/CommandPalette';
+import CertificationsVault from '@/components/cyber/CertificationsVault';
 import { ChevronDown, Shield, Terminal as TerminalIcon, Award, Cpu, Globe, Mail } from 'lucide-react';
 
 export default function Home() {
@@ -87,6 +89,13 @@ export default function Home() {
               <div className="h-px w-full bg-gradient-to-r from-primary/50 to-transparent mt-4" />
             </div>
             <MissionLogs />
+          </div>
+        </section>
+
+        {/* CERTIFICATIONS VAULT SECTION */}
+        <section id="certs" className="py-24 px-6 border-t border-primary/10">
+          <div className="max-w-7xl mx-auto">
+            <CertificationsVault />
           </div>
         </section>
 
