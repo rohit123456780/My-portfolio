@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -10,6 +9,7 @@ import TerminalPanel from '@/components/cyber/TerminalPanel';
 import MissionLogs from '@/components/cyber/MissionLogs';
 import CommandPalette from '@/components/cyber/CommandPalette';
 import CertificationsVault from '@/components/cyber/CertificationsVault';
+import InternshipAtlas from '@/components/cyber/InternshipAtlas';
 import { ChevronDown, Shield, Terminal as TerminalIcon, Award, Cpu, Globe, Mail } from 'lucide-react';
 
 export default function Home() {
@@ -92,6 +92,13 @@ export default function Home() {
           </div>
         </section>
 
+        {/* INTERNSHIP ATLAS SECTION */}
+        <section id="atlas" className="py-24 px-6 bg-primary/5 border-y border-primary/10">
+          <div className="max-w-7xl mx-auto">
+            <InternshipAtlas />
+          </div>
+        </section>
+
         {/* CERTIFICATIONS VAULT SECTION */}
         <section id="certs" className="py-24 px-6 border-t border-primary/10">
           <div className="max-w-7xl mx-auto">
@@ -99,29 +106,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* STATS HUD */}
-        <section className="py-24 px-6 border-y border-primary/10 bg-primary/5">
-          <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center space-y-2">
-              <h4 className="text-4xl font-headline text-accent">27+</h4>
-              <p className="text-[10px] font-code text-primary/60 uppercase tracking-widest">Internships Executed</p>
-            </div>
-            <div className="text-center space-y-2">
-              <h4 className="text-4xl font-headline text-accent">97+</h4>
-              <p className="text-[10px] font-code text-primary/60 uppercase tracking-widest">Certs Decrypted</p>
-            </div>
-            <div className="text-center space-y-2">
-              <h4 className="text-4xl font-headline text-accent">2023</h4>
-              <p className="text-[10px] font-code text-primary/60 uppercase tracking-widest">CTF Engagement Date</p>
-            </div>
-            <div className="text-center space-y-2">
-              <h4 className="text-4xl font-headline text-accent">L1</h4>
-              <p className="text-[10px] font-code text-primary/60 uppercase tracking-widest">OT Security Rank</p>
-            </div>
-          </div>
-        </section>
-
-        {/* EDUCATION & SKILLS TEASER */}
+        {/* EDUCATION & SKILLS SECTION */}
         <section className="py-24 px-6 relative">
           <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
             <div>

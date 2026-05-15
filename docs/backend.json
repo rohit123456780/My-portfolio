@@ -1,4 +1,3 @@
-
 {
   "entities": {
     "Certification": {
@@ -13,6 +12,20 @@
         "date": { "type": "string", "format": "date" }
       },
       "required": ["name", "issuer", "category"]
+    },
+    "Internship": {
+      "title": "Internship",
+      "description": "A cybersecurity internship or industrial training placement.",
+      "type": "object",
+      "properties": {
+        "organization": { "type": "string" },
+        "role": { "type": "string" },
+        "period": { "type": "string" },
+        "domain": { "type": "string" },
+        "description": { "type": "string" },
+        "isAdvanced": { "type": "boolean" }
+      },
+      "required": ["organization", "role", "period", "domain"]
     }
   },
   "auth": {
@@ -22,6 +35,10 @@
     "/certifications/{certId}": {
       "schema": "#/backend/entities/Certification",
       "description": "Collection of professional certifications."
+    },
+    "/internships/{internId}": {
+      "schema": "#/backend/entities/Internship",
+      "description": "Historical record of internship deployments."
     }
   }
 }
