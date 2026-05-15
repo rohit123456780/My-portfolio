@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "Certification": {
@@ -26,6 +27,19 @@
         "isAdvanced": { "type": "boolean" }
       },
       "required": ["organization", "role", "period", "domain"]
+    },
+    "Achievement": {
+      "title": "Achievement",
+      "description": "An award, honor, or professional milestone.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "date": { "type": "string" },
+        "isMajor": { "type": "boolean" }
+      },
+      "required": ["title", "description", "category"]
     }
   },
   "auth": {
@@ -39,6 +53,10 @@
     "/internships/{internId}": {
       "schema": "#/backend/entities/Internship",
       "description": "Historical record of internship deployments."
+    },
+    "/achievements/{achId}": {
+      "schema": "#/backend/entities/Achievement",
+      "description": "Record of professional awards and achievements."
     }
   }
 }

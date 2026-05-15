@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -10,7 +11,8 @@ import MissionLogs from '@/components/cyber/MissionLogs';
 import CommandPalette from '@/components/cyber/CommandPalette';
 import CertificationsVault from '@/components/cyber/CertificationsVault';
 import InternshipAtlas from '@/components/cyber/InternshipAtlas';
-import { ChevronDown, Shield, Terminal as TerminalIcon, Award, Cpu, Globe, Mail } from 'lucide-react';
+import AchievementsVault from '@/components/cyber/AchievementsVault';
+import { ChevronDown, Shield, Terminal as TerminalIcon, Award, Cpu, Globe, Mail, Trophy } from 'lucide-react';
 
 export default function Home() {
   const { isBooted } = useUIStore();
@@ -92,6 +94,13 @@ export default function Home() {
           </div>
         </section>
 
+        {/* ACHIEVEMENTS SECTION */}
+        <section id="achievements" className="py-24 px-6 bg-accent/5 border-y border-accent/10">
+          <div className="max-w-7xl mx-auto">
+            <AchievementsVault />
+          </div>
+        </section>
+
         {/* INTERNSHIP ATLAS SECTION */}
         <section id="atlas" className="py-24 px-6 bg-primary/5 border-y border-primary/10">
           <div className="max-w-7xl mx-auto">
@@ -118,11 +127,7 @@ export default function Home() {
                 <div className="cyber-glass p-4 border-l-4 border-primary">
                   <h4 className="font-headline text-sm">B.Sc. Networking & Cyber Security</h4>
                   <p className="text-xs font-code opacity-70">Brainware University | Kolkata</p>
-                  <p className="text-[10px] text-accent font-code mt-2">YEAR 3 | CURRENT SCORE: 63%</p>
-                </div>
-                <div className="cyber-glass p-4 border-l-4 border-primary/40">
-                  <h4 className="font-headline text-sm">Class XII - Science (CBSE)</h4>
-                  <p className="text-xs font-code opacity-70">St. Joseph's Convent</p>
+                  <p className="text-[10px] text-accent font-code mt-2">YEAR 3 | CURRENT SCORE: 91%</p>
                 </div>
               </div>
             </div>
