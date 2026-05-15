@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -12,7 +11,8 @@ import CommandPalette from '@/components/cyber/CommandPalette';
 import CertificationsVault from '@/components/cyber/CertificationsVault';
 import InternshipAtlas from '@/components/cyber/InternshipAtlas';
 import AchievementsVault from '@/components/cyber/AchievementsVault';
-import { ChevronDown, Shield, Terminal as TerminalIcon, Award, Cpu, Globe, Mail, Trophy } from 'lucide-react';
+import MissionSelect from '@/components/cyber/MissionSelect';
+import { ChevronDown, Shield, Terminal as TerminalIcon, Award, Cpu, Globe, Mail, Trophy, Briefcase } from 'lucide-react';
 
 export default function Home() {
   const { isBooted } = useUIStore();
@@ -41,7 +41,7 @@ export default function Home() {
               ROHIT ROY
             </h1>
             <p className="max-w-2xl mx-auto text-sm md:text-lg font-code opacity-80 uppercase tracking-wide">
-              OT Engineering Administrator L1 | Cybersecurity Practitioner | VAPT & Penetration Testing Specialist
+              Technical Engineer | OT Engineering Administrator L1 | Cybersecurity Practitioner
             </p>
             
             <div className="flex flex-wrap justify-center gap-4 pt-8">
@@ -94,6 +94,23 @@ export default function Home() {
           </div>
         </section>
 
+        {/* PROJECTS SECTION */}
+        <section id="projects" className="py-24 px-6 bg-background relative overflow-hidden">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-16">
+              <h2 className="text-3xl font-headline mb-4 flex items-center gap-3">
+                <Briefcase className="w-8 h-8 text-primary" />
+                Mission Select
+              </h2>
+              <p className="text-xs font-code text-primary/50 uppercase tracking-widest">Key Projects & Technical Case Studies</p>
+              <div className="h-px w-full bg-gradient-to-r from-primary/50 to-transparent mt-4" />
+            </div>
+            <MissionSelect />
+          </div>
+          {/* Decorative element */}
+          <div className="absolute top-1/2 -right-64 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+        </section>
+
         {/* ACHIEVEMENTS SECTION */}
         <section id="achievements" className="py-24 px-6 bg-accent/5 border-y border-accent/10">
           <div className="max-w-7xl mx-auto">
@@ -137,7 +154,7 @@ export default function Home() {
                 System Matrix
               </h2>
               <div className="flex flex-wrap gap-2">
-                {["VAPT", "OT/ICS", "SOC", "PYTHON", "KALI LINUX", "WIRESHARK", "METASPLOIT", "NETWORKING", "CLOUD SEC", "GRC"].map((skill) => (
+                {["VAPT", "OT/ICS", "SOC", "PYTHON", "KALI LINUX", "WIRESHARK", "METASPLOIT", "NETWORKING", "CLOUD SEC", "GRC", "QUANTUM TECH"].map((skill) => (
                   <span key={skill} className="px-3 py-1 bg-primary/10 border border-primary/20 text-[10px] font-code text-primary hover:bg-primary hover:text-primary-foreground transition-all cursor-crosshair">
                     {skill}
                   </span>

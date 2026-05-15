@@ -1,15 +1,15 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const storyLogs = [
   "SYSTEM ACCESS GRANTED: LOGGED IN AS ADMIN@CYBERDECK",
   "RETRIEVING PROFILE DATA: ROHIT ROY...",
-  "TITLE: OT ENGINEERING ADMINISTRATOR L1",
-  "CORE COMPETENCIES: VAPT, SOC, ICS SECURITY, FORENSICS",
+  "TITLE: TECHNICAL ENGINEER | OT ENGINEERING ADMINISTRATOR L1",
+  "CORE COMPETENCIES: TECHNICAL ENGINEER, OT/ICS, SOC, QUANTUM TECHNOLOGY",
   "MISSION STATUS: ACTIVE",
-  "LOCATION: BARASAT, WEST BENGAL, INDIA",
+  "LOCATION: WEST BENGAL, INDIA",
   "CONTACT SECURE: +91-6294067930",
   "EMAIL: DASHINGRAJ447@GMAIL.COM",
   "LINKEDIN: linkedin.com/in/rohit-roy-rrr"

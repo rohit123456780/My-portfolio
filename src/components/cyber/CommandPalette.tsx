@@ -2,13 +2,14 @@
 
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Command, X, Shield, Terminal, BookOpen, User } from 'lucide-react';
+import { Search, Command, X, Shield, Terminal, BookOpen, User, Trophy, Briefcase } from 'lucide-react';
 import { useUIStore } from '@/lib/store';
 
 const items = [
   { icon: User, label: "Identity", path: "#hero" },
   { icon: BookOpen, label: "Mission Logs", path: "#missions" },
-  { icon: Shield, label: "Mission Select", path: "#projects" },
+  { icon: Briefcase, label: "Mission Select (Projects)", path: "#projects" },
+  { icon: Trophy, label: "Awards & Honours", path: "#achievements" },
   { icon: Terminal, label: "Internship Atlas", path: "#atlas" },
   { icon: Shield, label: "Certifications Vault", path: "#certs" },
 ];
@@ -65,7 +66,8 @@ export default function CommandPalette() {
                     key={i}
                     onClick={() => {
                       setCommandPaletteOpen(false);
-                      document.querySelector(item.path)?.scrollIntoView({ behavior: 'smooth' });
+                      const el = document.querySelector(item.path);
+                      if (el) el.scrollIntoView({ behavior: 'smooth' });
                     }}
                     className="w-full flex items-center gap-3 p-3 hover:bg-primary/10 group transition-colors rounded-sm"
                   >
