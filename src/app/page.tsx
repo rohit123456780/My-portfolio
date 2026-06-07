@@ -1,7 +1,7 @@
 
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUIStore } from '@/lib/store';
 import BootSequence from '@/components/cyber/BootSequence';
@@ -81,7 +81,7 @@ export default function Home() {
 
           {/* Planets UI Layer */}
           {PLANETS.map((planet, index) => (
-            <PlanetNode key={planet.id} planet={planet} index={index} />
+            <PlanetNode key={planet.id} planet={planet} index={index} isBooted={isBooted} />
           ))}
 
           {/* Bottom Terminal Overlay */}
@@ -97,15 +97,24 @@ export default function Home() {
   );
 }
 
-function PlanetNode({ planet, index }: { planet: any, index: number }) {
+function PlanetNode({ planet, index, isBooted }: { planet: any, index: number, isBooted: boolean }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const radian = (planet.angle * Math.PI) / 180;
-  const x = Math.cos(radian) * planet.orbitRadius;
-  const y = Math.sin(radian) * planet.orbitRadius;
+  const x = (Math.cos(radian) * planet.orbitRadius).toFixed(2);
+  const y = (Math.sin(radian) * planet.orbitRadius).toFixed(2);
+
+  // Defer rendering position until client mount to avoid hydration mismatch
+  if (!mounted) return null;
 
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0 }}
-      animate={{ opacity: 1, scale: 1 }}
+      animate={isBooted ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 1, delay: 0.5 + index * 0.2 }}
       className="absolute z-20"
       style={{ 
@@ -137,7 +146,7 @@ function PlanetNode({ planet, index }: { planet: any, index: number }) {
 
           {/* Coordinates Pointer */}
           <div className="absolute -top-8 text-[8px] font-code text-primary/30 opacity-40 group-hover:opacity-100 transition-opacity">
-            X:{Math.round(x)} Y:{Math.round(y)}
+            X:{Math.round(parseFloat(x))} Y:{Math.round(parseFloat(y))}
           </div>
         </motion.div>
       </Link>

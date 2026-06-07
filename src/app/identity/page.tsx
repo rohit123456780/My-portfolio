@@ -40,7 +40,7 @@ export default function IdentityPage() {
             <div className="flex-1 space-y-4 text-center md:text-left">
               <div className="space-y-1">
                 <h1 className="text-6xl font-headline tracking-tighter text-glow">ROHIT ROY</h1>
-                <p className="text-xl font-code text-primary/80 uppercase tracking-widest">Technical Engineer | OT Engineering Administrator L1</p>
+                <p className="text-xl font-code text-primary/80 uppercase tracking-widest">Technical Engineer, OT/ICS, SOC, Quantum Technology</p>
               </div>
               <div className="flex flex-wrap justify-center md:justify-start gap-4">
                 <span className="px-3 py-1 bg-primary/10 border border-primary/20 text-[10px] font-code text-primary uppercase">Quantum Technology Specialist</span>
