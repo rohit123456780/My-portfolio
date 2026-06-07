@@ -1,14 +1,21 @@
 
 "use client";
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 export default function TerminalPanel() {
   const [mounted, setMounted] = useState(false);
+  const [currentTime, setCurrentTime] = useState("");
 
   useEffect(() => {
     setMounted(true);
+    const updateTime = () => {
+      setCurrentTime(new Date().toLocaleTimeString());
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
   }, []);
 
   if (!mounted) return null;
@@ -22,11 +29,11 @@ export default function TerminalPanel() {
       
       <div className="space-y-1 min-h-[60px]">
         <div className="flex gap-2">
-          <span className="text-primary/20">[{new Date().toLocaleTimeString()}]</span>
+          <span className="text-primary/20">[{currentTime}]</span>
           <span className="text-primary/60 tracking-tighter uppercase">SECURE_LINK_STABLE</span>
         </div>
         <div className="flex gap-2">
-          <span className="text-primary/20">[{new Date().toLocaleTimeString()}]</span>
+          <span className="text-primary/20">[{currentTime}]</span>
           <span className="text-primary/60 tracking-tighter uppercase">AETHER_SUBSYSTEM_ONLINE</span>
         </div>
         <motion.div 

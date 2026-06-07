@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUIStore } from '@/lib/store';
-import { Shield, Lock } from 'lucide-react';
+import { Shield } from 'lucide-react';
 
 const logs = [
   "SYSTEM_BOOT_INIT [v3.0.0]",
@@ -19,20 +19,31 @@ const logs = [
 export default function BootSequence() {
   const { setBooted } = useUIStore();
   const [currentLog, setCurrentLog] = useState(0);
+  const [mounted, setMounted] = useState(false);
+  const [timeStrings, setTimeStrings] = useState<string[]>([]);
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    setMounted(true);
+    const interval = setInterval(() => {
       setCurrentLog(prev => {
         if (prev >= logs.length - 1) {
-          clearInterval(timer);
+          clearInterval(interval);
           setTimeout(() => setBooted(true), 1200);
           return prev;
         }
         return prev + 1;
       });
     }, 300);
-    return () => clearInterval(timer);
+    return () => clearInterval(interval);
   }, [setBooted]);
+
+  useEffect(() => {
+    if (mounted) {
+      // Generate a fresh set of timestamps only once on the client
+      const times = logs.map(() => new Date().toLocaleTimeString([], { hour12: false, second: '2-digit' }));
+      setTimeStrings(times);
+    }
+  }, [mounted]);
 
   return (
     <motion.div 
@@ -52,7 +63,7 @@ export default function BootSequence() {
           </motion.div>
           
           <div className="space-y-2">
-            <h2 className="text-3xl font-headline tracking-[0.4em] text-[#00ff9f] uppercase shadow-[#00ff9f]/20 text-glow">Cyber_Ops</h2>
+            <h2 className="text-3xl font-headline tracking-[0.4em] text-[#00ff9f] uppercase text-glow">Cyber_Ops</h2>
             <div className="flex justify-center items-center gap-4 text-[10px] text-[#00ff9f]/40 uppercase tracking-[0.3em]">
               <span>NODE: INDIA_WB</span>
               <span className="w-1 h-1 bg-[#00ff9f]/20 rounded-full" />
@@ -63,9 +74,9 @@ export default function BootSequence() {
 
         <div className="h-48 overflow-hidden text-[11px] space-y-2 bg-black/80 p-6 border border-[#00ff9f]/10 font-code relative">
           <div className="absolute top-0 left-0 w-full h-[1px] bg-[#00ff9f]/10" />
-          {logs.slice(0, currentLog + 1).map((log, i) => (
+          {mounted && logs.slice(0, currentLog + 1).map((log, i) => (
             <div key={i} className="flex gap-4">
-              <span className="text-[#00ff9f]/20">[{new Date().toLocaleTimeString([], { hour12: false, second: '2-digit' })}]</span>
+              <span className="text-[#00ff9f]/20">[{timeStrings[i] || '--:--:--'}]</span>
               <span className={i === currentLog ? "text-[#00cfff]" : "text-[#00ff9f]/70"}>
                 {i === currentLog ? "> " : ">> "}{log}
               </span>

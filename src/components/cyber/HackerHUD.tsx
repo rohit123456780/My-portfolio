@@ -29,14 +29,22 @@ const alerts = [
 
 export default function HackerHUD() {
   const [currentAlert, setCurrentAlert] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
+    setMounted(true);
     const interval = setInterval(() => {
       setCurrentAlert(prev => (prev + 1) % alerts.length);
     }, 3000);
     return () => clearInterval(interval);
   }, []);
+
+  if (!mounted) {
+    return (
+      <div className="fixed top-0 left-0 right-0 z-[100] bg-[#020408] border-b border-[#00ff9f]/20 h-8 flex items-center overflow-hidden" />
+    );
+  }
 
   return (
     <>
