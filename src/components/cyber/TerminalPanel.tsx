@@ -4,15 +4,11 @@ import React, { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 const storyLogs = [
-  "SYSTEM ACCESS GRANTED: LOGGED IN AS ADMIN@CYBERDECK",
-  "RETRIEVING PROFILE DATA: ROHIT ROY...",
-  "TITLE: TECHNICAL ENGINEER | OT ENGINEERING ADMINISTRATOR L1",
-  "CORE COMPETENCIES: TECHNICAL ENGINEER, OT/ICS, SOC, QUANTUM TECHNOLOGY",
-  "MISSION STATUS: ACTIVE",
-  "LOCATION: WEST BENGAL, INDIA",
-  "CONTACT SECURE: +91-6294067930",
-  "EMAIL: DASHINGRAJ447@GMAIL.COM",
-  "LINKEDIN: linkedin.com/in/rohit-roy-rrr"
+  "SYSTEM INITIALIZED",
+  "NEURAL LINK ESTABLISHED",
+  "SCANNING SECTOR 7G...",
+  "MAP GENERATED",
+  "READY FOR NAVIGATION"
 ];
 
 export default function TerminalPanel() {
@@ -36,37 +32,35 @@ export default function TerminalPanel() {
       } else {
         clearInterval(interval);
       }
-    }, 150);
+    }, 200);
     return () => clearInterval(interval);
   }, []);
 
   if (!mounted) return null;
 
   return (
-    <div ref={containerRef} className="w-full max-w-2xl mx-auto font-code text-sm cyber-glass p-6 border-glow">
-      <div className="flex items-center gap-2 border-b border-primary/20 pb-2 mb-4">
-        <div className="w-3 h-3 rounded-full bg-destructive/50" />
-        <div className="w-3 h-3 rounded-full bg-accent/50" />
-        <div className="w-3 h-3 rounded-full bg-primary/50" />
-        <span className="ml-2 text-[10px] text-primary/50 tracking-widest uppercase">system_log.sh</span>
+    <div ref={containerRef} className="w-full font-code text-[10px] cyber-glass p-4 border-primary/10">
+      <div className="flex items-center gap-2 border-b border-primary/20 pb-2 mb-3">
+        <div className="w-2 h-2 rounded-full bg-primary/30" />
+        <span className="text-[8px] text-primary/30 tracking-widest uppercase">system_log.sh</span>
       </div>
       
-      <div className="space-y-2 min-h-[200px]">
+      <div className="space-y-1 min-h-[100px]">
         {visibleLogs.map((log, i) => (
           <motion.div 
             key={i} 
-            initial={{ opacity: 0, x: -10 }} 
+            initial={{ opacity: 0, x: -5 }} 
             animate={{ opacity: 1, x: 0 }}
-            className="flex gap-3"
+            className="flex gap-2"
           >
-            <span className="text-primary/30">[{log.time}]</span>
-            <span className={i === 0 ? "text-accent" : "text-foreground"}>{log.text}</span>
+            <span className="text-primary/20">[{log.time}]</span>
+            <span className="text-primary/60">{log.text}</span>
           </motion.div>
         ))}
         <motion.div 
           animate={{ opacity: [0, 1] }} 
           transition={{ repeat: Infinity, duration: 0.8 }}
-          className="w-2 h-4 bg-primary inline-block align-middle"
+          className="w-1.5 h-3 bg-primary/40 inline-block align-middle"
         />
       </div>
     </div>
