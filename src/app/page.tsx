@@ -9,15 +9,15 @@ import HeroScene from '@/components/cyber/HeroScene';
 import TerminalPanel from '@/components/cyber/TerminalPanel';
 import SpaceshipCursor from '@/components/cyber/SpaceshipCursor';
 import Link from 'next/link';
-import { Shield, Cpu, Globe, Trophy, Briefcase, Sparkles, User, MousePointer2 } from 'lucide-react';
+import { Shield, Globe, Trophy, Briefcase, Sparkles, User, Cpu, MousePointer2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 const PLANETS = [
-  { id: 'awards', name: 'Mercury: Distinction Belt', icon: Trophy, path: '/awards', color: 'text-orange-400', orbitRadius: 160, angle: 0 },
-  { id: 'internships', name: 'Venus: Growth Sector', icon: Globe, path: '/internships', color: 'text-emerald-400', orbitRadius: 220, angle: 72 },
-  { id: 'projects', name: 'Earth: Mission Matrix', icon: Cpu, path: '/projects', color: 'text-blue-400', orbitRadius: 280, angle: 144 },
-  { id: 'experience', name: 'Mars: Orbital Deployments', icon: Briefcase, path: '/experience', color: 'text-red-400', orbitRadius: 340, angle: 216 },
-  { id: 'certifications', name: 'Jupiter: Credential Nebula', icon: Shield, path: '/certifications', color: 'text-cyan-400', orbitRadius: 400, angle: 288 },
+  { id: 'awards', name: 'Mercury: Distinction Belt', icon: Trophy, path: '/awards', color: 'from-orange-400 to-red-600', orbitRadius: 140, angle: 0, size: 'w-12 h-12' },
+  { id: 'internships', name: 'Venus: Growth Sector', icon: Globe, path: '/internships', color: 'from-emerald-400 to-teal-700', orbitRadius: 200, angle: 72, size: 'w-14 h-14' },
+  { id: 'projects', name: 'Earth: Mission Matrix', icon: Cpu, path: '/projects', color: 'from-blue-400 to-indigo-800', orbitRadius: 260, angle: 144, size: 'w-16 h-16' },
+  { id: 'experience', name: 'Mars: Orbital Deployments', icon: Briefcase, path: '/experience', color: 'from-red-500 to-red-900', orbitRadius: 320, angle: 216, size: 'w-14 h-14' },
+  { id: 'certifications', name: 'Jupiter: Credential Nebula', icon: Shield, path: '/certifications', color: 'from-cyan-400 to-blue-600', orbitRadius: 380, angle: 288, size: 'w-20 h-20' },
 ];
 
 export default function Home() {
@@ -56,14 +56,14 @@ export default function Home() {
         <div className="fixed top-12 left-1/2 -translate-x-1/2 pointer-events-none z-40 opacity-30">
           <div className="flex flex-col items-center gap-2">
             <MousePointer2 className="w-6 h-6 text-primary animate-bounce" />
-            <p className="text-[8px] font-code text-primary uppercase tracking-[0.4em]">Drag to Explore Galaxy</p>
+            <p className="text-[8px] font-code text-primary uppercase tracking-[0.4em]">Drag to Explore System</p>
           </div>
         </div>
 
         {/* ORBITAL NAVIGATION SYSTEM */}
-        <section className="relative w-screen h-screen flex items-center justify-center">
+        <section className="relative w-screen h-screen flex items-center justify-center pointer-events-none">
           {/* Galactic Center / Sun (Identity) */}
-          <Link href="/identity">
+          <Link href="/identity" className="pointer-events-auto">
             <motion.div 
               initial={{ scale: 0, opacity: 0 }}
               animate={isBooted ? { scale: 1, opacity: 1 } : {}}
@@ -72,14 +72,15 @@ export default function Home() {
               onMouseEnter={() => setHoveredPlanet('identity')}
               onMouseLeave={() => setHoveredPlanet(null)}
             >
-              <div className="w-32 h-32 rounded-full bg-primary/20 border-2 border-primary shadow-[0_0_80px_hsla(var(--primary),0.4)] flex flex-col items-center justify-center backdrop-blur-3xl group">
-                <Sparkles className="w-10 h-10 text-primary animate-pulse mb-1 group-hover:scale-125 transition-transform" />
+              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-yellow-300 via-orange-500 to-red-600 shadow-[0_0_100px_rgba(255,165,0,0.6)] flex flex-col items-center justify-center backdrop-blur-3xl group">
+                <Sparkles className="w-10 h-10 text-white animate-pulse mb-1 group-hover:scale-125 transition-transform" />
                 <div className="text-center">
-                  <p className="text-[8px] font-code text-primary/80 uppercase tracking-widest">Identity Core</p>
+                  <p className="text-[8px] font-code text-white/80 uppercase tracking-widest">Identity Core</p>
                   <p className="text-[10px] font-headline text-white tracking-widest uppercase">THE SUN</p>
                 </div>
               </div>
-              <div className="absolute inset-[-20px] border border-primary/20 rounded-full animate-spin-slow pointer-events-none" />
+              {/* Corona Effect */}
+              <div className="absolute inset-[-40px] border border-orange-500/20 rounded-full animate-pulse pointer-events-none" />
             </motion.div>
           </Link>
 
@@ -95,7 +96,7 @@ export default function Home() {
           ))}
 
           {/* Bottom Terminal Overlay */}
-          <div className="absolute bottom-12 right-12 w-80 z-50">
+          <div className="absolute bottom-12 right-12 w-80 z-50 pointer-events-auto">
             <TerminalPanel />
           </div>
         </section>
@@ -130,7 +131,7 @@ function PlanetNode({ planet, index, isBooted, onHover }: { planet: any, index: 
     setIsLanding(true);
     setTimeout(() => {
       router.push(planet.path);
-    }, 1500);
+    }, 1200);
   };
 
   return (
@@ -138,7 +139,7 @@ function PlanetNode({ planet, index, isBooted, onHover }: { planet: any, index: 
       initial={{ opacity: 0, scale: 0 }}
       animate={isBooted ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
-      className="absolute z-20"
+      className="absolute z-20 pointer-events-auto"
       style={{ 
         left: `calc(50% + ${x}px)`, 
         top: `calc(50% + ${y}px)`,
@@ -151,12 +152,18 @@ function PlanetNode({ planet, index, isBooted, onHover }: { planet: any, index: 
         onClick={handleLanding}
         className="group relative flex flex-col items-center gap-4 cursor-none"
       >
-        <div className={`relative w-14 h-14 rounded-full bg-black border-2 border-current shadow-[0_0_30px_currentColor] flex items-center justify-center transition-all duration-500 group-hover:shadow-[0_0_60px_currentColor] group-hover:scale-110 ${planet.color} ${isLanding ? 'animate-ping' : ''}`}>
-          <planet.icon className="w-6 h-6 group-hover:text-white transition-colors" />
-          <div className="absolute inset-[-6px] border border-current opacity-20 rounded-full group-hover:opacity-100 group-hover:scale-110 transition-all border-dashed animate-spin-slow" />
+        {/* Realistic Planet Sphere */}
+        <div className={`relative ${planet.size} rounded-full bg-gradient-to-br ${planet.color} shadow-[0_0_30px_currentColor] flex items-center justify-center transition-all duration-500 group-hover:shadow-[0_0_60px_currentColor] group-hover:scale-110 text-white ${isLanding ? 'animate-ping' : ''}`}>
+          <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.2),transparent)]" />
+          <planet.icon className="w-1/2 h-1/2 drop-shadow-lg" />
+          
+          {/* Orbital Ring if Jupiter */}
+          {planet.id === 'certifications' && (
+            <div className="absolute inset-[-10px] border-2 border-white/10 rounded-full scale-y-[0.3] rotate-[15deg] pointer-events-none" />
+          )}
         </div>
 
-        <div className="absolute top-16 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-y-2 pointer-events-none">
+        <div className="absolute top-full mt-4 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-y-2 pointer-events-none">
           <span className="text-[8px] font-code text-white uppercase tracking-[0.3em] whitespace-nowrap bg-black/90 px-4 py-2 border border-primary/40 backdrop-blur-md">
             {planet.name}
           </span>
