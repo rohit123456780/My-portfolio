@@ -3,7 +3,7 @@
 
 import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Stars, PerspectiveCamera, Float } from '@react-three/drei';
+import { Stars, Float } from '@react-three/drei';
 import * as THREE from 'three';
 
 function ThreatGlobe() {
@@ -25,51 +25,38 @@ function ThreatGlobe() {
     }
   });
 
+  const nodes = useMemo(() => {
+    const temp = [];
+    for (let i = 0; i < 40; i++) {
+      const phi = Math.acos(-1 + (2 * i) / 40);
+      const theta = Math.sqrt(40 * Math.PI) * phi;
+      const x = 2.5 * Math.cos(theta) * Math.sin(phi);
+      const y = 2.5 * Math.sin(theta) * Math.sin(phi);
+      const z = 2.5 * Math.cos(phi);
+      temp.push([x, y, z]);
+    }
+    return temp;
+  }, []);
+
   return (
     <group>
-      {/* Core Wireframe */}
       <mesh ref={meshRef}>
         <sphereGeometry args={[2.5, 40, 40]} />
         <meshBasicMaterial color="#00ff9f" wireframe transparent opacity={0.2} />
       </mesh>
       
-      {/* Pulse Shell */}
       <mesh ref={outerMeshRef}>
         <sphereGeometry args={[2.8, 20, 20]} />
         <meshBasicMaterial color="#00cfff" wireframe transparent opacity={0.1} />
       </mesh>
       
-      {/* Active Nodes and Connections */}
       <group ref={linesRef}>
-        {[...Array(40)].map((_, i) => {
-          const phi = Math.acos(-1 + (2 * i) / 40);
-          const theta = Math.sqrt(40 * Math.PI) * phi;
-          const x = 2.5 * Math.cos(theta) * Math.sin(phi);
-          const y = 2.5 * Math.sin(theta) * Math.sin(phi);
-          const z = 2.5 * Math.cos(phi);
-          
-          return (
-            <group key={i}>
-              <mesh position={[x, y, z]}>
-                <sphereGeometry args={[0.05, 8, 8]} />
-                <meshBasicMaterial color={i % 5 === 0 ? "#ff003c" : "#00ff9f"} />
-              </mesh>
-              {i % 3 === 0 && (
-                <line>
-                  <bufferGeometry>
-                    <bufferAttribute 
-                      attach="attributes-position" 
-                      count={2} 
-                      array={new Float32Array([0, 0, 0, x, y, z])} 
-                      itemSize={3} 
-                    />
-                  </bufferGeometry>
-                  <lineBasicMaterial color="#00ff9f" transparent opacity={0.05} />
-                </line>
-              )}
-            </group>
-          );
-        })}
+        {nodes.map((pos, i) => (
+          <mesh key={i} position={pos as [number, number, number]}>
+            <sphereGeometry args={[0.05, 8, 8]} />
+            <meshBasicMaterial color={i % 5 === 0 ? "#ff003c" : "#00ff9f"} />
+          </mesh>
+        ))}
       </group>
     </group>
   );
@@ -119,21 +106,12 @@ export default function Hero3D() {
       <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 8] }}>
         <ambientLight intensity={0.5} />
         <pointLight position={[5, 5, 5]} color="#00ff9f" intensity={1} />
-        
         <Stars radius={50} depth={50} count={3000} factor={4} saturation={0} fade speed={0.5} />
-        
         <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
           <ThreatGlobe />
         </Float>
-        
         <BinaryRain />
-        
-        <gridHelper 
-          args={[100, 100, 0x00ff9f, 0x020408]} 
-          position={[0, -5, 0]} 
-          opacity={0.1} 
-          transparent 
-        />
+        <gridHelper args={[100, 100, 0x00ff9f, 0x020408]} position={[0, -5, 0]} opacity={0.1} transparent />
       </Canvas>
     </div>
   );

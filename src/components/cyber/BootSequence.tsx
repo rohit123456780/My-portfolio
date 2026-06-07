@@ -33,13 +33,12 @@ export default function BootSequence() {
         }
         return prev + 1;
       });
-    }, 300);
+    }, 200);
     return () => clearInterval(interval);
   }, [setBooted]);
 
   useEffect(() => {
     if (mounted) {
-      // Generate a fresh set of timestamps only once on the client
       const times = logs.map(() => new Date().toLocaleTimeString([], { hour12: false, second: '2-digit' }));
       setTimeStrings(times);
     }
