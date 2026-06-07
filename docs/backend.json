@@ -9,8 +9,8 @@
         "name": { "type": "string" },
         "issuer": { "type": "string" },
         "category": { "type": "string" },
-        "featured": { "type": "boolean" },
-        "date": { "type": "string", "format": "date" }
+        "date": { "type": "string" },
+        "id": { "type": "string" }
       },
       "required": ["name", "issuer", "category"]
     },
@@ -19,27 +19,54 @@
       "description": "A cybersecurity internship or industrial training placement.",
       "type": "object",
       "properties": {
-        "organization": { "type": "string" },
+        "org": { "type": "string" },
         "role": { "type": "string" },
         "period": { "type": "string" },
         "domain": { "type": "string" },
-        "description": { "type": "string" },
-        "isAdvanced": { "type": "boolean" }
+        "details": { "type": "string" }
       },
-      "required": ["organization", "role", "period", "domain"]
+      "required": ["org", "role", "period"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "A technical project or case study.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "org": { "type": "string" },
+        "period": { "type": "string" },
+        "details": { "type": "string" },
+        "tools": { "type": "array", "items": { "type": "string" } },
+        "category": { "type": "string" }
+      },
+      "required": ["title", "details", "category"]
+    },
+    "Experience": {
+      "title": "Experience",
+      "description": "Primary work experience.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "org": { "type": "string" },
+        "period": { "type": "string" },
+        "type": { "type": "string" },
+        "focus": { "type": "string" },
+        "location": { "type": "string" }
+      },
+      "required": ["title", "org", "period"]
     },
     "Achievement": {
       "title": "Achievement",
-      "description": "An award, honor, or professional milestone.",
+      "description": "A professional award or milestone.",
       "type": "object",
       "properties": {
         "title": { "type": "string" },
         "description": { "type": "string" },
         "category": { "type": "string" },
-        "date": { "type": "string" },
+        "meta": { "type": "string" },
         "isMajor": { "type": "boolean" }
       },
-      "required": ["title", "description", "category"]
+      "required": ["title", "description"]
     }
   },
   "auth": {
@@ -48,15 +75,23 @@
   "firestore": {
     "/certifications/{certId}": {
       "schema": "#/backend/entities/Certification",
-      "description": "Collection of professional certifications."
+      "description": "Collection of 97+ credentials."
     },
     "/internships/{internId}": {
       "schema": "#/backend/entities/Internship",
-      "description": "Historical record of internship deployments."
+      "description": "Deployment history of 27+ internships."
+    },
+    "/projects/{projectId}": {
+      "schema": "#/backend/entities/Project",
+      "description": "Matrix of 14 technical projects."
+    },
+    "/experience/{expId}": {
+      "schema": "#/backend/entities/Experience",
+      "description": "Core mission logs."
     },
     "/achievements/{achId}": {
       "schema": "#/backend/entities/Achievement",
-      "description": "Record of professional awards and achievements."
+      "description": "Distinction belt milestones."
     }
   }
 }
