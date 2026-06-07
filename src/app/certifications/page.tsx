@@ -8,14 +8,14 @@ import { collection, query, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useCollection } from 'react-firebase-hooks/firestore';
 
-const FALLBACK_CERTS = [
+const FULL_CERTIFICATIONS_LIST = [
   // API & Web Security
   { name: "APISEC Certified Professional", issuer: "APIsec University", category: "API & Web Security", date: "Apr 2025", id: "01733775-8dc0-41f1-8133-185e919d4e46" },
   { name: "Certified API Security Analyst", issuer: "APIsec University", category: "API & Web Security", date: "Apr 2025", id: "8c4bbbea-3e23-4c8d-9b49-469bf1c4c8a1" },
   { name: "API Security Fundamentals", issuer: "APIsec University", category: "API & Web Security" },
   { name: "Certified REST Engineer", issuer: "Cyber NOW Education", category: "API & Web Security", date: "Jul 2024", id: "2ec1040114748" },
   { name: "Certified AppSec Practitioner (CAP)", issuer: "The SecOps Group", category: "API & Web Security", date: "Feb 2024", id: "8366839" },
-  
+
   // Penetration Testing & Ethical Hacking
   { name: "C)PTE: Certified Penetration Testing Engineer", issuer: "Mile2", category: "Penetration Testing & Ethical Hacking", date: "Oct 2023", id: "23231-169-796-7246" },
   { name: "Certified Red Team Operations Management (CRTOM)", issuer: "Red Team Leaders", category: "Penetration Testing & Ethical Hacking", date: "Dec 2025" },
@@ -23,45 +23,54 @@ const FALLBACK_CERTS = [
   { name: "Certified Phishing Prevention Specialist (CPPS)", issuer: "Hack & Fix", category: "Penetration Testing & Ethical Hacking", date: "Dec 2025", id: "2347-2827-4889-2127" },
   { name: "Certified Vulnerability Analyst (C-VA)", issuer: "Sturtle Security", category: "Penetration Testing & Ethical Hacking", date: "Apr 2024", id: "STURSEC/CVA/2024/009" },
   { name: "Ethical Hacking Essentials (EHE)", issuer: "EC-Council", category: "Penetration Testing & Ethical Hacking", date: "Jul 2023", id: "233321" },
+  { name: "Cyber Security White Hat Hacker Level 1", issuer: "MOCT College", category: "Penetration Testing & Ethical Hacking", date: "Jan 2022", id: "MTJ R6YLU8-CE000862" },
+  { name: "Be A White Hat Hacker and Pen Tester", issuer: "EDUONIX", category: "Penetration Testing & Ethical Hacking", date: "Dec 2021" },
   { name: "Ethical Hacker", issuer: "Cisco Networking Academy", category: "Penetration Testing & Ethical Hacking", date: "Jan 2024" },
-  
-  // Network & Infrastructure
+
+  // Network & Infrastructure Security
   { name: "Certified Network Security Practitioner (CNSP)", issuer: "The SecOps Group", category: "Network & Infrastructure Security", date: "Jun 2024", id: "8813475" },
   { name: "Network Defense Essentials (NDE)", issuer: "EC-Council", category: "Network & Infrastructure Security", date: "Jul 2023", id: "236975" },
   { name: "Networking Essentials", issuer: "Cisco Networking Academy", category: "Network & Infrastructure Security", date: "Jan 2022" },
   { name: "Introduction to Cybersecurity", issuer: "Cisco Networking Academy", category: "Network & Infrastructure Security", date: "Aug 2022" },
   { name: "CCNAv7: Enterprise Networking Security and Automation", issuer: "Cisco Networking Academy", category: "Network & Infrastructure Security", date: "Apr 2024" },
   { name: "Cybersecurity Essentials (LFC108)", issuer: "The Linux Foundation", category: "Network & Infrastructure Security", date: "Jul 2023", id: "LF-gqojdj219m" },
-  { name: "Certified Linux File System Professional", issuer: "CCSSR", category: "Network & Infrastructure Security", date: "Jul 2024" },
+  { name: "Certified Linux File System Professional", issuer: "CCSSR", category: "Network & Infrastructure Security", date: "Jul 2024", id: "TESTING92324615" },
+  { name: "OPSWAT File Security Associate", issuer: "OPSWAT", category: "Network & Infrastructure Security", date: "Apr 2025", id: "4iyCdoBD4g" },
+  { name: "Introduction to Critical Infrastructure Protection", issuer: "OPSWAT Academy", category: "Network & Infrastructure Security", date: "Jun 2024", id: "e8QYOZQPuQ" },
+  { name: "Fortinet Certified Fundamentals", issuer: "Fortinet", category: "Network & Infrastructure Security", date: "Jan 2024", id: "2469397420RR" },
   { name: "Fortinet Certified Associate", issuer: "Fortinet", category: "Network & Infrastructure Security", date: "Feb 2024", id: "2001131314RR" },
 
-  // SOC, Threat Intel & Forensics
-  { name: "Threat Intelligence Fundamentals", issuer: "SOCRadar", category: "SOC, Threat Intelligence & Digital Forensics", date: "Dec 2025" },
-  { name: "Mastering Cyber Threat Intelligence", issuer: "SOCRadar", category: "SOC, Threat Intelligence & Digital Forensics", date: "Dec 2025" },
-  { name: "Mastering Gen AI for SOC", issuer: "SOCRadar", category: "SOC, Threat Intelligence & Digital Forensics", date: "Dec 2025" },
-  { name: "Fundamentals of Dark Web", issuer: "SOCRadar", category: "SOC, Threat Intelligence & Digital Forensics", date: "Dec 2025" },
-  { name: "Digital Forensics Essentials", issuer: "EC-Council", category: "SOC, Threat Intelligence & Digital Forensics", date: "Jul 2023" },
+  // SOC, Threat Intelligence & Digital Forensics
+  { name: "Threat Intelligence Fundamentals", issuer: "SOCRadar", category: "SOC, Threat Intelligence & Digital Forensics", date: "Dec 2025", id: "b3deb5fc-7c80-4cdd-a93b-d4c7287efe08" },
+  { name: "Mastering Cyber Threat Intelligence", issuer: "SOCRadar", category: "SOC, Threat Intelligence & Digital Forensics", date: "Dec 2025", id: "38a82901-c9f5-4ab7-ac7e-9e2b9034957d" },
+  { name: "Mastering Gen AI for SOC", issuer: "SOCRadar", category: "SOC, Threat Intelligence & Digital Forensics", date: "Dec 2025", id: "118751be-dbe0-429d-872f-3bbe42898a86" },
+  { name: "Fundamentals of Dark Web", issuer: "SOCRadar", category: "SOC, Threat Intelligence & Digital Forensics", date: "Dec 2025", id: "217b7023-e555-4648-973d-4f73952a06c1" },
+  { name: "SOC Summit 2026", issuer: "Antisyphon Training", category: "SOC, Threat Intelligence & Digital Forensics", date: "Mar 2026", id: "178121337" },
+  { name: "Digital Forensics Essentials (DFE)", issuer: "EC-Council", category: "SOC, Threat Intelligence & Digital Forensics", date: "Jul 2023", id: "235021" },
+  { name: "Introduction to OSINT", issuer: "Security Blue Team", category: "SOC, Threat Intelligence & Digital Forensics", date: "Jun 2024", id: "349613448" },
+  { name: "Cyber Threat Intelligence 101", issuer: "arcX", category: "SOC, Threat Intelligence & Digital Forensics", date: "Feb 2024" },
   { name: "CSI Linux Certified Investigator", issuer: "CSI Linux", category: "SOC, Threat Intelligence & Digital Forensics", date: "Jul 2025" },
 
   // GRC & Compliance
   { name: "JGRC – Junior GRC Analyst", issuer: "VibeSecurity", category: "GRC, Compliance & Governance", date: "Apr 2026", id: "VS-JGRC-CERT7519" },
-  { name: "CRPO – ICTTF United for Cyber Resilience", issuer: "ICTTF", category: "GRC, Compliance & Governance", date: "Dec 2025" },
-  { name: "CSCSO – ICTTF United for Cyber Resilience", issuer: "ICTTF", category: "GRC, Compliance & Governance", date: "Dec 2025" },
-  { name: "ISO/IEC 27001 Information Security Associate", issuer: "SkillFront", category: "GRC, Compliance & Governance", date: "Jan 2022" },
-  { name: "SC-900: Microsoft Security Fundamentals", issuer: "Microsoft", category: "GRC, Compliance & Governance", date: "Jul 2025" },
-  
+  { name: "CRPO – ICTTF United for Cyber Resilience", issuer: "ICTTF", category: "GRC, Compliance & Governance", date: "Dec 2025", id: "64d63660ac9488bbf50f3e76" },
+  { name: "CSCSO – ICTTF United for Cyber Resilience", issuer: "ICTTF", category: "GRC, Compliance & Governance", date: "Dec 2025", id: "64d27672fd3cdf761404c8c5" },
+  { name: "ISO/IEC 27001 Information Security Associate", issuer: "SkillFront", category: "GRC, Compliance & Governance", date: "Jan 2022", id: "63570328933086" },
+  { name: "SC-900: Microsoft Security Fundamentals", issuer: "Microsoft", category: "GRC, Compliance & Governance", date: "Jul 2025", id: "CU2x-uTE4" },
+  { name: "Cybersecurity Awareness Professional (CAPC)", issuer: "Certiprof", category: "GRC, Compliance & Governance", date: "Aug 2024", id: "Oabb8322" },
+  { name: "SailPoint Identity Security Leader", issuer: "SailPoint", category: "GRC, Compliance & Governance", date: "Oct 2025" },
+
   // Cloud, AI & Data
-  { name: "OCI Certified Multicloud Architect", issuer: "Oracle", category: "Cloud, AI & Data Platforms", date: "Jul 2025" },
-  { name: "AgentForce Specialist", issuer: "Salesforce", category: "Cloud, AI & Data Platforms", date: "Apr 2025" },
-  { name: "Generative AI Fundamentals", issuer: "Databricks", category: "Cloud, AI & Data Platforms", date: "Apr 2026" },
-  { name: "AI Agent Fundamentals", issuer: "Databricks", category: "Cloud, AI & Data Platforms", date: "Apr 2026" },
-  
-  // Google Professional
-  { name: "Google Cybersecurity Professional", issuer: "Google/Coursera", category: "Google Cybersecurity Professional", date: "May 2024" },
-  
+  { name: "OCI Certified Multicloud Architect Associate", issuer: "Oracle", category: "Cloud, AI & Data Platforms", date: "Jul 2025" },
+  { name: "AgentForce Specialist", issuer: "Salesforce", category: "Cloud, AI & Data Platforms", date: "Apr 2025", id: "6097365" },
+  { name: "Generative AI Fundamentals", issuer: "Databricks", category: "Cloud, AI & Data Platforms", date: "Apr 2026", id: "181008907" },
+  { name: "AI Agent Fundamentals", issuer: "Databricks", category: "Cloud, AI & Data Platforms", date: "Apr 2026", id: "181010117" },
+  { name: "JDE – Junior DevOps Engineer", issuer: "VibeSecurity", category: "Cloud, AI & Data Platforms", date: "Apr 2026", id: "VS-JDE-CERT1485" },
+
   // Specialist & Gov
   { name: "Geo-data Sharing and Cyber Security", issuer: "ISRO", category: "Specialist & Miscellaneous Certifications", date: "Dec 2023", id: "2023233862177" },
-  { name: "Certified Cyber Warrior", issuer: "HackingFlix", category: "Specialist & Miscellaneous Certifications", date: "Jan 2024" }
+  { name: "IoT: Internet of Things", issuer: "SVS College", category: "Specialist & Miscellaneous Certifications", date: "Jan 2022", id: "GCBSQ8-CE001977" },
+  { name: "Certified Cyber Warrior", issuer: "HackingFlix", category: "Specialist & Miscellaneous Certifications", date: "Jan 2024", id: "01223493800975" }
 ];
 
 export default function CertificationsPage() {
@@ -71,7 +80,7 @@ export default function CertificationsPage() {
 
   const certs = useMemo(() => {
     const dbCerts = value?.docs.map(doc => ({ id: doc.id, ...doc.data() })) || [];
-    return dbCerts.length > 0 ? dbCerts : FALLBACK_CERTS;
+    return dbCerts.length > 0 ? dbCerts : FULL_CERTIFICATIONS_LIST;
   }, [value]);
 
   const groups = useMemo(() => {
@@ -88,7 +97,7 @@ export default function CertificationsPage() {
     <main className="min-h-screen bg-[#02040a] p-6 pt-24 cyber-grid">
       <div className="max-w-6xl mx-auto space-y-16">
         <Link href="/" className="inline-flex items-center gap-2 text-primary hover:text-accent transition-colors font-code text-xs group">
-          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> RETURN_TO_ORBIT
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> RETURN_TO_BASE
         </Link>
         
         <div className="space-y-4">

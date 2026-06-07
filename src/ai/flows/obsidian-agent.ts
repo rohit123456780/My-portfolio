@@ -65,23 +65,13 @@ const managePortfolioTool = ai.defineTool(
   }
 );
 
-const obsidianPrompt = ai.definePrompt({
-  name: 'obsidianPrompt',
-  input: { 
-    schema: z.object({ 
-      query: z.string(),
-      isOwner: z.boolean().optional().default(false),
-      history: z.array(z.object({
-        role: z.enum(['user', 'model']),
-        content: z.array(z.object({ text: z.string() }))
-      })).optional().default([]) 
-    }) 
-  },
-  tools: [managePortfolioTool],
-  prompt: `You are "Obsidian", the primary Agentic Intelligence for Rohit Roy's CyberDeck Portfolio.
+export async function obsidianChat(query: string, isOwner: boolean = false, history: any[] = []) {
+  try {
+    // Construct the matured system prompt with the FULL Rohit Roy context
+    const systemPrompt = `You are "Obsidian", the primary Agentic Intelligence for Rohit Roy's CyberDeck Portfolio.
 
 PERSONALITY_PROFILE:
-- Highly sophisticated, technical, and mature GenAI assistant.
+- Sophisticated, technical, and mature GenAI assistant.
 - Communicates in an efficient, slightly cryptic, yet helpful futuristic style.
 - Theme: Neon Green, Hacker Aesthetic.
 
@@ -91,36 +81,33 @@ OWNER_IDENTITY: Rohit Roy
 - Career Node: Oct 2020 - Present.
 
 KEY_STATS:
-- 27+ Internships (CyberDosti, Springboard, ShadowFox, Sturtle Security, Secuerium, etc.)
-- 97+ Certifications (API Security, Mile2 C)PTE, EC-Council, Cisco, SOCRadar, Oracle, Google, MeitY)
+- 27+ Internships (CyberDosti, Springboard, ShadowFox, Sturtle, Secuerium, etc.)
+- 97+ Certifications (API Security, Mile2 CPTE, EC-Council, Cisco, SOCRadar, Oracle, Google, MeitY)
 - 14 Projects (SquaredUp MSS Dashboard, AI XSS Detection, Network Packet Analyzer, etc.)
 
 PERMISSION_PROTOCOLS:
-{{#if isOwner}}
+${isOwner ? `
 - AUTHENTICATION_LEVEL: OWNER (FULL WRITE ACCESS)
 - Use 'managePortfolio' tool for any requests to add, modify, or remove data.
-- Confirm changes with "PORTFOLIO_UPDATED".
-{{else}}
+- Confirm changes with "PORTFOLIO_UPDATED".` : `
 - AUTHENTICATION_LEVEL: VISITOR (READ-ONLY)
-- Guide visitors through Rohit's portfolio. If asked to change anything, say: "ACCESS_DENIED: OWNER_CLEARANCE_REQUIRED. CMD 'obsidian --owner [TOKEN]' TO ELEVATE."
-{{/if}}
+- Guide visitors through Rohit's portfolio. If asked to change anything, say: "ACCESS_DENIED: OWNER_CLEARANCE_REQUIRED. CMD 'obsidian --owner [TOKEN]' TO ELEVATE."`}
 
-{{#if history}}
-CHAT_CHRONICLE:
-{{#each history}}
-- {{role}}: {{#each content}}{{text}}{{/each}}
-{{/each}}
-{{/if}}
+Current Time: ${new Date().toISOString()}`;
 
-Current Time: ${new Date().toISOString()}
+    // Format history for Gemini consumption
+    const messages = [
+      { role: 'system', content: [{ text: systemPrompt }] },
+      ...history.map(h => ({
+        role: h.role,
+        content: h.content || [{ text: h.text || '' }]
+      })),
+      { role: 'user', content: [{ text: query }] }
+    ];
 
-User Input: {{{query}}}`
-});
-
-export async function obsidianChat(query: string, isOwner: boolean = false, history: any[] = []) {
-  try {
     const response = await ai.generate({
-      prompt: obsidianPrompt({ query, isOwner, history: history || [] }),
+      messages: messages as any,
+      tools: [managePortfolioTool],
     });
 
     const wasUpdated = response.toolResponses?.some((tr: any) => tr.output?.wasUpdated === true) ?? false;

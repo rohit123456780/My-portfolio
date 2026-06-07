@@ -8,7 +8,7 @@ import { collection, query, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useCollection } from 'react-firebase-hooks/firestore';
 
-const FALLBACK_INTERNSHIPS = [
+const FULL_INTERNSHIP_LIST = [
   { org: "Secuerium Technologies", role: "Cybersecurity Intern (VAPT)", period: "Sep 2025 – Sep 2025", domain: "VAPT" },
   { org: "Razz Security IT Services LLP", role: "Cybersecurity Intern", period: "Jul 2025 – Aug 2025", domain: "Cybersecurity" },
   { org: "Redynox", role: "Cybersecurity Intern", period: "May 2025 – Jun 2025", domain: "Cybersecurity" },
@@ -45,14 +45,14 @@ export default function InternshipsPage() {
 
   const internships = useMemo(() => {
     const dbInterns = value?.docs.map(doc => ({ id: doc.id, ...doc.data() })) || [];
-    return dbInterns.length > 0 ? dbInterns : FALLBACK_INTERNSHIPS;
+    return dbInterns.length > 0 ? dbInterns : FULL_INTERNSHIP_LIST;
   }, [value]);
 
   return (
     <main className="min-h-screen bg-[#02040a] p-6 pt-24 cyber-grid">
       <div className="max-w-5xl mx-auto space-y-16">
         <Link href="/" className="inline-flex items-center gap-2 text-primary hover:text-accent transition-colors font-code text-xs group">
-          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> RETURN_TO_ORBIT
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> RETURN_TO_BASE
         </Link>
         
         <div className="space-y-4">
