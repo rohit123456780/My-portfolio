@@ -39,7 +39,7 @@ function ThreatGlobe() {
         <meshBasicMaterial color="#00cfff" wireframe transparent opacity={0.1} />
       </mesh>
       
-      {/* Active Nodes */}
+      {/* Active Nodes and Connections */}
       <group ref={linesRef}>
         {[...Array(40)].map((_, i) => {
           const phi = Math.acos(-1 + (2 * i) / 40);
@@ -57,7 +57,7 @@ function ThreatGlobe() {
               {i % 3 === 0 && (
                 <line>
                   <bufferGeometry>
-                    <float32BufferAttribute 
+                    <bufferAttribute 
                       attach="attributes-position" 
                       count={2} 
                       array={new Float32Array([0, 0, 0, x, y, z])} 
@@ -76,7 +76,7 @@ function ThreatGlobe() {
 }
 
 function BinaryRain() {
-  const count = 2000;
+  const count = 1000;
   const meshRef = useRef<THREE.InstancedMesh>(null);
   const dummy = useMemo(() => new THREE.Object3D(), []);
 
@@ -116,8 +116,7 @@ function BinaryRain() {
 export default function Hero3D() {
   return (
     <div className="absolute inset-0 z-0">
-      <Canvas dpr={[1, 2]}>
-        <PerspectiveCamera makeDefault position={[0, 0, 8]} />
+      <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 8] }}>
         <ambientLight intensity={0.5} />
         <pointLight position={[5, 5, 5]} color="#00ff9f" intensity={1} />
         

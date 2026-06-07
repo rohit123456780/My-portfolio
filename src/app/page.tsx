@@ -3,11 +3,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Hero3D from '@/components/cyber/Hero3D';
-import BootSequence from '@/components/cyber/BootSequence';
+import dynamic from 'next/dynamic';
 import { useUIStore } from '@/lib/store';
 import { Shield, Activity, Zap, Lock, Terminal, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
+
+// Dynamically import 3D components to avoid hydration and constructor issues
+const Hero3D = dynamic(() => import('@/components/cyber/Hero3D'), { ssr: false });
+const BootSequence = dynamic(() => import('@/components/cyber/BootSequence'), { ssr: false });
 
 export default function Home() {
   const { isBooted } = useUIStore();
@@ -52,7 +55,7 @@ export default function Home() {
                   <Lock className="w-3 h-3" /> SECURE_ACCESS_ESTABLISHED
                 </motion.div>
                 
-                <h1 className="text-7xl md:text-9xl font-headline tracking-tighter text-[#00ff9f] glitch-text leading-none text-glow uppercase">
+                <h1 className="text-7xl md:text-9xl font-headline tracking-tighter text-[#00ff9f] leading-none text-glow uppercase">
                   ROHIT<br/>ROY
                 </h1>
                 
@@ -108,13 +111,6 @@ export default function Home() {
                     <p className="pl-4">QUANTUM_TECH: 72%</p>
                   </div>
                 </div>
-                <div className="h-2 w-full bg-[#00ff9f]/5 overflow-hidden">
-                  <motion.div 
-                    animate={{ x: ['-100%', '100%'] }}
-                    transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
-                    className="w-1/3 h-full bg-[#00ff9f]/40"
-                  />
-                </div>
               </div>
             </div>
           </div>
@@ -122,16 +118,6 @@ export default function Home() {
       )}
 
       <style jsx global>{`
-        .glitch-text {
-          animation: CharacterScramble 0.3s steps(2) infinite;
-        }
-        @keyframes CharacterScramble {
-          0% { transform: translate(0); }
-          25% { transform: translate(-1px, 0.5px); }
-          50% { transform: translate(1px, -0.5px); }
-          75% { transform: translate(-0.5px, -1px); }
-          100% { transform: translate(0); }
-        }
         .text-glow {
           text-shadow: 0 0 15px rgba(0, 255, 159, 0.4);
         }
