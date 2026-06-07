@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Terminal, Send, X, Cpu, ShieldCheck, Lock, Unlock, Activity } from 'lucide-react';
+import { Terminal, Send, X, Cpu, ShieldCheck, Lock, Unlock, Activity, Bot } from 'lucide-react';
 import { obsidianChat } from '@/ai/flows/obsidian-agent';
 
 type Message = {
@@ -18,7 +18,7 @@ export default function ObsidianChatbot() {
   const [input, setInput] = useState('');
   const [isOwner, setIsOwner] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'obsidian', text: 'SYSTEM_ONLINE: Obsidian Intelligence Core active. I am Rohit Roy\'s personal GenAI assistant. Type "obsidian --owner 1507" to unlock write access.' }
+    { role: 'obsidian', text: 'SYSTEM_ONLINE: Obsidian Intelligence Core active. I am Rohit Roy\'s personal GenAI assistant. How can I assist with your mission logs today?' }
   ]);
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -102,7 +102,7 @@ export default function ObsidianChatbot() {
         onClick={() => setIsOpen(true)}
         className="fixed bottom-8 right-8 z-[200] p-4 bg-black border border-[#00ff9f]/30 text-[#00ff9f] rounded-full shadow-[0_0_20px_rgba(0,255,159,0.2)] hover:shadow-[0_0_30px_rgba(0,255,159,0.4)] hover:scale-110 transition-all group"
       >
-        <Cpu className="w-6 h-6 animate-pulse" />
+        <Bot className="w-6 h-6 animate-pulse" />
         <span className="absolute -top-12 right-0 bg-black/90 text-[#00ff9f] text-[8px] font-code px-2 py-1 border border-[#00ff9f]/20 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap uppercase tracking-widest">
           Invoke Obsidian
         </span>
@@ -119,10 +119,10 @@ export default function ObsidianChatbot() {
             <div className="bg-[#00ff9f]/10 p-4 flex justify-between items-center border-b border-[#00ff9f]/20">
               <div className="flex items-center gap-3">
                 <div className="relative">
-                  <Terminal className="w-4 h-4 text-[#00ff9f]" />
+                  <Bot className="w-4 h-4 text-[#00ff9f]" />
                   {isOwner && <div className="absolute -top-1 -right-1 w-2 h-2 bg-[#00ff9f] rounded-full animate-ping" />}
                 </div>
-                <span className="text-[12px] font-bold text-[#00ff9f] tracking-[0.5em] uppercase font-headline">OBSIDIAN</span>
+                <span className="text-[12px] font-bold text-[#00ff9f] tracking-[0.5em] uppercase font-headline">OBSIDIAN_AI</span>
               </div>
               <div className="flex items-center gap-4">
                 {isOwner ? (
@@ -156,7 +156,7 @@ export default function ObsidianChatbot() {
               {isTyping && (
                 <div className="flex justify-start">
                   <div className="p-3 border border-[#00ff9f]/10 bg-[#00ff9f]/5">
-                    <span className="text-[#00ff9f] animate-pulse">ANALYZING_INPUT...</span>
+                    <span className="text-[#00ff9f] animate-pulse">ANALYZING_CORE...</span>
                   </div>
                 </div>
               )}
@@ -183,7 +183,7 @@ export default function ObsidianChatbot() {
                 <ShieldCheck className={`w-2 h-2 ${isOwner ? 'text-[#00ff9f]' : 'text-white/10'}`} /> 
                 {isOwner ? 'Clearance: Owner' : 'Clearance: Visitor'}
               </span>
-              <span>Obsidian_v2.0_Online</span>
+              <span>Obsidian_GenAI_v2.5</span>
             </div>
           </motion.div>
         )}
