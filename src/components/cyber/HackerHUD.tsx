@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Activity, Shield, Cpu, Globe, Trophy, User, Terminal, Search } from 'lucide-react';
+import { Activity, Shield, Cpu, Globe, Trophy, User, Terminal, Lock } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -17,11 +17,9 @@ const navItems = [
 ];
 
 const alerts = [
-  "INTRUSION ATTEMPT BLOCKED - IP: 192.168.1.44 - [14:23:01]",
+  "INTRUSION ATTEMPT BLOCKED - IP: 192.168.1.44",
   "CVE-2024-4421 PATCHED IN MAIN NODE",
   "FIREWALL RULE UPDATED: PORT 8080 RESTRICTED",
-  "SCAN DETECTED FROM REMOTE IP: 45.23.11.2",
-  "ENCRYPTION KEY ROTATED SUCCESSFULLY",
   "THREAT_LEVEL: MINIMAL",
   "DDoS MITIGATION ACTIVE",
   "QUANTUM_ENCRYPTION_LINK_STABLE",
@@ -40,20 +38,15 @@ export default function HackerHUD() {
     return () => clearInterval(interval);
   }, []);
 
-  if (!mounted) {
-    return (
-      <div className="fixed top-0 left-0 right-0 z-[100] bg-[#020408] border-b border-[#00ff9f]/20 h-8 flex items-center overflow-hidden" />
-    );
-  }
+  if (!mounted) return <div className="fixed top-0 left-0 right-0 z-[100] h-8 bg-background border-b border-primary/20" />;
 
   return (
     <>
-      {/* Live Threat Ticker */}
       <div className="fixed top-0 left-0 right-0 z-[100] bg-[#020408]/95 border-b border-[#00ff9f]/20 backdrop-blur-xl h-8 flex items-center overflow-hidden font-code text-[9px]">
-        <div className="bg-[#00ff9f] text-[#020408] px-4 h-full flex items-center font-bold tracking-[0.2em] shrink-0">
+        <div className="bg-[#00ff9f] text-[#020408] px-4 h-full flex items-center font-bold tracking-[0.2em] shrink-0 uppercase">
           LIVE_THREAT_FEED
         </div>
-        <div className="flex-1 whitespace-nowrap pl-6 flex items-center gap-8 animate-marquee">
+        <div className="flex-1 whitespace-nowrap pl-6 flex items-center gap-8">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentAlert}
@@ -67,25 +60,23 @@ export default function HackerHUD() {
             </motion.div>
           </AnimatePresence>
         </div>
-        <div className="px-6 text-[#00ff9f]/40 hidden md:flex items-center gap-2 tracking-widest border-l border-[#00ff9f]/10">
-          <span className="w-2 h-2 rounded-full bg-[#00ff9f]/20 animate-pulse" />
-          NODE: WB_INDIA_CORE_01
-        </div>
+        <Link href="/vault" className="px-6 text-[#00ff9f]/60 flex items-center gap-2 tracking-widest border-l border-[#00ff9f]/10 hover:text-[#00ff9f] transition-colors">
+          <Lock className="w-3 h-3" />
+          SECURE_VAULT
+        </Link>
       </div>
 
-      {/* Main Navigation HUD */}
       <nav className="fixed top-8 left-0 right-0 z-[90] p-4 flex justify-between items-center pointer-events-none">
         <Link href="/" className="pointer-events-auto">
           <div className="flex items-center gap-4 group">
-            <div className="w-12 h-12 border border-[#00ff9f]/40 bg-black/90 flex items-center justify-center relative">
-              <Terminal className="w-6 h-6 text-[#00ff9f] group-hover:scale-110 transition-transform" />
-              <div className="absolute inset-0 bg-[#00ff9f]/5 group-hover:bg-[#00ff9f]/20 transition-colors" />
+            <div className="w-10 h-10 border border-[#00ff9f]/40 bg-black/90 flex items-center justify-center relative">
+              <Terminal className="w-5 h-5 text-[#00ff9f] group-hover:scale-110 transition-transform" />
               <div className="absolute -top-1 -left-1 w-2 h-2 border-t border-l border-[#00ff9f]" />
               <div className="absolute -bottom-1 -right-1 w-2 h-2 border-b border-r border-[#00ff9f]" />
             </div>
             <div>
-              <div className="text-sm font-headline text-glow tracking-[0.3em] uppercase">ROHIT_ROY</div>
-              <div className="text-[8px] font-code text-[#00ff9f]/40 tracking-[0.2em] uppercase">CYBER_OPS_COMMAND</div>
+              <div className="text-xs font-headline text-glow tracking-[0.3em] uppercase">ROHIT_ROY</div>
+              <div className="text-[7px] font-code text-[#00ff9f]/40 tracking-[0.2em] uppercase">CYBER_OPS_COMMAND</div>
             </div>
           </div>
         </Link>
@@ -99,31 +90,14 @@ export default function HackerHUD() {
                   : 'border-white/5 text-[#00ff9f]/40 hover:border-[#00ff9f]/40 hover:text-[#00ff9f]'
               }`}>
                 <span className="text-[8px] font-code opacity-40">[{item.id}]</span>
-                <span className="text-[10px] font-headline tracking-[0.2em]">{item.label}</span>
-                {pathname === item.path && (
-                  <motion.div 
-                    layoutId="activeNav"
-                    className="absolute inset-0 border border-[#00ff9f]/50 shadow-[0_0_10px_rgba(0,255,159,0.3)] pointer-events-none" 
-                  />
-                )}
+                <span className="text-[9px] font-headline tracking-[0.2em]">{item.label}</span>
               </div>
             </Link>
           ))}
-          <div className="ml-4 pl-4 border-l border-white/10 flex items-center gap-4">
-            <Search className="w-4 h-4 text-[#00ff9f]/30 hover:text-[#00ff9f] transition-colors cursor-pointer" />
-            <div className="text-[10px] text-[#00ff9f]/20 font-code uppercase tracking-tighter">v3.0.0_STABLE</div>
-          </div>
         </div>
       </nav>
 
       <style jsx global>{`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-          animation: marquee 30s linear infinite;
-        }
         .text-glow {
           text-shadow: 0 0 8px rgba(0, 255, 159, 0.5);
         }
