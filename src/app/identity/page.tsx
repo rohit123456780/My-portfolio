@@ -1,13 +1,27 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { User, MapPin, Shield, Lock, ArrowLeft, Terminal } from 'lucide-react';
+import { User, MapPin, Shield, Lock, ArrowLeft, Terminal, Activity, GraduationCap } from 'lucide-react';
 import Link from 'next/link';
+import { collection, query, orderBy } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { useCollection } from 'react-firebase-hooks/firestore';
 
 export default function IdentityPage() {
   const [mounted, setMounted] = useState(false);
+
+  // Real-time fetches for skills and education
+  const [skillsValue, skillsLoading] = useCollection(
+    query(collection(db, 'skills'), orderBy('level', 'desc'))
+  );
+  const [eduValue, eduLoading] = useCollection(
+    query(collection(db, 'education'), orderBy('period', 'desc'))
+  );
+
+  const skills = useMemo(() => skillsValue?.docs.map(d => ({ id: d.id, ...d.data() })) || [], [skillsValue]);
+  const education = useMemo(() => eduValue?.docs.map(d => ({ id: d.id, ...d.data() })) || [], [eduValue]);
 
   useEffect(() => {
     setMounted(true);
@@ -50,18 +64,25 @@ export default function IdentityPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="cyber-glass p-8 space-y-6 border border-primary/10 hover:border-accent transition-all group">
               <h3 className="text-xs font-code text-primary/40 uppercase tracking-[0.5em] border-b border-primary/10 pb-2">Academic Node</h3>
-              <div>
-                <h4 className="text-xl font-headline text-glow uppercase">B.Sc. Networking & Cyber Security</h4>
-                <p className="text-xs font-code text-primary/60 uppercase">Brainware University | Kolkata</p>
-                <div className="mt-4 space-y-2">
-                  <div className="flex justify-between text-[10px] font-code text-primary/40 uppercase">
-                    <span>Performance Matrix</span>
-                    <span>91% (Distinction)</span>
+              <div className="space-y-6">
+                {education.map((edu: any) => (
+                  <div key={edu.id}>
+                    <h4 className="text-xl font-headline text-glow uppercase">{edu.degree}</h4>
+                    <p className="text-xs font-code text-primary/60 uppercase">{edu.school} | {edu.period}</p>
+                    {edu.score && (
+                      <div className="mt-4 space-y-2">
+                        <div className="flex justify-between text-[10px] font-code text-primary/40 uppercase">
+                          <span>Performance Matrix</span>
+                          <span>{edu.score}</span>
+                        </div>
+                        <div className="h-1 w-full bg-primary/10 overflow-hidden">
+                          <motion.div initial={{ width: 0 }} whileInView={{ width: "91%" }} transition={{ duration: 1.5 }} className="h-full bg-primary shadow-[0_0_10px_hsla(var(--primary),0.5)]" />
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <div className="h-1 w-full bg-primary/10 overflow-hidden">
-                    <motion.div initial={{ width: 0 }} animate={{ width: "91%" }} transition={{ duration: 1.5 }} className="h-full bg-primary shadow-[0_0_10px_hsla(var(--primary),0.5)]" />
-                  </div>
-                </div>
+                ))}
+                {education.length === 0 && !eduLoading && <p className="text-[10px] font-code text-primary/20 uppercase">Awaiting Academic Uplink...</p>}
               </div>
             </div>
 
@@ -94,16 +115,17 @@ export default function IdentityPage() {
           <div className="space-y-8">
             <h3 className="text-xs font-code text-primary/40 uppercase tracking-[0.5em] border-b border-primary/10 pb-2">Skill Matrix Alignment</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {['VAPT', 'SOC', 'ICS SECURITY', 'FORENSICS', 'GRC', 'CLOUD', 'AI', 'QUANTUM'].map((skill) => (
+              {skills.map((skill: any) => (
                 <motion.div 
-                  key={skill}
+                  key={skill.id}
                   whileHover={{ scale: 1.05 }}
                   className="p-6 border border-primary/10 bg-primary/5 hover:border-primary/40 hover:bg-primary/10 transition-all text-center group"
                 >
                   <Shield className="w-6 h-6 text-primary/40 mx-auto mb-3 group-hover:text-primary group-hover:animate-pulse" />
-                  <span className="text-[10px] font-code text-primary uppercase tracking-widest">{skill}</span>
+                  <span className="text-[10px] font-code text-primary uppercase tracking-widest">{skill.name}</span>
                 </motion.div>
               ))}
+              {skills.length === 0 && !skillsLoading && <p className="col-span-full text-center text-[10px] font-code text-primary/20 uppercase">No active skill nodes. Invoke Obsidian.</p>}
             </div>
           </div>
         </div>

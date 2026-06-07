@@ -6,10 +6,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Terminal, Send, X, Cpu, Sparkles, ShieldCheck } from 'lucide-react';
 import { obsidianChat } from '@/ai/flows/obsidian-agent';
 
+type Message = {
+  role: 'user' | 'obsidian';
+  text: string;
+};
+
 export default function ObsidianChatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<{ role: 'user' | 'obsidian', text: string }[]>([
+  const [messages, setMessages] = useState<Message[]>([
     { role: 'obsidian', text: 'SYSTEM_ONLINE: Obsidian Intelligence Subsystem active. Awaiting mission parameters.' }
   ]);
   const [isTyping, setIsTyping] = useState(false);
@@ -31,7 +36,13 @@ export default function ObsidianChatbot() {
     setIsTyping(true);
 
     try {
-      const response = await obsidianChat(userMsg);
+      // Map messages to Genkit history format
+      const history = messages.map(m => ({
+        role: m.role === 'user' ? 'user' : 'model',
+        content: [{ text: m.text }]
+      }));
+
+      const response = await obsidianChat(userMsg, history);
       setMessages(prev => [...prev, { role: 'obsidian', text: response }]);
     } catch (error) {
       setMessages(prev => [...prev, { role: 'obsidian', text: 'ERR: Neural link interrupted. Please retry.' }]);
@@ -60,7 +71,6 @@ export default function ObsidianChatbot() {
             exit={{ opacity: 0, scale: 0.9, y: 50 }}
             className="fixed bottom-24 right-8 w-[350px] h-[500px] z-[200] cyber-glass border-2 border-primary/30 flex flex-col overflow-hidden shadow-2xl"
           >
-            {/* Header */}
             <div className="bg-primary/20 p-3 flex justify-between items-center border-b border-primary/20">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-primary" />
@@ -71,7 +81,6 @@ export default function ObsidianChatbot() {
               </button>
             </div>
 
-            {/* Chat Area */}
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 font-code text-xs no-scrollbar">
               {messages.map((m, i) => (
                 <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -93,7 +102,6 @@ export default function ObsidianChatbot() {
               )}
             </div>
 
-            {/* Input */}
             <form onSubmit={handleSend} className="p-4 border-t border-primary/20 bg-primary/5">
               <div className="flex gap-2">
                 <input
@@ -108,7 +116,6 @@ export default function ObsidianChatbot() {
               </div>
             </form>
 
-            {/* Footer Status */}
             <div className="p-2 px-4 bg-primary/10 flex justify-between items-center text-[7px] text-primary/30 uppercase tracking-[0.2em]">
               <span className="flex items-center gap-1"><ShieldCheck className="w-2 h-2" /> Authorized_Write_Access</span>
               <span>Obsidian_Link: Stable</span>

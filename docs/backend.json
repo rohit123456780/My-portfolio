@@ -51,7 +51,8 @@
         "period": { "type": "string" },
         "type": { "type": "string" },
         "focus": { "type": "string" },
-        "location": { "type": "string" }
+        "location": { "type": "string" },
+        "icon": { "type": "string", "enum": ["Shield", "Server", "Terminal"] }
       },
       "required": ["title", "org", "period"]
     },
@@ -67,6 +68,28 @@
         "isMajor": { "type": "boolean" }
       },
       "required": ["title", "description"]
+    },
+    "Skill": {
+      "title": "Skill",
+      "description": "A technical competency.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "level": { "type": "number" }
+      },
+      "required": ["name"]
+    },
+    "Education": {
+      "title": "Education",
+      "description": "Academic qualifications.",
+      "type": "object",
+      "properties": {
+        "degree": { "type": "string" },
+        "school": { "type": "string" },
+        "period": { "type": "string" },
+        "score": { "type": "string" }
+      },
+      "required": ["degree", "school"]
     }
   },
   "auth": {
@@ -75,23 +98,31 @@
   "firestore": {
     "/certifications/{certId}": {
       "schema": "#/backend/entities/Certification",
-      "description": "Collection of 97+ credentials."
+      "description": "Professional credentials."
     },
     "/internships/{internId}": {
       "schema": "#/backend/entities/Internship",
-      "description": "Deployment history of 27+ internships."
+      "description": "Deployment history."
     },
     "/projects/{projectId}": {
       "schema": "#/backend/entities/Project",
-      "description": "Matrix of 14 technical projects."
+      "description": "Mission matrix."
     },
     "/experience/{expId}": {
       "schema": "#/backend/entities/Experience",
-      "description": "Core mission logs."
+      "description": "Primary operational logs."
     },
     "/achievements/{achId}": {
       "schema": "#/backend/entities/Achievement",
       "description": "Distinction belt milestones."
+    },
+    "/skills/{skillId}": {
+      "schema": "#/backend/entities/Skill",
+      "description": "Technical skill matrix."
+    },
+    "/education/{eduId}": {
+      "schema": "#/backend/entities/Education",
+      "description": "Academic nodes."
     }
   }
 }
