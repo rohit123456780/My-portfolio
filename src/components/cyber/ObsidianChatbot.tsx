@@ -71,8 +71,8 @@ export default function ObsidianChatbot() {
       const history = messages
         .filter(m => m.role !== 'system')
         .map(m => ({
-          role: m.role === 'user' ? ('user' as const) : ('model' as const),
-          content: [{ text: m.text || '' }]
+          role: m.role === 'user' ? 'user' : 'model',
+          text: m.text || ''
         }));
 
       const response = await obsidianChat(userMsg, isOwner, history);
@@ -89,7 +89,7 @@ export default function ObsidianChatbot() {
     } catch (error: any) {
       setMessages(prev => [...prev, { 
         role: 'obsidian', 
-        text: `ERR: Neural link interrupted. [SYSTEM_RELAY: ${error.message || 'COMMUNICATION_ERROR'}]` 
+        text: `ERR: Neural link interrupted. [REASON: ${error.message || 'COMMUNICATION_ERROR'}]` 
       }]);
     } finally {
       setIsTyping(false);

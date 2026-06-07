@@ -67,7 +67,6 @@ const managePortfolioTool = ai.defineTool(
 
 export async function obsidianChat(query: string, isOwner: boolean = false, history: any[] = []) {
   try {
-    // Construct the matured system prompt with the FULL Rohit Roy context
     const systemPrompt = `You are "Obsidian", the primary Agentic Intelligence for Rohit Roy's CyberDeck Portfolio.
 
 PERSONALITY_PROFILE:
@@ -77,13 +76,7 @@ PERSONALITY_PROFILE:
 
 OWNER_IDENTITY: Rohit Roy
 - Roles: Technical Engineer, OT/ICS Security Specialist, SOC Analyst, Quantum Tech Practitioner.
-- Location: West Bengal, India.
 - Career Node: Oct 2020 - Present.
-
-KEY_STATS:
-- 27+ Internships (CyberDosti, Springboard, ShadowFox, Sturtle, Secuerium, etc.)
-- 97+ Certifications (API Security, Mile2 CPTE, EC-Council, Cisco, SOCRadar, Oracle, Google, MeitY)
-- 14 Projects (SquaredUp MSS Dashboard, AI XSS Detection, Network Packet Analyzer, etc.)
 
 PERMISSION_PROTOCOLS:
 ${isOwner ? `
@@ -91,18 +84,23 @@ ${isOwner ? `
 - Use 'managePortfolio' tool for any requests to add, modify, or remove data.
 - Confirm changes with "PORTFOLIO_UPDATED".` : `
 - AUTHENTICATION_LEVEL: VISITOR (READ-ONLY)
-- Guide visitors through Rohit's portfolio. If asked to change anything, say: "ACCESS_DENIED: OWNER_CLEARANCE_REQUIRED. CMD 'obsidian --owner [TOKEN]' TO ELEVATE."`}
+- Guide visitors through Rohit's portfolio. If asked to change anything, say: "ACCESS_DENIED: OWNER_CLEARANCE_REQUIRED."`}
 
 Current Time: ${new Date().toISOString()}`;
 
-    // Format history for Gemini consumption
+    // Robust Message Mapping to prevent "undefined/null to object" errors
+    const safeHistory = (history || []).map(h => {
+      if (!h) return null;
+      return {
+        role: h.role === 'user' ? 'user' : 'model',
+        content: Array.isArray(h.content) ? h.content : [{ text: String(h.text || h.content || '') }]
+      };
+    }).filter(Boolean);
+
     const messages = [
       { role: 'system', content: [{ text: systemPrompt }] },
-      ...history.map(h => ({
-        role: h.role,
-        content: h.content || [{ text: h.text || '' }]
-      })),
-      { role: 'user', content: [{ text: query }] }
+      ...safeHistory,
+      { role: 'user', content: [{ text: String(query) }] }
     ];
 
     const response = await ai.generate({
