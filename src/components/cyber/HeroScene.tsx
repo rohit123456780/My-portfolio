@@ -24,15 +24,15 @@ export default function HeroScene() {
       color: 0x4444ff,
       size: 1.2,
       transparent: true,
-      opacity: 0.15,
+      opacity: 0.1,
       blending: THREE.AdditiveBlending
     });
 
     const dustVertices = [];
-    for (let i = 0; i < 15000; i++) {
-      const x = (Math.random() - 0.5) * 4000;
-      const y = (Math.random() - 0.5) * 4000;
-      const z = (Math.random() - 0.5) * 4000;
+    for (let i = 0; i < 20000; i++) {
+      const x = (Math.random() - 0.5) * 5000;
+      const y = (Math.random() - 0.5) * 5000;
+      const z = (Math.random() - 0.5) * 5000;
       dustVertices.push(x, y, z);
     }
     dustGeometry.setAttribute('position', new THREE.Float32BufferAttribute(dustVertices, 3));
@@ -43,60 +43,59 @@ export default function HeroScene() {
     const starGeometry = new THREE.BufferGeometry();
     const starMaterial = new THREE.PointsMaterial({
       color: 0xffffff,
-      size: 2,
+      size: 1.5,
       sizeAttenuation: true,
       transparent: true,
-      opacity: 0.9,
+      opacity: 0.8,
       blending: THREE.AdditiveBlending
     });
 
     const starVertices = [];
-    for (let i = 0; i < 6000; i++) {
-      const x = (Math.random() - 0.5) * 3000;
-      const y = (Math.random() - 0.5) * 3000;
-      const z = (Math.random() - 0.5) * 3000;
+    for (let i = 0; i < 8000; i++) {
+      const x = (Math.random() - 0.5) * 4000;
+      const y = (Math.random() - 0.5) * 4000;
+      const z = (Math.random() - 0.5) * 4000;
       starVertices.push(x, y, z);
     }
     starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
     const stars = new THREE.Points(starGeometry, starMaterial);
     scene.add(stars);
 
-    // Orbital Rings
+    // Orbital Rings - Tighter and more defined
     const createOrbit = (radius: number, color: number) => {
-      const geometry = new THREE.RingGeometry(radius, radius + 0.5, 128);
-      const material = new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide, transparent: true, opacity: 0.1 });
+      const geometry = new THREE.RingGeometry(radius, radius + 0.3, 128);
+      const material = new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide, transparent: true, opacity: 0.05 });
       const mesh = new THREE.Mesh(geometry, material);
       mesh.rotation.x = Math.PI / 2;
       return mesh;
     };
 
-    [200, 280, 360, 440, 520, 600].forEach(r => scene.add(createOrbit(r, 0x00C2FF)));
+    [160, 220, 280, 340, 400].forEach(r => scene.add(createOrbit(r, 0x00C2FF)));
 
-    // Milky Way Core Glow (Central Sphere)
+    // Milky Way Core Glow (Identity Sun)
     const coreGroup = new THREE.Group();
-    const coreGeometry = new THREE.SphereGeometry(100, 64, 64);
+    const coreGeometry = new THREE.SphereGeometry(60, 64, 64);
     const coreMaterial = new THREE.MeshBasicMaterial({
       color: 0x00C2FF,
       transparent: true,
-      opacity: 0.08,
+      opacity: 0.1,
       wireframe: true
     });
     const coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
     coreGroup.add(coreMesh);
 
-    // Add a bright point at center
-    const light = new THREE.PointLight(0x00C2FF, 2, 1000);
+    // Add bright central light
+    const light = new THREE.PointLight(0x00C2FF, 3, 1500);
     scene.add(light);
-
     scene.add(coreGroup);
 
-    camera.position.z = 1000;
-    camera.position.y = 200;
+    camera.position.z = 800;
+    camera.position.y = 150;
 
-    let mouseX = 0;
-    let mouseY = 0;
     let targetX = 0;
     let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
     let isMouseDown = false;
 
     const onMouseMove = (event: MouseEvent) => {
@@ -118,17 +117,16 @@ export default function HeroScene() {
       
       stars.rotation.y += 0.0001;
       dust.rotation.y += 0.00005;
-      coreGroup.rotation.y += 0.001;
+      coreGroup.rotation.y += 0.002;
       
       // Smooth world rotation
-      mouseX += (targetX - mouseX) * 0.05;
-      mouseY += (targetY - mouseY) * 0.05;
+      currentX += (targetX - currentX) * 0.05;
+      currentY += (targetY - currentY) * 0.05;
 
-      scene.rotation.y = mouseX * 0.001;
-      scene.rotation.x = mouseY * 0.001;
+      scene.rotation.y = currentX * 0.001;
+      scene.rotation.x = currentY * 0.001;
       
       camera.lookAt(scene.position);
-
       renderer.render(scene, camera);
     };
 

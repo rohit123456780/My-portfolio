@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUIStore } from '@/lib/store';
 import BootSequence from '@/components/cyber/BootSequence';
@@ -10,18 +10,19 @@ import TerminalPanel from '@/components/cyber/TerminalPanel';
 import SpaceshipCursor from '@/components/cyber/SpaceshipCursor';
 import Link from 'next/link';
 import { Shield, Cpu, Globe, Trophy, Briefcase, Sparkles, User, MousePointer2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const PLANETS = [
-  { id: 'identity', name: 'Identity Node', icon: User, path: '/identity', color: 'text-primary', orbitRadius: 200, angle: 0 },
-  { id: 'experience', name: 'Orbital Deployments', icon: Briefcase, path: '/experience', color: 'text-blue-400', orbitRadius: 280, angle: 60 },
-  { id: 'projects', name: 'Mission Matrix', icon: Cpu, path: '/projects', color: 'text-accent', orbitRadius: 360, angle: 120 },
-  { id: 'awards', name: 'Distinction Belt', icon: Trophy, path: '/awards', color: 'text-yellow-400', orbitRadius: 440, angle: 180 },
-  { id: 'internships', name: 'Growth Sector', icon: Globe, path: '/internships', color: 'text-emerald-400', orbitRadius: 520, angle: 240 },
-  { id: 'certifications', name: 'Credential Nebula', icon: Shield, path: '/certifications', color: 'text-cyan-400', orbitRadius: 600, angle: 300 },
+  { id: 'awards', name: 'Mercury: Distinction Belt', icon: Trophy, path: '/awards', color: 'text-orange-400', orbitRadius: 160, angle: 0 },
+  { id: 'internships', name: 'Venus: Growth Sector', icon: Globe, path: '/internships', color: 'text-emerald-400', orbitRadius: 220, angle: 72 },
+  { id: 'projects', name: 'Earth: Mission Matrix', icon: Cpu, path: '/projects', color: 'text-blue-400', orbitRadius: 280, angle: 144 },
+  { id: 'experience', name: 'Mars: Orbital Deployments', icon: Briefcase, path: '/experience', color: 'text-red-400', orbitRadius: 340, angle: 216 },
+  { id: 'certifications', name: 'Jupiter: Credential Nebula', icon: Shield, path: '/certifications', color: 'text-cyan-400', orbitRadius: 400, angle: 288 },
 ];
 
 export default function Home() {
   const { isBooted } = useUIStore();
+  const [hoveredPlanet, setHoveredPlanet] = useState<string | null>(null);
 
   return (
     <main className="relative min-h-screen bg-[#02040a] overflow-hidden">
@@ -29,7 +30,7 @@ export default function Home() {
         {!isBooted && <BootSequence />}
       </AnimatePresence>
 
-      <SpaceshipCursor />
+      <SpaceshipCursor hoveredPlanet={hoveredPlanet} />
 
       <div className={`transition-opacity duration-1000 ${isBooted ? 'opacity-100' : 'opacity-0'}`}>
         <HeroScene />
@@ -46,42 +47,51 @@ export default function Home() {
             </div>
             <div>
               <h1 className="text-2xl font-headline tracking-tighter text-glow">ROHIT ROY</h1>
-              <p className="text-[10px] font-code text-primary/40 uppercase tracking-widest">System Architect v2.5</p>
+              <p className="text-[10px] font-code text-primary/40 uppercase tracking-widest">Technical Engineer | v2.5</p>
             </div>
           </motion.div>
         </div>
 
         {/* DRAG TO EXPLORE HINT */}
-        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-40 opacity-30">
+        <div className="fixed top-12 left-1/2 -translate-x-1/2 pointer-events-none z-40 opacity-30">
           <div className="flex flex-col items-center gap-2">
             <MousePointer2 className="w-6 h-6 text-primary animate-bounce" />
-            <p className="text-[8px] font-code text-primary uppercase tracking-[0.4em]">Drag to Navigate Galaxy</p>
+            <p className="text-[8px] font-code text-primary uppercase tracking-[0.4em]">Drag to Explore Galaxy</p>
           </div>
         </div>
 
         {/* ORBITAL NAVIGATION SYSTEM */}
         <section className="relative w-screen h-screen flex items-center justify-center">
-          {/* Galactic Center / Sun */}
-          <motion.div 
-            initial={{ scale: 0, opacity: 0 }}
-            animate={isBooted ? { scale: 1, opacity: 1 } : {}}
-            transition={{ duration: 2, ease: "easeOut" }}
-            className="relative z-10"
-          >
-            <div className="w-48 h-48 rounded-full bg-primary/10 border border-primary/30 flex flex-col items-center justify-center backdrop-blur-2xl shadow-[0_0_80px_hsla(var(--primary),0.2)]">
-              <Sparkles className="w-12 h-12 text-primary animate-pulse mb-2" />
-              <div className="text-center">
-                <p className="text-[8px] font-code text-primary/60 uppercase tracking-widest">Galaxy Core</p>
-                <p className="text-xs font-headline text-white tracking-widest uppercase">Operational</p>
+          {/* Galactic Center / Sun (Identity) */}
+          <Link href="/identity">
+            <motion.div 
+              initial={{ scale: 0, opacity: 0 }}
+              animate={isBooted ? { scale: 1, opacity: 1 } : {}}
+              transition={{ duration: 2, ease: "easeOut" }}
+              className="relative z-30 cursor-none"
+              onMouseEnter={() => setHoveredPlanet('identity')}
+              onMouseLeave={() => setHoveredPlanet(null)}
+            >
+              <div className="w-32 h-32 rounded-full bg-primary/20 border-2 border-primary shadow-[0_0_80px_hsla(var(--primary),0.4)] flex flex-col items-center justify-center backdrop-blur-3xl group">
+                <Sparkles className="w-10 h-10 text-primary animate-pulse mb-1 group-hover:scale-125 transition-transform" />
+                <div className="text-center">
+                  <p className="text-[8px] font-code text-primary/80 uppercase tracking-widest">Identity Core</p>
+                  <p className="text-[10px] font-headline text-white tracking-widest uppercase">THE SUN</p>
+                </div>
               </div>
-            </div>
-            
-            <div className="absolute inset-[-40px] border border-primary/10 rounded-full animate-spin-slow pointer-events-none" />
-          </motion.div>
+              <div className="absolute inset-[-20px] border border-primary/20 rounded-full animate-spin-slow pointer-events-none" />
+            </motion.div>
+          </Link>
 
           {/* Planets UI Layer */}
           {PLANETS.map((planet, index) => (
-            <PlanetNode key={planet.id} planet={planet} index={index} isBooted={isBooted} />
+            <PlanetNode 
+              key={planet.id} 
+              planet={planet} 
+              index={index} 
+              isBooted={isBooted} 
+              onHover={setHoveredPlanet}
+            />
           ))}
 
           {/* Bottom Terminal Overlay */}
@@ -97,25 +107,37 @@ export default function Home() {
   );
 }
 
-function PlanetNode({ planet, index, isBooted }: { planet: any, index: number, isBooted: boolean }) {
+function PlanetNode({ planet, index, isBooted, onHover }: { planet: any, index: number, isBooted: boolean, onHover: (id: string | null) => void }) {
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
+  const [isLanding, setIsLanding] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const radian = (planet.angle * Math.PI) / 180;
-  const x = (Math.cos(radian) * planet.orbitRadius).toFixed(2);
-  const y = (Math.sin(radian) * planet.orbitRadius).toFixed(2);
+  const { x, y } = useMemo(() => {
+    const radian = (planet.angle * Math.PI) / 180;
+    return {
+      x: (Math.cos(radian) * planet.orbitRadius).toFixed(2),
+      y: (Math.sin(radian) * planet.orbitRadius).toFixed(2)
+    };
+  }, [planet.angle, planet.orbitRadius]);
 
-  // Defer rendering position until client mount to avoid hydration mismatch
   if (!mounted) return null;
+
+  const handleLanding = () => {
+    setIsLanding(true);
+    setTimeout(() => {
+      router.push(planet.path);
+    }, 1500);
+  };
 
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0 }}
       animate={isBooted ? { opacity: 1, scale: 1 } : {}}
-      transition={{ duration: 1, delay: 0.5 + index * 0.2 }}
+      transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
       className="absolute z-20"
       style={{ 
         left: `calc(50% + ${x}px)`, 
@@ -123,33 +145,23 @@ function PlanetNode({ planet, index, isBooted }: { planet: any, index: number, i
         transform: 'translate(-50%, -50%)'
       }}
     >
-      <Link href={planet.path}>
-        <motion.div
-          whileHover={{ scale: 1.15 }}
-          className="group relative flex flex-col items-center gap-4 cursor-none"
-        >
-          {/* Planet Body */}
-          <div className={`relative w-20 h-20 rounded-full bg-black border-2 border-current shadow-[0_0_30px_currentColor] flex items-center justify-center transition-all duration-500 group-hover:shadow-[0_0_50px_currentColor] group-hover:border-white ${planet.color}`}>
-            <planet.icon className="w-10 h-10 group-hover:text-white transition-colors" />
-            
-            {/* Atmospheric Ring */}
-            <div className="absolute inset-[-8px] border-2 border-current opacity-20 rounded-full group-hover:opacity-100 group-hover:scale-110 transition-all border-dashed animate-spin-slow" />
-          </div>
+      <div 
+        onMouseEnter={() => onHover(planet.id)}
+        onMouseLeave={() => onHover(null)}
+        onClick={handleLanding}
+        className="group relative flex flex-col items-center gap-4 cursor-none"
+      >
+        <div className={`relative w-14 h-14 rounded-full bg-black border-2 border-current shadow-[0_0_30px_currentColor] flex items-center justify-center transition-all duration-500 group-hover:shadow-[0_0_60px_currentColor] group-hover:scale-110 ${planet.color} ${isLanding ? 'animate-ping' : ''}`}>
+          <planet.icon className="w-6 h-6 group-hover:text-white transition-colors" />
+          <div className="absolute inset-[-6px] border border-current opacity-20 rounded-full group-hover:opacity-100 group-hover:scale-110 transition-all border-dashed animate-spin-slow" />
+        </div>
 
-          {/* Label */}
-          <div className="absolute top-24 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-y-2">
-            <span className="text-[10px] font-code text-white uppercase tracking-[0.3em] whitespace-nowrap bg-black/90 px-6 py-3 border border-primary/40 backdrop-blur-md shadow-[0_0_20px_hsla(var(--primary),0.2)]">
-              {planet.name}
-            </span>
-            <div className="w-[1px] h-8 bg-gradient-to-b from-primary to-transparent" />
-          </div>
-
-          {/* Coordinates Pointer */}
-          <div className="absolute -top-8 text-[8px] font-code text-primary/30 opacity-40 group-hover:opacity-100 transition-opacity">
-            X:{Math.round(parseFloat(x))} Y:{Math.round(parseFloat(y))}
-          </div>
-        </motion.div>
-      </Link>
+        <div className="absolute top-16 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-y-2 pointer-events-none">
+          <span className="text-[8px] font-code text-white uppercase tracking-[0.3em] whitespace-nowrap bg-black/90 px-4 py-2 border border-primary/40 backdrop-blur-md">
+            {planet.name}
+          </span>
+        </div>
+      </div>
     </motion.div>
   );
 }

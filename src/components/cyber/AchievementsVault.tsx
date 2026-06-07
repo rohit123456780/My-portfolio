@@ -1,9 +1,9 @@
 
 "use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Trophy, Target, Award, Star, ShieldCheck, Zap, BookOpen } from 'lucide-react';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { Trophy, Target, Award, Star, ShieldCheck, Zap, BookOpen, Home, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface Achievement {
@@ -64,66 +64,102 @@ const ACHIEVEMENTS: Achievement[] = [
 ];
 
 export default function AchievementsVault() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollXProgress } = useScroll({ container: containerRef });
+
   return (
-    <div className="space-y-12">
-      <div className="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-primary/20 pb-8">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <Trophy className="w-5 h-5 text-accent" />
-            <span className="text-xs font-code text-accent uppercase tracking-[0.3em]">Honours & Awards</span>
-          </div>
-          <h2 className="text-4xl font-headline text-glow">
-            MISSION <span className="text-primary/50">MILESTONES</span>
-          </h2>
-          <p className="text-[10px] font-code text-primary/40 uppercase max-w-md">
-            Verifying excellence across the global security theater. Recognition nodes synced.
-          </p>
+    <div className="relative h-screen w-full bg-[#02040a] overflow-hidden">
+      {/* Scroll Instruction */}
+      <div className="fixed top-24 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 opacity-50">
+        <div className="flex items-center gap-2 text-primary">
+          <ChevronRight className="w-4 h-4 animate-bounce" />
+          <span className="text-[10px] font-code uppercase tracking-[0.5em]">Scroll Sideways to Explore Distinction Belt</span>
+          <ChevronRight className="w-4 h-4 animate-bounce rotate-180" />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div 
+        ref={containerRef}
+        className="flex overflow-x-auto h-full scroll-smooth no-scrollbar snap-x snap-mandatory"
+        style={{ scrollbarWidth: 'none' }}
+      >
         {ACHIEVEMENTS.map((ach, idx) => (
-          <motion.div
-            key={ach.title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: idx * 0.1 }}
-            className={cn(
-              "group relative p-6 cyber-glass border border-primary/10 hover:border-accent/50 transition-all cursor-default",
-              ach.isMajor && "border-primary/30 bg-primary/5"
-            )}
-          >
-            <div className="flex items-start justify-between mb-4">
-              <div className="p-3 bg-primary/10 border border-primary/20 group-hover:border-accent group-hover:bg-accent/10 transition-colors">
-                <ach.icon className="w-5 h-5 text-primary group-hover:text-accent" />
-              </div>
-              <span className="text-[8px] font-code text-primary/40 uppercase tracking-widest">{ach.category}</span>
-            </div>
-
-            <div className="space-y-2">
-              <h3 className="text-sm font-headline group-hover:text-glow transition-all">
-                {ach.title}
-              </h3>
-              <p className="text-[11px] font-code text-primary/70 leading-relaxed">
-                {ach.description}
-              </p>
-            </div>
-
-            {ach.isMajor && (
-              <div className="absolute top-0 right-0 p-1">
-                <div className="w-1 h-1 bg-accent animate-ping" />
-              </div>
-            )}
-            
-            <div className="mt-4 pt-4 border-t border-primary/5 flex items-center justify-between opacity-40 group-hover:opacity-100 transition-opacity">
-              <span className="text-[8px] font-code uppercase">Status: Verified</span>
-              <div className="h-[1px] flex-1 bg-primary/10 mx-4" />
-              <Zap className="w-3 h-3 text-accent" />
-            </div>
-          </motion.div>
+          <AchievementHouse key={idx} ach={ach} index={idx} />
         ))}
+
+        {/* Ending Block */}
+        <div className="min-w-[40vw] flex items-center justify-center snap-center">
+          <div className="text-center space-y-4">
+            <Trophy className="w-20 h-20 text-primary/20 mx-auto" />
+            <p className="text-xs font-code text-primary/40 uppercase tracking-widest">End of Sector</p>
+          </div>
+        </div>
       </div>
+
+      {/* Progress Bar */}
+      <div className="fixed bottom-12 left-12 right-12 h-[2px] bg-primary/10">
+        <motion.div 
+          className="h-full bg-primary shadow-[0_0_10px_hsla(var(--primary),0.5)]"
+          style={{ scaleX: scrollXProgress, transformOrigin: 'left' }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function AchievementHouse({ ach, index }: { ach: Achievement, index: number }) {
+  return (
+    <div className="min-w-screen md:min-w-[80vw] lg:min-w-[60vw] h-full flex items-center justify-center snap-center px-12">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, x: 100 }}
+        whileInView={{ opacity: 1, scale: 1, x: 0 }}
+        viewport={{ once: false, margin: "-100px" }}
+        transition={{ duration: 0.8, type: "spring" }}
+        className="relative group w-full max-w-2xl"
+      >
+        {/* The "House" Structure */}
+        <div className="absolute -inset-8 border border-primary/10 bg-primary/5 -z-10 skew-x-3 group-hover:skew-x-0 transition-transform duration-700" />
+        
+        <div className="cyber-glass p-12 border-l-4 border-l-primary relative">
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-40 transition-opacity">
+            <span className="text-8xl font-headline italic">0{index + 1}</span>
+          </div>
+
+          <div className="flex flex-col gap-6">
+            <div className="flex items-center gap-4">
+              <div className="p-4 bg-primary/10 border border-primary/20 group-hover:border-accent group-hover:bg-accent/10 transition-colors">
+                <ach.icon className="w-10 h-10 text-primary group-hover:text-accent" />
+              </div>
+              <div className="space-y-1">
+                <span className="text-[10px] font-code text-accent uppercase tracking-[0.3em]">{ach.category}</span>
+                <h3 className="text-3xl font-headline group-hover:text-glow transition-all">
+                  {ach.title}
+                </h3>
+              </div>
+            </div>
+
+            <p className="text-sm font-code text-primary/70 leading-relaxed border-t border-primary/10 pt-6">
+              {ach.description}
+            </p>
+
+            <div className="flex items-center justify-between pt-6">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                <span className="text-[10px] font-code text-accent uppercase">Operational Success</span>
+              </div>
+              {ach.isMajor && (
+                <div className="px-3 py-1 border border-primary/30 text-[10px] font-code text-primary uppercase">
+                  Major Milestone
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Decorative elements to feel like a "House" façade */}
+        <div className="absolute -bottom-4 left-4 right-4 h-1 bg-primary/20" />
+        <div className="absolute top-4 -left-4 w-1 h-32 bg-primary/20" />
+      </motion.div>
     </div>
   );
 }
