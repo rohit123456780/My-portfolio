@@ -18,7 +18,7 @@ export default function ObsidianChatbot() {
   const [input, setInput] = useState('');
   const [isOwner, setIsOwner] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'obsidian', text: 'SYSTEM_ONLINE: Obsidian Intelligence Core active. I am your mature GenAI assistant. Type "obsidian --owner 1507" to elevate permissions.' }
+    { role: 'obsidian', text: 'SYSTEM_ONLINE: Obsidian Intelligence Core active. I am Rohit Roy\'s personal GenAI assistant. Type "obsidian --owner 1507" to unlock write access.' }
   ]);
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -36,7 +36,7 @@ export default function ObsidianChatbot() {
     const userMsg = input.trim();
     setInput('');
 
-    // Handle authentication command
+    // Authentication Logic
     if (userMsg.toLowerCase().startsWith('obsidian --owner')) {
       const parts = userMsg.split(' ');
       const pass = parts[2];
@@ -55,12 +55,12 @@ export default function ObsidianChatbot() {
         } else {
           setMessages(prev => [...prev, { 
             role: 'system', 
-            text: 'AUTHENTICATION_FAILURE: INVALID_ACCESS_TOKEN. INCIDENT_LOGGED.',
+            text: 'AUTHENTICATION_FAILURE: INVALID_ACCESS_TOKEN.',
             type: 'standard' 
           }]);
         }
         setIsTyping(false);
-      }, 800);
+      }, 600);
       return;
     }
 
@@ -68,11 +68,10 @@ export default function ObsidianChatbot() {
     setIsTyping(true);
 
     try {
-      // Structure history for the server action
       const history = messages
         .filter(m => m.role !== 'system')
         .map(m => ({
-          role: m.role === 'user' ? 'user' : ('model' as const),
+          role: m.role === 'user' ? ('user' as const) : ('model' as const),
           content: [{ text: m.text || '' }]
         }));
 
@@ -157,7 +156,7 @@ export default function ObsidianChatbot() {
               {isTyping && (
                 <div className="flex justify-start">
                   <div className="p-3 border border-[#00ff9f]/10 bg-[#00ff9f]/5">
-                    <span className="text-[#00ff9f] animate-pulse">ANALYZING_PHASE...</span>
+                    <span className="text-[#00ff9f] animate-pulse">ANALYZING_INPUT...</span>
                   </div>
                 </div>
               )}
@@ -184,7 +183,7 @@ export default function ObsidianChatbot() {
                 <ShieldCheck className={`w-2 h-2 ${isOwner ? 'text-[#00ff9f]' : 'text-white/10'}`} /> 
                 {isOwner ? 'Clearance: Owner' : 'Clearance: Visitor'}
               </span>
-              <span>Obsidian_Link: Stable</span>
+              <span>Obsidian_v2.0_Online</span>
             </div>
           </motion.div>
         )}

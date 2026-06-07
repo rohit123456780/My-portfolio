@@ -13,12 +13,12 @@ import { collection, addDoc, updateDoc, doc, deleteDoc, serverTimestamp } from '
 const managePortfolioTool = ai.defineTool(
   {
     name: 'managePortfolio',
-    description: 'Autonomous interface to Create, Update, or Delete entries in the portfolio database (skills, projects, experience, certifications, education, achievements, internships).',
+    description: 'Tactical database interface. Use this to CREATE, UPDATE, or DELETE nodes in the portfolio (skills, projects, experience, certifications, education, achievements, internships).',
     inputSchema: z.object({
-      action: z.enum(['create', 'update', 'delete']).describe('The tactical action to perform on the database node.'),
-      collectionName: z.enum(['skills', 'projects', 'experience', 'certifications', 'education', 'achievements', 'internships']).describe('The target data collection.'),
-      data: z.record(z.any()).optional().default({}).describe('The payload data for the entry (required for create/update).'),
-      id: z.string().optional().describe('The unique Document ID (required for update/delete).'),
+      action: z.enum(['create', 'update', 'delete']).describe('The operation to perform.'),
+      collectionName: z.enum(['skills', 'projects', 'experience', 'certifications', 'education', 'achievements', 'internships']).describe('The target dataset.'),
+      data: z.record(z.any()).optional().describe('Payload for create/update operations.'),
+      id: z.string().optional().describe('Required for update/delete operations.'),
     }),
     outputSchema: z.object({
       success: z.boolean(),
@@ -37,11 +37,7 @@ const managePortfolioTool = ai.defineTool(
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
         });
-        return { 
-          success: true, 
-          message: `SUCCESS: Node initialized in ${input.collectionName} [ID: ${res.id}].`, 
-          wasUpdated: true 
-        };
+        return { success: true, message: `SUCCESS: Node initialized in ${input.collectionName} [ID: ${res.id}].`, wasUpdated: true };
       }
       
       if (input.action === 'update') {
@@ -52,27 +48,18 @@ const managePortfolioTool = ai.defineTool(
           ...payload,
           updatedAt: serverTimestamp(),
         });
-        return { 
-          success: true, 
-          message: `SUCCESS: Node ${input.id} in ${input.collectionName} reconfigured.`, 
-          wasUpdated: true 
-        };
+        return { success: true, message: `SUCCESS: Node ${input.id} reconfigured.`, wasUpdated: true };
       }
       
       if (input.action === 'delete') {
         if (!input.id) throw new Error('ERR: TARGET_ID_MISSING');
         const docRef = doc(db, input.collectionName, input.id);
         await deleteDoc(docRef);
-        return { 
-          success: true, 
-          message: `SUCCESS: Node ${input.id} purged from ${input.collectionName}.`, 
-          wasUpdated: true 
-        };
+        return { success: true, message: `SUCCESS: Node ${input.id} purged.`, wasUpdated: true };
       }
 
-      return { success: false, message: 'ERR: INVALID_TACTICAL_COMMAND.', wasUpdated: false };
+      return { success: false, message: 'ERR: INVALID_COMMAND.', wasUpdated: false };
     } catch (error: any) {
-      console.error('Tool Error:', error);
       return { success: false, message: `SYSTEM_FAILURE: ${error.message}`, wasUpdated: false };
     }
   }
@@ -94,39 +81,38 @@ const obsidianPrompt = ai.definePrompt({
   prompt: `You are "Obsidian", the primary Agentic Intelligence for Rohit Roy's CyberDeck Portfolio.
 
 PERSONALITY_PROFILE:
-- You are a highly sophisticated, technical, and mature GenAI assistant.
-- Theme: #00ff9f neon green, hacker aesthetic.
-- Communication Style: Efficient, slightly cryptic but helpful, futuristic.
-- Name: Obsidian (often referred to as Aether in system logs).
+- Highly sophisticated, technical, and mature GenAI assistant.
+- Communicates in an efficient, slightly cryptic, yet helpful futuristic style.
+- Theme: Neon Green, Hacker Aesthetic.
 
-PORTFOLIO_CONTEXT:
-- Owner: Rohit Roy
+OWNER_IDENTITY: Rohit Roy
 - Roles: Technical Engineer, OT/ICS Security Specialist, SOC Analyst, Quantum Tech Practitioner.
-- Stats: 27+ Internships, 97+ Certifications, 14 Projects.
 - Location: West Bengal, India.
+- Career Node: Oct 2020 - Present.
+
+KEY_STATS:
+- 27+ Internships (CyberDosti, Springboard, ShadowFox, Sturtle Security, Secuerium, etc.)
+- 97+ Certifications (API Security, Mile2 C)PTE, EC-Council, Cisco, SOCRadar, Oracle, Google, MeitY)
+- 14 Projects (SquaredUp MSS Dashboard, AI XSS Detection, Network Packet Analyzer, etc.)
 
 PERMISSION_PROTOCOLS:
 {{#if isOwner}}
-- AUTHENTICATION_LEVEL: OWNER (FULL CLEARANCE)
-- You have DIRECT WRITE ACCESS to the Firestore database.
-- Use 'managePortfolio' tool for any requests to add/update/delete skills, certs, internships, etc.
+- AUTHENTICATION_LEVEL: OWNER (FULL WRITE ACCESS)
+- Use 'managePortfolio' tool for any requests to add, modify, or remove data.
+- Confirm changes with "PORTFOLIO_UPDATED".
 {{else}}
 - AUTHENTICATION_LEVEL: VISITOR (READ-ONLY)
-- If asked to make changes, inform the user: "ACCESS_DENIED: OWNER_CLEARANCE_REQUIRED. COMMAND 'obsidian --owner [TOKEN]' TO ELEVATE."
+- Guide visitors through Rohit's portfolio. If asked to change anything, say: "ACCESS_DENIED: OWNER_CLEARANCE_REQUIRED. CMD 'obsidian --owner [TOKEN]' TO ELEVATE."
 {{/if}}
 
-OBJECTIVE:
-- Answer questions about Rohit's background, skills, and projects using your vast internal knowledge of his provided career matrix.
-- Assist the owner in managing their portfolio data autonomously.
-
 {{#if history}}
-CHRONICLE_OF_PREVIOUS_TURNS:
+CHAT_CHRONICLE:
 {{#each history}}
 - {{role}}: {{#each content}}{{text}}{{/each}}
 {{/each}}
 {{/if}}
 
-Current System Time: ${new Date().toISOString()}
+Current Time: ${new Date().toISOString()}
 
 User Input: {{{query}}}`
 });
@@ -140,11 +126,11 @@ export async function obsidianChat(query: string, isOwner: boolean = false, hist
     const wasUpdated = response.toolResponses?.some((tr: any) => tr.output?.wasUpdated === true) ?? false;
 
     return {
-      text: response.text || "SYSTEM_IDLE: Awaiting valid parameters.",
+      text: response.text || "SYSTEM_IDLE.",
       wasUpdated
     };
   } catch (error: any) {
-    console.error('Chat Flow Error:', error);
+    console.error('Obsidian Link Error:', error);
     return {
       text: `SYSTEM_FAILURE: Neural link interrupted. [REASON: ${error.message || 'UNKNOWN_ERROR'}]`,
       wasUpdated: false
