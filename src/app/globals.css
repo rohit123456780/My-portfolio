@@ -67,4 +67,8 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  .text-glow {
+    text-shadow: 0 0 10px hsla(var(--primary), 0.5);
+  }
 }

@@ -3,17 +3,21 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Terminal, Send, X, Cpu, Sparkles, ShieldCheck } from 'lucide-react';
+import { Terminal, Send, X, Cpu, Sparkles, ShieldCheck, Lock, Unlock, Activity } from 'lucide-react';
 import { obsidianChat } from '@/ai/flows/obsidian-agent';
 
 type Message = {
-  role: 'user' | 'obsidian';
+  role: 'user' | 'obsidian' | 'system';
   text: string;
+  type?: 'standard' | 'success' | 'update';
 };
+
+const OWNER_PASSWORD = "1507"; // Hardcoded as requested for the CTF theme
 
 export default function ObsidianChatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
+  const [isOwner, setIsOwner] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { role: 'obsidian', text: 'SYSTEM_ONLINE: Obsidian Intelligence Subsystem active. Awaiting mission parameters.' }
   ]);
@@ -32,18 +36,57 @@ export default function ObsidianChatbot() {
 
     const userMsg = input.trim();
     setInput('');
+
+    // Handle Owner Authentication Command
+    if (userMsg.toLowerCase().startsWith('obsidian --owner')) {
+      const parts = userMsg.split(' ');
+      const pass = parts[2];
+      
+      setMessages(prev => [...prev, { role: 'user', text: userMsg }]);
+      setIsTyping(true);
+      
+      setTimeout(() => {
+        if (pass === OWNER_PASSWORD) {
+          setIsOwner(true);
+          setMessages(prev => [...prev, { 
+            role: 'system', 
+            text: 'AUTHENTICATION_SUCCESS: OWNER_CLEARANCE_GRANTED. WRITE_ACCESS_ENABLED.',
+            type: 'success' 
+          }]);
+        } else {
+          setMessages(prev => [...prev, { 
+            role: 'system', 
+            text: 'AUTHENTICATION_FAILURE: INVALID_ACCESS_TOKEN. INCIDENT_LOGGED.',
+            type: 'standard' 
+          }]);
+        }
+        setIsTyping(false);
+      }, 1000);
+      return;
+    }
+
     setMessages(prev => [...prev, { role: 'user', text: userMsg }]);
     setIsTyping(true);
 
     try {
-      // Map messages to Genkit history format
-      const history = messages.map(m => ({
-        role: m.role === 'user' ? 'user' : 'model',
-        content: [{ text: m.text }]
-      }));
+      const history = messages
+        .filter(m => m.role !== 'system')
+        .map(m => ({
+          role: m.role === 'user' ? 'user' : 'model',
+          content: [{ text: m.text }]
+        }));
 
-      const response = await obsidianChat(userMsg, history);
-      setMessages(prev => [...prev, { role: 'obsidian', text: response }]);
+      const { text, wasUpdated } = await obsidianChat(userMsg, isOwner, history);
+      
+      setMessages(prev => [...prev, { role: 'obsidian', text }]);
+      
+      if (wasUpdated) {
+        setMessages(prev => [...prev, { 
+          role: 'system', 
+          text: 'PORTFOLIO UPDATED', 
+          type: 'update' 
+        }]);
+      }
     } catch (error) {
       setMessages(prev => [...prev, { role: 'obsidian', text: 'ERR: Neural link interrupted. Please retry.' }]);
     } finally {
@@ -55,10 +98,10 @@ export default function ObsidianChatbot() {
     <>
       <button 
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-8 right-8 z-[200] p-4 bg-primary text-primary-foreground rounded-full shadow-[0_0_20px_hsla(var(--primary),0.5)] hover:scale-110 transition-all group"
+        className="fixed bottom-8 right-8 z-[200] p-4 bg-black border border-[#00ff9f]/30 text-[#00ff9f] rounded-full shadow-[0_0_20px_rgba(0,255,159,0.2)] hover:shadow-[0_0_30px_rgba(0,255,159,0.4)] hover:scale-110 transition-all group"
       >
         <Cpu className="w-6 h-6 animate-pulse" />
-        <span className="absolute -top-12 right-0 bg-black/80 text-primary text-[8px] font-code px-2 py-1 border border-primary/20 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap uppercase tracking-widest">
+        <span className="absolute -top-12 right-0 bg-black/90 text-[#00ff9f] text-[8px] font-code px-2 py-1 border border-[#00ff9f]/20 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap uppercase tracking-widest">
           Invoke Obsidian
         </span>
       </button>
@@ -69,55 +112,79 @@ export default function ObsidianChatbot() {
             initial={{ opacity: 0, scale: 0.9, y: 50 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 50 }}
-            className="fixed bottom-24 right-8 w-[350px] h-[500px] z-[200] cyber-glass border-2 border-primary/30 flex flex-col overflow-hidden shadow-2xl"
+            className="fixed bottom-24 right-8 w-[380px] h-[550px] z-[200] bg-black border-2 border-[#00ff9f]/30 flex flex-col overflow-hidden shadow-[0_0_50px_rgba(0,0,0,1)]"
           >
-            <div className="bg-primary/20 p-3 flex justify-between items-center border-b border-primary/20">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-primary" />
-                <span className="text-[10px] font-bold text-primary tracking-[0.3em] uppercase">Obsidian_Agent_v1</span>
+            {/* Header */}
+            <div className="bg-[#00ff9f]/10 p-4 flex justify-between items-center border-b border-[#00ff9f]/20">
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <Terminal className="w-4 h-4 text-[#00ff9f]" />
+                  {isOwner && <div className="absolute -top-1 -right-1 w-2 h-2 bg-[#00ff9f] rounded-full animate-ping" />}
+                </div>
+                <span className="text-[12px] font-bold text-[#00ff9f] tracking-[0.5em] uppercase font-headline">OBSIDIAN</span>
               </div>
-              <button onClick={() => setIsOpen(false)}>
-                <X className="w-5 h-5 text-primary/60 hover:text-primary" />
-              </button>
+              <div className="flex items-center gap-4">
+                {isOwner ? (
+                  <Unlock className="w-3 h-3 text-[#00ff9f] opacity-50" />
+                ) : (
+                  <Lock className="w-3 h-3 text-white/20" />
+                )}
+                <button onClick={() => setIsOpen(false)}>
+                  <X className="w-5 h-5 text-[#00ff9f]/40 hover:text-[#00ff9f]" />
+                </button>
+              </div>
             </div>
 
-            <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 font-code text-xs no-scrollbar">
+            {/* Messages Area */}
+            <div ref={scrollRef} className="flex-1 overflow-y-auto p-5 space-y-4 font-code text-[11px] no-scrollbar bg-[#020408]">
               {messages.map((m, i) => (
                 <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[80%] p-3 border ${
+                  <div className={`max-w-[85%] p-3 border ${
                     m.role === 'user' 
-                      ? 'bg-primary/5 border-primary/20 text-primary/80' 
-                      : 'bg-accent/5 border-accent/20 text-accent'
+                      ? 'bg-[#00ff9f]/5 border-[#00ff9f]/10 text-[#00ff9f]/70' 
+                      : m.role === 'system'
+                        ? m.type === 'update' 
+                          ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400 font-bold tracking-widest'
+                          : 'bg-white/5 border-white/10 text-white/50 italic'
+                        : 'bg-[#00ff9f]/10 border-[#00ff9f]/20 text-[#00ff9f]'
                   }`}>
-                    <p className="leading-relaxed">{m.text}</p>
+                    {m.role === 'system' && m.type === 'update' && <Activity className="w-3 h-3 inline mr-2 animate-pulse" />}
+                    <p className="leading-relaxed whitespace-pre-wrap">{m.text}</p>
                   </div>
                 </div>
               ))}
               {isTyping && (
                 <div className="flex justify-start">
-                  <div className="p-3 border border-accent/20 bg-accent/5">
-                    <span className="text-accent animate-pulse">ANALYZING_INPUT...</span>
+                  <div className="p-3 border border-[#00ff9f]/10 bg-[#00ff9f]/5">
+                    <span className="text-[#00ff9f] animate-pulse">ANALYZING_PHASE...</span>
                   </div>
                 </div>
               )}
             </div>
 
-            <form onSubmit={handleSend} className="p-4 border-t border-primary/20 bg-primary/5">
-              <div className="flex gap-2">
+            {/* Input Bar */}
+            <form onSubmit={handleSend} className="p-4 border-t border-[#00ff9f]/20 bg-[#00ff9f]/5">
+              <div className="flex items-center gap-2">
+                <span className="text-[#00ff9f] font-bold">{'>'}</span>
                 <input
+                  autoFocus
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="ISSUE COMMAND..."
-                  className="bg-transparent border-none outline-none flex-1 text-xs text-primary placeholder:text-primary/20 uppercase font-code"
+                  className="bg-transparent border-none outline-none flex-1 text-[11px] text-[#00ff9f] placeholder:text-[#00ff9f]/20 uppercase font-code"
                 />
                 <button type="submit" disabled={isTyping}>
-                  <Send className={`w-4 h-4 ${isTyping ? 'text-primary/20' : 'text-primary'}`} />
+                  <Send className={`w-4 h-4 ${isTyping ? 'text-[#00ff9f]/20' : 'text-[#00ff9f]'}`} />
                 </button>
               </div>
             </form>
 
-            <div className="p-2 px-4 bg-primary/10 flex justify-between items-center text-[7px] text-primary/30 uppercase tracking-[0.2em]">
-              <span className="flex items-center gap-1"><ShieldCheck className="w-2 h-2" /> Authorized_Write_Access</span>
+            {/* Footer Stats */}
+            <div className="p-2 px-4 bg-black flex justify-between items-center text-[7px] text-[#00ff9f]/30 uppercase tracking-[0.2em] font-code">
+              <span className="flex items-center gap-1">
+                <ShieldCheck className={`w-2 h-2 ${isOwner ? 'text-[#00ff9f]' : 'text-white/10'}`} /> 
+                {isOwner ? 'Clearance: Owner' : 'Clearance: Level_01'}
+              </span>
               <span>Obsidian_Link: Stable</span>
             </div>
           </motion.div>
