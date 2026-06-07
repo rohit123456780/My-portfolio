@@ -3,20 +3,34 @@
 
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Briefcase, Calendar, Zap, Terminal, Activity, ArrowLeft, Globe } from 'lucide-react';
+import { Briefcase, Calendar, Zap, Terminal, Activity, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { collection, query, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useCollection } from 'react-firebase-hooks/firestore';
 
+const FALLBACK_INTERNSHIPS = [
+  { org: "Secuerium Technologies", role: "Cybersecurity Intern (VAPT)", period: "Sep 2025 – Sep 2025", domain: "VAPT" },
+  { org: "Razz Security IT Services LLP", role: "Cybersecurity Intern", period: "Jul 2025 – Aug 2025", domain: "Cybersecurity" },
+  { org: "Redynox", role: "Cybersecurity Intern", period: "May 2025 – Jun 2025", domain: "Cybersecurity" },
+  { org: "The Red Users", role: "Cybersecurity Intern", period: "Mar 2025 – Apr 2025", domain: "Cybersecurity" },
+  { org: "Hack Secure", role: "Cybersecurity Intern", period: "Jan 2025 – Feb 2025", domain: "Cybersecurity" },
+  { org: "Navodita Infotech", role: "Cybersecurity Intern", period: "Nov 2024 – Dec 2024", domain: "Cybersecurity" },
+  { org: "Brainwave Matrix Solutions", role: "Cybersecurity Intern", period: "Sep 2024 – Oct 2024", domain: "Cybersecurity" },
+  { org: "GrowIntern", role: "Cybersecurity Intern", period: "Aug 2024 – Aug 2024", domain: "Cybersecurity" },
+  { org: "Edunet Foundation / IBM SkillsBuild", role: "AI & Cloud Intern", period: "Jun 2024 – Jul 2024", domain: "AI & Cloud" },
+  { org: "ShadowFox", role: "Cybersecurity Intern", period: "Dec 2022 – Jan 2023", domain: "Cybersecurity" },
+  { org: "CyberDosti", role: "Cybersecurity & Ethical Hacking Intern", period: "Oct 2020 – Dec 2020", domain: "Ethical Hacking" }
+];
+
 export default function InternshipsPage() {
   const [value, loading] = useCollection(
-    query(collection(db, 'internships'), orderBy('period', 'desc')),
-    { snapshotListenOptions: { includeMetadataChanges: true } }
+    query(collection(db, 'internships'), orderBy('period', 'desc'))
   );
 
   const internships = useMemo(() => {
-    return value?.docs.map(doc => ({ id: doc.id, ...doc.data() })) || [];
+    const dbInterns = value?.docs.map(doc => ({ id: doc.id, ...doc.data() })) || [];
+    return dbInterns.length > 0 ? dbInterns : FALLBACK_INTERNSHIPS;
   }, [value]);
 
   return (
@@ -32,7 +46,7 @@ export default function InternshipsPage() {
             <span className="text-[10px] font-code uppercase tracking-widest">Infiltrating Deployment History...</span>
           </div>
           <h1 className="text-5xl font-headline text-glow uppercase">Growth Sector</h1>
-          <p className="text-xs font-code text-primary/40 uppercase tracking-widest">{internships.length || 0} Professional Deployments Identified.</p>
+          <p className="text-xs font-code text-primary/40 uppercase tracking-widest">27+ Professional Deployments Identified in Neural Archives.</p>
           <div className="h-px w-full bg-gradient-to-r from-blue-500/50 to-transparent" />
         </div>
 
@@ -45,7 +59,7 @@ export default function InternshipsPage() {
         <div className="grid grid-cols-1 gap-6 pb-20">
           {internships.map((intern: any, idx: number) => (
             <motion.div 
-              key={intern.id}
+              key={idx}
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -68,18 +82,11 @@ export default function InternshipsPage() {
                 <span className="px-3 py-1 border border-primary/30 text-[9px] font-code text-primary uppercase bg-primary/5">{intern.role}</span>
                 <div className="flex items-center gap-2">
                    <Terminal className="w-3 h-3 text-primary/20" />
-                   <span className="text-[7px] font-code text-primary/20 uppercase">Deployment Node: {idx + 1}</span>
+                   <span className="text-[7px] font-code text-primary/20 uppercase">Auth Verified Node</span>
                 </div>
               </div>
             </motion.div>
           ))}
-          
-          {!loading && internships.length === 0 && (
-            <div className="p-16 border-2 border-dashed border-primary/10 text-center space-y-4">
-               <Globe className="w-12 h-12 text-primary/10 mx-auto" />
-               <p className="text-sm font-headline text-primary/30 uppercase tracking-[0.3em]">Awaiting Data Feed Initialization...</p>
-            </div>
-          )}
         </div>
       </div>
     </main>

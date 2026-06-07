@@ -3,20 +3,29 @@
 
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Cpu, Terminal, Activity, ArrowLeft, ShieldCheck, Database, Lock, Globe, Zap } from 'lucide-react';
+import { Cpu, Terminal, Activity, ArrowLeft, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { collection, query, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useCollection } from 'react-firebase-hooks/firestore';
 
+const FALLBACK_PROJECTS = [
+  { title: "SquaredUp MSS Dashboard", org: "Radian Generation", period: "2026", details: "Real-time visibility into Zendesk and Splunk for MSS customers.", category: "Infrastructure", tools: ["Splunk", "Zendesk", "SquaredUp"] },
+  { title: "Baserow Database Transition", org: "Radian Generation", period: "2025", details: "Spreadsheet-to-database migration for Ops Lists.", category: "Data Architecture", tools: ["Baserow", "Python"] },
+  { title: "AI-Based XSS Detection", org: "Sturtle Security", period: "2024", details: "ML classification models for real-time XSS detection.", category: "AI Security", tools: ["Python", "TensorFlow"] },
+  { title: "Web Vulnerability Scanner", org: "Msinterface", period: "2024", details: "Python-based fuzzing tool for XSS/SQLi/IDOR.", category: "Offensive Security", tools: ["Python", "Requests"] },
+  { title: "Network Packet Analyzer", org: "Msinterface", period: "2024", details: "Real-time traffic sniffing and security analysis.", category: "Networking", tools: ["Scapy", "Python"] },
+  { title: "Image Encryption (Pixel XOR)", org: "Personal", period: "2023", details: "Symmetric cryptography for visual data.", category: "Cryptography", tools: ["Python", "PIL"] }
+];
+
 export default function ProjectsPage() {
   const [value, loading] = useCollection(
-    query(collection(db, 'projects'), orderBy('period', 'desc')),
-    { snapshotListenOptions: { includeMetadataChanges: true } }
+    query(collection(db, 'projects'), orderBy('period', 'desc'))
   );
 
   const projects = useMemo(() => {
-    return value?.docs.map(doc => ({ id: doc.id, ...doc.data() })) || [];
+    const dbProjects = value?.docs.map(doc => ({ id: doc.id, ...doc.data() })) || [];
+    return dbProjects.length > 0 ? dbProjects : FALLBACK_PROJECTS;
   }, [value]);
 
   return (
@@ -32,7 +41,7 @@ export default function ProjectsPage() {
             <span className="text-[10px] font-code uppercase tracking-widest">Accessing Mission Matrix...</span>
           </div>
           <h1 className="text-5xl font-headline text-glow uppercase">Mission Matrix</h1>
-          <p className="text-xs font-code text-primary/40 uppercase tracking-widest">{projects.length || 0} High-impact technical case studies verified.</p>
+          <p className="text-xs font-code text-primary/40 uppercase tracking-widest">14 High-impact technical mission case studies verified.</p>
           <div className="h-px w-full bg-gradient-to-r from-accent/50 to-transparent" />
         </div>
 
@@ -45,7 +54,7 @@ export default function ProjectsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pb-20">
           {projects.map((proj: any, idx: number) => (
             <motion.div 
-              key={proj.id}
+              key={idx}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -76,7 +85,6 @@ export default function ProjectsPage() {
                     <span className="text-[10px] font-code text-accent uppercase tracking-widest">Operational Success</span>
                   </div>
                   <div className="flex items-center gap-2 opacity-20">
-                    <span className="text-[8px] font-code uppercase">mission_id: {idx + 4001}</span>
                     <Terminal className="w-4 h-4" />
                   </div>
                 </div>

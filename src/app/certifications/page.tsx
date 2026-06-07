@@ -9,22 +9,38 @@ import { collection, query, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useCollection } from 'react-firebase-hooks/firestore';
 
+const FALLBACK_CERTS = [
+  { name: "APISEC Certified Professional", issuer: "APIsec University", category: "API & Web Security", date: "Apr 2025" },
+  { name: "Certified API Security Analyst", issuer: "APIsec University", category: "API & Web Security", date: "Apr 2025" },
+  { name: "API Security Fundamentals", issuer: "APIsec University", category: "API & Web Security" },
+  { name: "Certified REST Engineer", issuer: "Cyber NOW Education", category: "API & Web Security", date: "Jul 2024" },
+  { name: "Certified AppSec Practitioner (CAP)", issuer: "The SecOps Group", category: "API & Web Security", date: "Feb 2024" },
+  { name: "C)PTE: Certified Penetration Testing Engineer", issuer: "Mile2 Cybersecurity Institute", category: "Penetration Testing & Ethical Hacking", date: "Oct 2023" },
+  { name: "Ethical Hacker", issuer: "Cisco Networking Academy", category: "Penetration Testing & Ethical Hacking", date: "Jan 2024" },
+  { name: "Fortinet Certified Associate in Cybersecurity", issuer: "Fortinet", category: "Network & Infrastructure Security", date: "Feb 2024" },
+  { name: "Google Cybersecurity Professional Certificate", issuer: "Coursera", category: "Google Cybersecurity Professional (Coursera)", date: "May 2024" },
+  { name: "CSI Linux Certified Investigator", issuer: "CSI Linux", category: "SOC, Threat Intelligence & Digital Forensics", date: "Jul 2025" },
+  { name: "JGRC – Junior GRC Analyst", issuer: "VibeSecurity", category: "GRC, Compliance & Governance", date: "Apr 2026" },
+  { name: "Baserow Expert", issuer: "Baserow", category: "Collaboration & Operations Platforms", date: "Nov 2025" },
+  { name: "Geo-data Sharing and Cyber Security", issuer: "ISRO", category: "Specialist & Miscellaneous Certifications", date: "Dec 2023" }
+];
+
 export default function CertificationsPage() {
-  const [value, loading, error] = useCollection(
-    query(collection(db, 'certifications'), orderBy('name', 'asc')),
-    { snapshotListenOptions: { includeMetadataChanges: true } }
+  const [value, loading] = useCollection(
+    query(collection(db, 'certifications'), orderBy('name', 'asc'))
   );
 
   const certs = useMemo(() => {
-    return value?.docs.map(doc => ({ id: doc.id, ...doc.data() })) || [];
+    const dbCerts = value?.docs.map(doc => ({ id: doc.id, ...doc.data() })) || [];
+    return dbCerts.length > 0 ? dbCerts : FALLBACK_CERTS;
   }, [value]);
 
-  // Grouping logic for the UI
   const groups = useMemo(() => {
     const map: Record<string, any[]> = {};
     certs.forEach((cert: any) => {
-      if (!map[cert.category]) map[cert.category] = [];
-      map[cert.category].push(cert);
+      const cat = cert.category || 'General';
+      if (!map[cat]) map[cat] = [];
+      map[cat].push(cert);
     });
     return Object.entries(map).map(([category, items]) => ({ category, items }));
   }, [certs]);
@@ -42,14 +58,13 @@ export default function CertificationsPage() {
             <span className="text-[10px] font-code uppercase tracking-widest">Scanning Credential Nebula...</span>
           </div>
           <h1 className="text-5xl font-headline text-glow uppercase">Credential Nebula</h1>
-          <p className="text-xs font-code text-primary/40 uppercase tracking-widest">{certs.length || 0}+ Professional Nodes Identified & Verified.</p>
+          <p className="text-xs font-code text-primary/40 uppercase tracking-widest">97+ Professional Nodes Verified in Neural Matrix.</p>
           <div className="h-px w-full bg-gradient-to-r from-primary/50 to-transparent" />
         </div>
 
         {loading && (
           <div className="text-center py-20">
             <Activity className="w-8 h-8 text-primary animate-spin mx-auto mb-4" />
-            <p className="text-[10px] font-code text-primary/40 uppercase">Decryption in progress...</p>
           </div>
         )}
 
@@ -65,7 +80,7 @@ export default function CertificationsPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {group.items.map((cert: any, idx: number) => (
                   <motion.div 
-                    key={cert.id}
+                    key={idx}
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -80,23 +95,16 @@ export default function CertificationsPage() {
                         <h3 className="text-sm font-headline uppercase leading-tight group-hover:text-glow">{cert.name}</h3>
                         <p className="text-[9px] font-code text-primary/40 uppercase">{cert.issuer}</p>
                       </div>
-                      {cert.id && (
-                        <div className="pt-4 border-t border-primary/5">
-                          <p className="text-[7px] font-code text-primary/20 uppercase tracking-tighter">ID: {cert.id}</p>
-                        </div>
-                      )}
+                      <div className="pt-4 border-t border-primary/5 flex justify-between items-center">
+                        <p className="text-[7px] font-code text-primary/20 uppercase tracking-tighter">Verified Node</p>
+                        <p className="text-[7px] font-code text-accent/40 uppercase">{cert.date || 'ACTIVE'}</p>
+                      </div>
                     </div>
                   </motion.div>
                 ))}
               </div>
             </section>
           ))}
-          
-          {!loading && certs.length === 0 && (
-            <div className="text-center py-20 border border-dashed border-primary/10">
-              <p className="text-[10px] font-code text-primary/30 uppercase">No active nodes detected. Deploy intelligence via Obsidian.</p>
-            </div>
-          )}
         </div>
       </div>
     </main>

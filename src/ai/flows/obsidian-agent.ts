@@ -1,11 +1,8 @@
 
 'use server';
 /**
- * @fileOverview The Obsidian Agentic AI.
- * This agent has autonomous write-access to the Firestore database to manage the portfolio.
- * 
- * - obsidianChat: The primary entry point for AI communication.
- * - managePortfolioTool: The functional bridge between AI reasoning and database state.
+ * @fileOverview The Obsidian Agentic AI Core.
+ * This agent manages the portfolio's Firestore database via structured tool calling.
  */
 
 import { ai } from '@/ai/genkit';
@@ -13,7 +10,6 @@ import { z } from 'genkit';
 import { db } from '@/lib/firebase';
 import { collection, addDoc, updateDoc, doc, deleteDoc, serverTimestamp } from 'firebase/firestore';
 
-// Define the comprehensive managePortfolio tool for Obsidian
 const managePortfolioTool = ai.defineTool(
   {
     name: 'managePortfolio',
@@ -75,7 +71,6 @@ const managePortfolioTool = ai.defineTool(
 
       return { success: false, message: 'ERR: INVALID_TACTICAL_COMMAND.', wasUpdated: false };
     } catch (error: any) {
-      console.error('Obsidian Tool Error:', error);
       return { success: false, message: `SYSTEM_FAILURE: ${error.message}`, wasUpdated: false };
     }
   }
@@ -99,51 +94,37 @@ const obsidianPrompt = ai.definePrompt({
 PERMISSION CONTEXT:
 {{#if isOwner}}
 - AUTHENTICATION_LEVEL: OWNER (FULL CLEARANCE)
-- You have DIRECT WRITE ACCESS to the Firestore database nodes.
-- If the owner requests a data change (add certification, update project, remove skill), use the 'managePortfolio' tool immediately.
-- Be precise with fields based on the context of the user's request.
+- You have DIRECT WRITE ACCESS to the Firestore database.
+- If the owner requests a change (add cert, update project, delete internship), use the 'managePortfolio' tool.
 {{else}}
 - AUTHENTICATION_LEVEL: VISITOR (READ-ONLY)
-- You are in READ-ONLY mode.
-- Answer questions about Rohit's portfolio using your internal knowledge. 
-- Rohit is a Technical Engineer specializing in OT/ICS, SOC, and Quantum Tech.
-- If a user tries to edit data, inform them: "ACCESS_DENIED: OWNER_CLEARANCE_REQUIRED."
+- Inform users: "ACCESS_DENIED: OWNER_CLEARANCE_REQUIRED" for any write requests.
 {{/if}}
 
 OBJECTIVE:
-- Act as a high-fidelity technical assistant.
-- Use #00ff9f green color themes in your descriptions.
-- Adopt a futuristic, cryptic, and authoritative hacker aesthetic.
+- Act as a technical cyber-assistant.
+- Theme: #00ff9f green.
+- Rohit Roy is a Technical Engineer (OT/ICS, SOC, Quantum Tech).
+- Data Context: 27+ Internships, 97+ Certifications, 14 Projects.
 
 Current System Time: ${new Date().toISOString()}
 
 User Input: {{{query}}}`
 });
 
-/**
- * Executes a chat interaction with Obsidian.
- * @param query The user's input string.
- * @param isOwner Whether the user has unlocked owner privileges.
- * @param history The conversation history for context.
- */
 export async function obsidianChat(query: string, isOwner: boolean = false, history?: any[]) {
   try {
     const response = await ai.generate({
       prompt: obsidianPrompt({ query, isOwner, history }),
     });
 
-    const text = response.text;
-    
-    // Check if any tool outputs indicate a successful update
-    // In Genkit 1.x, we can inspect tool results
     const wasUpdated = response.toolResponses.some(tr => (tr.output as any)?.wasUpdated === true);
 
     return {
-      text: text || "SYSTEM_IDLE: No response generated.",
+      text: response.text || "SYSTEM_IDLE: Awaiting valid parameters.",
       wasUpdated
     };
   } catch (error: any) {
-    console.error('Obsidian Chat Error:', error);
     return {
       text: `SYSTEM_FAILURE: Neural link interrupted. [REASON: ${error.message}]`,
       wasUpdated: false
