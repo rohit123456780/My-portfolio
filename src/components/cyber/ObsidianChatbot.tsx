@@ -12,7 +12,7 @@ type Message = {
   type?: 'standard' | 'success' | 'update';
 };
 
-const OWNER_PASSWORD = "1507"; // Hardcoded as requested for the CTF theme
+const OWNER_PASSWORD = "1507"; // Hardcoded tactical access key
 
 export default function ObsidianChatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,6 +24,7 @@ export default function ObsidianChatbot() {
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  // Auto-scroll to latest message
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -61,14 +62,16 @@ export default function ObsidianChatbot() {
           }]);
         }
         setIsTyping(false);
-      }, 1000);
+      }, 800);
       return;
     }
 
+    // Add user message to UI
     setMessages(prev => [...prev, { role: 'user', text: userMsg }]);
     setIsTyping(true);
 
     try {
+      // Build context history for the AI
       const history = messages
         .filter(m => m.role !== 'system')
         .map(m => ({
@@ -76,19 +79,23 @@ export default function ObsidianChatbot() {
           content: [{ text: m.text }]
         }));
 
-      const { text, wasUpdated } = await obsidianChat(userMsg, isOwner, history);
+      // Trigger the server-side agentic flow
+      const response = await obsidianChat(userMsg, isOwner, history);
       
-      setMessages(prev => [...prev, { role: 'obsidian', text }]);
+      setMessages(prev => [...prev, { role: 'obsidian', text: response.text }]);
       
-      if (wasUpdated) {
+      if (response.wasUpdated) {
         setMessages(prev => [...prev, { 
           role: 'system', 
-          text: 'PORTFOLIO UPDATED', 
+          text: 'PORTFOLIO_UPDATED: Changes synchronized to Firestore.', 
           type: 'update' 
         }]);
       }
-    } catch (error) {
-      setMessages(prev => [...prev, { role: 'obsidian', text: 'ERR: Neural link interrupted. Please retry.' }]);
+    } catch (error: any) {
+      setMessages(prev => [...prev, { 
+        role: 'obsidian', 
+        text: `ERR: Neural link interrupted. [SYSTEM_RELAY: ${error.message}]` 
+      }]);
     } finally {
       setIsTyping(false);
     }
