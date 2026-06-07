@@ -1,23 +1,24 @@
+
 import { create } from 'zustand';
 
 interface UIState {
   isBooted: boolean;
   setBooted: (val: boolean) => void;
-  lowMotion: boolean;
-  setLowMotion: (val: boolean) => void;
+  terminalOpen: boolean;
+  setTerminalOpen: (val: boolean) => void;
   accentColor: string;
   setAccentColor: (val: string) => void;
-  commandPaletteOpen: boolean;
-  setCommandPaletteOpen: (val: boolean) => void;
+  activeSection: string;
+  setActiveSection: (val: string) => void;
 }
 
 export const useUIStore = create<UIState>((set) => ({
   isBooted: false,
   setBooted: (val) => set({ isBooted: val }),
-  lowMotion: false,
-  setLowMotion: (val) => set({ lowMotion: val }),
-  accentColor: '#00C2FF',
+  terminalOpen: false,
+  setTerminalOpen: (val) => set({ terminalOpen: val }),
+  accentColor: '#00ff9f',
   setAccentColor: (val) => set({ accentColor: val }),
-  commandPaletteOpen: false,
-  setCommandPaletteOpen: (val) => set({ commandPaletteOpen: val }),
+  activeSection: '01',
+  setActiveSection: (val) => set({ activeSection: val }),
 }));

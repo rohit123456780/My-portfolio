@@ -1,171 +1,145 @@
 
 "use client";
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useUIStore } from '@/lib/store';
+import Hero3D from '@/components/cyber/Hero3D';
 import BootSequence from '@/components/cyber/BootSequence';
-import HeroScene from '@/components/cyber/HeroScene';
-import TerminalPanel from '@/components/cyber/TerminalPanel';
-import SpaceshipCursor from '@/components/cyber/SpaceshipCursor';
+import { useUIStore } from '@/lib/store';
+import { Shield, Activity, Zap, Lock, Terminal, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
-import { Shield, Globe, Trophy, Briefcase, Sparkles, User, Cpu, MousePointer2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-
-const PLANETS = [
-  { id: 'certifications', name: 'Jupiter: Credential Nebula', icon: Shield, path: '/certifications', color: 'from-cyan-400 to-blue-600', orbitRadius: 100, angle: 0, size: 'w-16 h-16' },
-  { id: 'awards', name: 'Mercury: Distinction Belt', icon: Trophy, path: '/awards', color: 'from-orange-400 to-red-600', orbitRadius: 150, angle: 72, size: 'w-12 h-12' },
-  { id: 'internships', name: 'Venus: Growth Sector', icon: Globe, path: '/internships', color: 'from-emerald-400 to-teal-700', orbitRadius: 200, angle: 144, size: 'w-14 h-14' },
-  { id: 'projects', name: 'Earth: Mission Matrix', icon: Cpu, path: '/projects', color: 'from-blue-400 to-indigo-800', orbitRadius: 250, angle: 216, size: 'w-16 h-16' },
-  { id: 'experience', name: 'Mars: Orbital Deployments', icon: Briefcase, path: '/experience', color: 'from-red-500 to-red-900', orbitRadius: 300, angle: 288, size: 'w-14 h-14' },
-];
 
 export default function Home() {
   const { isBooted } = useUIStore();
-  const [hoveredPlanet, setHoveredPlanet] = useState<string | null>(null);
+  const [typedText, setTypedText] = useState('');
+  const fullText = "TECHNICAL_ENGINEER | OT/ICS_SPECIALIST | CYBER_PRACTITIONER";
+
+  useEffect(() => {
+    if (isBooted) {
+      let i = 0;
+      const timer = setInterval(() => {
+        setTypedText(fullText.slice(0, i));
+        i++;
+        if (i > fullText.length) clearInterval(timer);
+      }, 40);
+      return () => clearInterval(timer);
+    }
+  }, [isBooted]);
 
   return (
-    <main className="relative min-h-screen bg-[#02040a] overflow-hidden">
+    <main className="relative min-h-screen bg-[#020408] selection:bg-primary/30 overflow-hidden">
       <AnimatePresence>
         {!isBooted && <BootSequence />}
       </AnimatePresence>
 
-      <SpaceshipCursor hoveredPlanet={hoveredPlanet} />
+      {isBooted && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5 }}
+          className="relative min-h-screen flex items-center justify-center"
+        >
+          <Hero3D />
 
-      <div className={`transition-opacity duration-1000 ${isBooted ? 'opacity-100' : 'opacity-0'}`}>
-        <HeroScene />
-        
-        {/* TOP HUD */}
-        <div className="fixed top-8 left-8 z-50">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={isBooted ? { opacity: 1, x: 0 } : {}}
-            className="flex items-center gap-4"
-          >
-            <div className="w-12 h-12 rounded-full border border-primary/40 flex items-center justify-center bg-primary/5 backdrop-blur-md">
-              <User className="w-6 h-6 text-primary" />
+          <div className="relative z-10 w-full max-w-7xl px-8 flex flex-col lg:flex-row items-center justify-between gap-12">
+            {/* Intel Feed Left */}
+            <div className="w-full lg:w-1/2 space-y-8">
+              <div className="space-y-4">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="flex items-center gap-3 text-[10px] font-code text-accent tracking-[0.4em] uppercase"
+                >
+                  <Lock className="w-3 h-3" /> SECURE_NODE_01_ESTABLISHED
+                </motion.div>
+                
+                <h1 className="text-6xl md:text-8xl font-headline tracking-tighter text-glow glitch-text leading-none">
+                  ROHIT_ROY
+                </h1>
+                
+                <p className="text-sm font-code text-primary/80 border-l-2 border-primary/40 pl-6 leading-relaxed">
+                  {typedText}
+                  <span className="w-2 h-5 bg-primary inline-block ml-1 animate-pulse" />
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <StatusCard icon={Activity} label="MISSION_STATUS" value="ACTIVE_NODE" />
+                <StatusCard icon={Zap} label="PRIMARY_DOMAIN" value="OT/ICS_SECURITY" />
+              </div>
+
+              <div className="flex gap-6 pt-4">
+                <Link href="/identity">
+                  <button className="px-8 py-3 bg-primary text-primary-foreground font-headline uppercase tracking-widest hover:bg-accent hover:text-accent-foreground transition-all flex items-center gap-2 group shadow-[0_0_20px_hsla(var(--primary),0.3)]">
+                    Identity Core <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </Link>
+                <Link href="/experience">
+                  <button className="px-8 py-3 border border-primary/40 text-primary font-headline uppercase tracking-widest hover:bg-primary/10 transition-all">
+                    Mission Logs
+                  </button>
+                </Link>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-headline tracking-tighter text-glow">ROHIT ROY</h1>
-              <p className="text-[10px] font-code text-primary/40 uppercase tracking-widest">Technical Engineer | v2.5</p>
-            </div>
-          </motion.div>
-        </div>
 
-        {/* DRAG TO EXPLORE HINT */}
-        <div className="fixed top-12 left-1/2 -translate-x-1/2 pointer-events-none z-40 opacity-30">
-          <div className="flex flex-col items-center gap-2">
-            <MousePointer2 className="w-6 h-6 text-primary animate-bounce" />
-            <p className="text-[8px] font-code text-primary uppercase tracking-[0.4em]">Drag to Explore System</p>
-          </div>
-        </div>
-
-        {/* ORBITAL NAVIGATION SYSTEM */}
-        <section className="relative w-screen h-screen flex items-center justify-center pointer-events-none">
-          {/* Galactic Center / Sun (Identity) */}
-          <Link href="/identity" className="pointer-events-auto">
-            <motion.div 
-              initial={{ scale: 0, opacity: 0 }}
-              animate={isBooted ? { scale: 1, opacity: 1 } : {}}
-              transition={{ duration: 2, ease: "easeOut" }}
-              className="relative z-30 cursor-none"
-              onMouseEnter={() => setHoveredPlanet('identity')}
-              onMouseLeave={() => setHoveredPlanet(null)}
-            >
-              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-yellow-300 via-orange-500 to-red-600 shadow-[0_0_100px_rgba(255,165,0,0.6)] flex flex-col items-center justify-center backdrop-blur-3xl group">
-                <Sparkles className="w-10 h-10 text-white animate-pulse mb-1 group-hover:scale-125 transition-transform" />
-                <div className="text-center">
-                  <p className="text-[8px] font-code text-white/80 uppercase tracking-widest">Identity Core</p>
-                  <p className="text-[10px] font-headline text-white tracking-widest uppercase">THE SUN</p>
+            {/* Terminal Preview Right */}
+            <div className="hidden lg:block w-1/3">
+              <div className="cyber-glass p-6 space-y-4">
+                <div className="flex justify-between items-center border-b border-primary/20 pb-2">
+                  <span className="text-[10px] font-code text-primary/40 uppercase tracking-widest">System_Intel.v2</span>
+                  <div className="flex gap-1">
+                    <div className="w-2 h-2 rounded-full bg-accent-danger/40" />
+                    <div className="w-2 h-2 rounded-full bg-accent-gold/40" />
+                    <div className="w-2 h-2 rounded-full bg-accent-primary/40" />
+                  </div>
+                </div>
+                <div className="space-y-2 text-[11px] font-code text-primary/70">
+                  <p className="text-accent">> LOCATING_OPERATIVE...</p>
+                  <p className="pl-4">IDENTITY: ROHIT ROY</p>
+                  <p className="pl-4">LOCATION: WEST_BENGAL_INDIA</p>
+                  <p className="pl-4">RANK: TECHNICAL_ENGINEER_L1</p>
+                  <p className="text-accent">> SCANNING_CAPABILITIES...</p>
+                  <p className="pl-4">OT/ICS: 94% [STABLE]</p>
+                  <p className="pl-4">SOC_OPS: 89% [ACTIVE]</p>
+                  <p className="pl-4">QUANTUM: 72% [INITIATING]</p>
                 </div>
               </div>
-              <div className="absolute inset-[-40px] border border-orange-500/20 rounded-full animate-pulse pointer-events-none" />
-            </motion.div>
-          </Link>
-
-          {/* Planets UI Layer */}
-          {PLANETS.map((planet, index) => (
-            <PlanetNode 
-              key={planet.id} 
-              planet={planet} 
-              index={index} 
-              isBooted={isBooted} 
-              onHover={setHoveredPlanet}
-            />
-          ))}
-
-          {/* Bottom Terminal Overlay */}
-          <div className="absolute bottom-12 right-12 w-80 z-50 pointer-events-auto">
-            <TerminalPanel />
+            </div>
           </div>
-        </section>
 
-        {/* BACKGROUND SCANLINES */}
-        <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-[100] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]" />
-      </div>
+          <div className="fixed right-12 bottom-12 hidden lg:block z-20">
+             <div className="text-[10px] font-code text-primary/30 uppercase rotate-90 origin-right translate-y-[-100%] tracking-[0.4em]">
+               [ CTRL + ` SYSTEM_CONSOLE ]
+             </div>
+          </div>
+        </motion.div>
+      )}
+
+      <style jsx global>{`
+        .glitch-text {
+          animation: CharacterScramble 0.3s steps(2) infinite;
+        }
+        @keyframes CharacterScramble {
+          0% { transform: translate(0); }
+          25% { transform: translate(-1px, 0.5px); filter: hue-rotate(45deg); }
+          50% { transform: translate(1px, -0.5px); filter: hue-rotate(90deg); }
+          75% { transform: translate(-0.5px, -1px); filter: hue-rotate(135deg); }
+          100% { transform: translate(0); }
+        }
+      `}</style>
     </main>
   );
 }
 
-function PlanetNode({ planet, index, isBooted, onHover }: { planet: any, index: number, isBooted: boolean, onHover: (id: string | null) => void }) {
-  const router = useRouter();
-  const [mounted, setMounted] = useState(false);
-  const [isLanding, setIsLanding] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const { x, y } = useMemo(() => {
-    const radian = (planet.angle * Math.PI) / 180;
-    return {
-      x: (Math.cos(radian) * planet.orbitRadius).toFixed(2),
-      y: (Math.sin(radian) * planet.orbitRadius).toFixed(2)
-    };
-  }, [planet.angle, planet.orbitRadius]);
-
-  if (!mounted) return null;
-
-  const handleLanding = () => {
-    setIsLanding(true);
-    setTimeout(() => {
-      router.push(planet.path);
-    }, 1200);
-  };
-
+function StatusCard({ icon: Icon, label, value }: { icon: any, label: string, value: string }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0 }}
-      animate={isBooted ? { opacity: 1, scale: 1 } : {}}
-      transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
-      className="absolute z-20 pointer-events-auto"
-      style={{ 
-        left: `calc(50% + ${x}px)`, 
-        top: `calc(50% + ${y}px)`,
-        transform: 'translate(-50%, -50%)'
-      }}
-    >
-      <div 
-        onMouseEnter={() => onHover(planet.id)}
-        onMouseLeave={() => onHover(null)}
-        onClick={handleLanding}
-        className="group relative flex flex-col items-center gap-4 cursor-none"
-      >
-        <div className={`relative ${planet.size} rounded-full bg-gradient-to-br ${planet.color} shadow-[0_0_30px_currentColor] flex items-center justify-center transition-all duration-500 group-hover:shadow-[0_0_60px_currentColor] group-hover:scale-110 text-white ${isLanding ? 'animate-ping' : ''}`}>
-          <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.2),transparent)]" />
-          <planet.icon className="w-1/2 h-1/2 drop-shadow-lg" />
-          
-          {planet.id === 'certifications' && (
-            <div className="absolute inset-[-15px] border-2 border-white/20 rounded-full scale-y-[0.3] rotate-[15deg] pointer-events-none" />
-          )}
-        </div>
-
-        <div className="absolute top-full mt-4 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-y-2 pointer-events-none">
-          <span className="text-[8px] font-code text-white uppercase tracking-[0.3em] whitespace-nowrap bg-black/90 px-4 py-2 border border-primary/40 backdrop-blur-md">
-            {planet.name}
-          </span>
-        </div>
+    <div className="cyber-glass p-4 group hover:border-primary transition-all border-l-2 border-l-primary/40 relative">
+      <div className="flex items-center gap-3 mb-1">
+        <Icon className="w-3 h-3 text-primary" />
+        <span className="text-[8px] font-code text-primary/40 uppercase tracking-widest">{label}</span>
       </div>
-    </motion.div>
+      <div className="text-xs font-headline tracking-widest text-primary group-hover:text-glow transition-all">{value}</div>
+      <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary/20" />
+    </div>
   );
 }
