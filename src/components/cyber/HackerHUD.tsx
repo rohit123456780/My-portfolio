@@ -1,5 +1,5 @@
 
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -34,15 +34,15 @@ export default function HackerHUD() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentAlert(prev => (prev + 1) % alerts.length);
-    }, 4000);
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <>
       {/* Live Threat Ticker */}
-      <div className="fixed top-0 left-0 right-0 z-[100] bg-black/95 border-b border-primary/20 backdrop-blur-xl h-8 flex items-center overflow-hidden font-code text-[9px]">
-        <div className="bg-primary text-primary-foreground px-4 h-full flex items-center font-bold tracking-[0.2em] shrink-0">
+      <div className="fixed top-0 left-0 right-0 z-[100] bg-[#020408]/95 border-b border-[#00ff9f]/20 backdrop-blur-xl h-8 flex items-center overflow-hidden font-code text-[9px]">
+        <div className="bg-[#00ff9f] text-[#020408] px-4 h-full flex items-center font-bold tracking-[0.2em] shrink-0">
           LIVE_THREAT_FEED
         </div>
         <div className="flex-1 whitespace-nowrap pl-6 flex items-center gap-8 animate-marquee">
@@ -52,15 +52,15 @@ export default function HackerHUD() {
               initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -5 }}
-              className="flex items-center gap-3 text-primary/80"
+              className="flex items-center gap-3 text-[#00ff9f]/80"
             >
-              <Activity className="w-3 h-3 text-accent animate-pulse" />
-              <span className="tracking-widest uppercase">{alerts[currentAlert]}</span>
+              <Activity className="w-3 h-3 text-[#00cfff] animate-pulse" />
+              <span className="tracking-widest uppercase font-bold">{alerts[currentAlert]}</span>
             </motion.div>
           </AnimatePresence>
         </div>
-        <div className="px-6 text-primary/40 hidden md:flex items-center gap-2 tracking-widest border-l border-primary/10">
-          <span className="w-2 h-2 rounded-full bg-primary/20 animate-pulse" />
+        <div className="px-6 text-[#00ff9f]/40 hidden md:flex items-center gap-2 tracking-widest border-l border-[#00ff9f]/10">
+          <span className="w-2 h-2 rounded-full bg-[#00ff9f]/20 animate-pulse" />
           NODE: WB_INDIA_CORE_01
         </div>
       </div>
@@ -69,15 +69,15 @@ export default function HackerHUD() {
       <nav className="fixed top-8 left-0 right-0 z-[90] p-4 flex justify-between items-center pointer-events-none">
         <Link href="/" className="pointer-events-auto">
           <div className="flex items-center gap-4 group">
-            <div className="w-12 h-12 border border-primary/40 bg-black/90 flex items-center justify-center relative">
-              <Terminal className="w-6 h-6 text-primary group-hover:scale-110 transition-transform" />
-              <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/20 transition-colors" />
-              <div className="absolute -top-1 -left-1 w-2 h-2 border-t border-l border-primary" />
-              <div className="absolute -bottom-1 -right-1 w-2 h-2 border-b border-r border-primary" />
+            <div className="w-12 h-12 border border-[#00ff9f]/40 bg-black/90 flex items-center justify-center relative">
+              <Terminal className="w-6 h-6 text-[#00ff9f] group-hover:scale-110 transition-transform" />
+              <div className="absolute inset-0 bg-[#00ff9f]/5 group-hover:bg-[#00ff9f]/20 transition-colors" />
+              <div className="absolute -top-1 -left-1 w-2 h-2 border-t border-l border-[#00ff9f]" />
+              <div className="absolute -bottom-1 -right-1 w-2 h-2 border-b border-r border-[#00ff9f]" />
             </div>
             <div>
               <div className="text-sm font-headline text-glow tracking-[0.3em] uppercase">ROHIT_ROY</div>
-              <div className="text-[8px] font-code text-primary/40 tracking-[0.2em] uppercase">OPS_COMMAND_CENTER</div>
+              <div className="text-[8px] font-code text-[#00ff9f]/40 tracking-[0.2em] uppercase">CYBER_OPS_COMMAND</div>
             </div>
           </div>
         </Link>
@@ -87,23 +87,23 @@ export default function HackerHUD() {
             <Link key={item.id} href={item.path}>
               <div className={`px-4 py-1.5 border transition-all flex items-center gap-2 group relative overflow-hidden ${
                 pathname === item.path 
-                  ? 'border-primary bg-primary/10 text-primary' 
-                  : 'border-white/5 text-primary/40 hover:border-primary/40 hover:text-primary'
+                  ? 'border-[#00ff9f] bg-[#00ff9f]/10 text-[#00ff9f]' 
+                  : 'border-white/5 text-[#00ff9f]/40 hover:border-[#00ff9f]/40 hover:text-[#00ff9f]'
               }`}>
                 <span className="text-[8px] font-code opacity-40">[{item.id}]</span>
                 <span className="text-[10px] font-headline tracking-[0.2em]">{item.label}</span>
                 {pathname === item.path && (
                   <motion.div 
                     layoutId="activeNav"
-                    className="absolute inset-0 border border-primary/50 shadow-[0_0_10px_rgba(0,255,159,0.3)] pointer-events-none" 
+                    className="absolute inset-0 border border-[#00ff9f]/50 shadow-[0_0_10px_rgba(0,255,159,0.3)] pointer-events-none" 
                   />
                 )}
               </div>
             </Link>
           ))}
           <div className="ml-4 pl-4 border-l border-white/10 flex items-center gap-4">
-            <Search className="w-4 h-4 text-primary/30 hover:text-primary transition-colors cursor-pointer" />
-            <div className="text-[10px] text-primary/20 font-code uppercase">v2.5.0_stable</div>
+            <Search className="w-4 h-4 text-[#00ff9f]/30 hover:text-[#00ff9f] transition-colors cursor-pointer" />
+            <div className="text-[10px] text-[#00ff9f]/20 font-code uppercase tracking-tighter">v3.0.0_STABLE</div>
           </div>
         </div>
       </nav>
@@ -114,7 +114,10 @@ export default function HackerHUD() {
           100% { transform: translateX(-50%); }
         }
         .animate-marquee {
-          animation: marquee 40s linear infinite;
+          animation: marquee 30s linear infinite;
+        }
+        .text-glow {
+          text-shadow: 0 0 8px rgba(0, 255, 159, 0.5);
         }
       `}</style>
     </>

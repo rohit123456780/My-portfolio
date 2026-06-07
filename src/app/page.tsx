@@ -1,5 +1,5 @@
 
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -27,7 +27,7 @@ export default function Home() {
   }, [isBooted]);
 
   return (
-    <main className="relative min-h-screen bg-[#020408] selection:bg-primary/30 overflow-hidden">
+    <main className="relative min-h-screen bg-[#020408] overflow-hidden">
       <AnimatePresence>
         {!isBooted && <BootSequence />}
       </AnimatePresence>
@@ -36,31 +36,32 @@ export default function Home() {
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.5 }}
-          className="relative min-h-screen flex items-center justify-center"
+          transition={{ duration: 1 }}
+          className="relative min-h-screen flex items-center justify-center p-8"
         >
           <Hero3D />
 
-          <div className="relative z-10 w-full max-w-7xl px-8 flex flex-col lg:flex-row items-center justify-between gap-12">
-            {/* Intel Feed Left */}
-            <div className="w-full lg:w-1/2 space-y-8">
-              <div className="space-y-4">
+          <div className="relative z-10 w-full max-w-7xl flex flex-col lg:flex-row items-center justify-between gap-12">
+            <div className="w-full lg:w-1/2 space-y-12">
+              <div className="space-y-6">
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="flex items-center gap-3 text-[10px] font-code text-accent tracking-[0.4em] uppercase"
+                  className="flex items-center gap-3 text-[10px] font-code text-[#00cfff] tracking-[0.4em] uppercase"
                 >
-                  <Lock className="w-3 h-3" /> SECURE_NODE_01_ESTABLISHED
+                  <Lock className="w-3 h-3" /> SECURE_ACCESS_ESTABLISHED
                 </motion.div>
                 
-                <h1 className="text-6xl md:text-8xl font-headline tracking-tighter text-glow glitch-text leading-none">
-                  ROHIT_ROY
+                <h1 className="text-7xl md:text-9xl font-headline tracking-tighter text-[#00ff9f] glitch-text leading-none text-glow uppercase">
+                  ROHIT<br/>ROY
                 </h1>
                 
-                <p className="text-sm font-code text-primary/80 border-l-2 border-primary/40 pl-6 leading-relaxed">
-                  {typedText}
-                  <span className="w-2 h-5 bg-primary inline-block ml-1 animate-pulse" />
-                </p>
+                <div className="text-sm font-code text-[#00ff9f]/80 border-l-2 border-[#00ff9f]/40 pl-6 h-12 flex items-center">
+                  <p>
+                    {typedText}
+                    <span className="w-2 h-5 bg-[#00ff9f] inline-block ml-1 animate-pulse" />
+                  </p>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -68,49 +69,54 @@ export default function Home() {
                 <StatusCard icon={Zap} label="PRIMARY_DOMAIN" value="OT/ICS_SECURITY" />
               </div>
 
-              <div className="flex gap-6 pt-4">
+              <div className="flex flex-wrap gap-6">
                 <Link href="/identity">
-                  <button className="px-8 py-3 bg-primary text-primary-foreground font-headline uppercase tracking-widest hover:bg-accent hover:text-accent-foreground transition-all flex items-center gap-2 group shadow-[0_0_20px_hsla(var(--primary),0.3)]">
-                    Identity Core <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <button className="px-10 py-4 bg-[#00ff9f] text-[#020408] font-headline uppercase tracking-widest hover:bg-[#00cfff] transition-all flex items-center gap-3 group shadow-[0_0_25px_rgba(0,255,159,0.3)]">
+                    IDENTITY CORE <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </Link>
                 <Link href="/experience">
-                  <button className="px-8 py-3 border border-primary/40 text-primary font-headline uppercase tracking-widest hover:bg-primary/10 transition-all">
-                    Mission Logs
+                  <button className="px-10 py-4 border border-[#00ff9f]/40 text-[#00ff9f] font-headline uppercase tracking-widest hover:bg-[#00ff9f]/10 transition-all">
+                    MISSION LOGS
                   </button>
                 </Link>
               </div>
             </div>
 
-            {/* Terminal Preview Right */}
             <div className="hidden lg:block w-1/3">
-              <div className="cyber-glass p-6 space-y-4">
-                <div className="flex justify-between items-center border-b border-primary/20 pb-2">
-                  <span className="text-[10px] font-code text-primary/40 uppercase tracking-widest">System_Intel.v2</span>
-                  <div className="flex gap-1">
-                    <div className="w-2 h-2 rounded-full bg-accent-danger/40" />
-                    <div className="w-2 h-2 rounded-full bg-accent-gold/40" />
-                    <div className="w-2 h-2 rounded-full bg-accent-primary/40" />
+              <div className="bg-black/80 backdrop-blur-xl border border-[#00ff9f]/20 p-8 space-y-6 relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-b from-[#00ff9f]/5 to-transparent pointer-events-none" />
+                <div className="flex justify-between items-center border-b border-[#00ff9f]/20 pb-4">
+                  <span className="text-[10px] font-code text-[#00ff9f]/40 uppercase tracking-widest">TACTICAL_INTEL_v3</span>
+                  <div className="flex gap-1.5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#ff003c]/40" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#ffd700]/40" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#00ff9f]/40" />
                   </div>
                 </div>
-                <div className="space-y-2 text-[11px] font-code text-primary/70">
-                  <p className="text-accent">> LOCATING_OPERATIVE...</p>
-                  <p className="pl-4">IDENTITY: ROHIT ROY</p>
-                  <p className="pl-4">LOCATION: WEST_BENGAL_INDIA</p>
-                  <p className="pl-4">RANK: TECHNICAL_ENGINEER_L1</p>
-                  <p className="text-accent">> SCANNING_CAPABILITIES...</p>
-                  <p className="pl-4">OT/ICS: 94% [STABLE]</p>
-                  <p className="pl-4">SOC_OPS: 89% [ACTIVE]</p>
-                  <p className="pl-4">QUANTUM: 72% [INITIATING]</p>
+                <div className="space-y-4 text-[11px] font-code text-[#00ff9f]/70">
+                  <div className="space-y-1">
+                    <p className="text-[#00cfff]">> DECRYPTING_BIOMETRICS...</p>
+                    <p className="pl-4">SUBJECT: ROHIT ROY</p>
+                    <p className="pl-4">CLEARANCE: LEVEL_01</p>
+                    <p className="pl-4">LOC: WB_INDIA</p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-[#00cfff]">> SCANNING_SPECIALIZATIONS...</p>
+                    <p className="pl-4">OT/ICS_SECURITY: 94%</p>
+                    <p className="pl-4">SOC_OPERATIONS: 89%</p>
+                    <p className="pl-4">QUANTUM_TECH: 72%</p>
+                  </div>
+                </div>
+                <div className="h-2 w-full bg-[#00ff9f]/5 overflow-hidden">
+                  <motion.div 
+                    animate={{ x: ['-100%', '100%'] }}
+                    transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+                    className="w-1/3 h-full bg-[#00ff9f]/40"
+                  />
                 </div>
               </div>
             </div>
-          </div>
-
-          <div className="fixed right-12 bottom-12 hidden lg:block z-20">
-             <div className="text-[10px] font-code text-primary/30 uppercase rotate-90 origin-right translate-y-[-100%] tracking-[0.4em]">
-               [ CTRL + ` SYSTEM_CONSOLE ]
-             </div>
           </div>
         </motion.div>
       )}
@@ -121,10 +127,13 @@ export default function Home() {
         }
         @keyframes CharacterScramble {
           0% { transform: translate(0); }
-          25% { transform: translate(-1px, 0.5px); filter: hue-rotate(45deg); }
-          50% { transform: translate(1px, -0.5px); filter: hue-rotate(90deg); }
-          75% { transform: translate(-0.5px, -1px); filter: hue-rotate(135deg); }
+          25% { transform: translate(-1px, 0.5px); }
+          50% { transform: translate(1px, -0.5px); }
+          75% { transform: translate(-0.5px, -1px); }
           100% { transform: translate(0); }
+        }
+        .text-glow {
+          text-shadow: 0 0 15px rgba(0, 255, 159, 0.4);
         }
       `}</style>
     </main>
@@ -133,13 +142,13 @@ export default function Home() {
 
 function StatusCard({ icon: Icon, label, value }: { icon: any, label: string, value: string }) {
   return (
-    <div className="cyber-glass p-4 group hover:border-primary transition-all border-l-2 border-l-primary/40 relative">
-      <div className="flex items-center gap-3 mb-1">
-        <Icon className="w-3 h-3 text-primary" />
-        <span className="text-[8px] font-code text-primary/40 uppercase tracking-widest">{label}</span>
+    <div className="bg-black/60 border border-[#00ff9f]/10 p-5 group hover:border-[#00ff9f] transition-all border-l-4 border-l-[#00ff9f]/40 relative">
+      <div className="flex items-center gap-3 mb-2">
+        <Icon className="w-3.5 h-3.5 text-[#00ff9f]" />
+        <span className="text-[9px] font-code text-[#00ff9f]/40 uppercase tracking-widest font-bold">{label}</span>
       </div>
-      <div className="text-xs font-headline tracking-widest text-primary group-hover:text-glow transition-all">{value}</div>
-      <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary/20" />
+      <div className="text-sm font-headline tracking-widest text-[#00ff9f] group-hover:text-[#00cfff] transition-all uppercase">{value}</div>
+      <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-[#00ff9f]/20" />
     </div>
   );
 }
