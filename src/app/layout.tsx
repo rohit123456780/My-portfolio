@@ -4,7 +4,6 @@ import './globals.css';
 import HackerHUD from '@/components/cyber/HackerHUD';
 import CyberCursor from '@/components/cyber/CyberCursor';
 import TerminalEasterEgg from '@/components/cyber/TerminalEasterEgg';
-import ObsidianChatbot from '@/components/cyber/ObsidianChatbot';
 
 export const metadata: Metadata = {
   title: 'ROHIT ROY | CYBER OPS COMMAND',
@@ -28,7 +27,6 @@ export default function RootLayout({
         <CyberCursor />
         <HackerHUD />
         <TerminalEasterEgg />
-        <ObsidianChatbot />
         {children}
       </body>
     </html>
