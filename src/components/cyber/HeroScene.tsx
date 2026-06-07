@@ -18,7 +18,6 @@ export default function HeroScene() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     containerRef.current.appendChild(renderer.domElement);
 
-    // Deep Space Background (Galaxy Dust)
     const dustGeometry = new THREE.BufferGeometry();
     const dustMaterial = new THREE.PointsMaterial({
       color: 0x4444ff,
@@ -39,7 +38,6 @@ export default function HeroScene() {
     const dust = new THREE.Points(dustGeometry, dustMaterial);
     scene.add(dust);
 
-    // Stellar Cluster (Bright Stars)
     const starGeometry = new THREE.BufferGeometry();
     const starMaterial = new THREE.PointsMaterial({
       color: 0xffffff,
@@ -61,7 +59,6 @@ export default function HeroScene() {
     const stars = new THREE.Points(starGeometry, starMaterial);
     scene.add(stars);
 
-    // Orbital Rings - Tighter and more defined
     const createOrbit = (radius: number, color: number) => {
       const geometry = new THREE.RingGeometry(radius, radius + 0.3, 128);
       const material = new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide, transparent: true, opacity: 0.05 });
@@ -70,9 +67,9 @@ export default function HeroScene() {
       return mesh;
     };
 
-    [160, 220, 280, 340, 400].forEach(r => scene.add(createOrbit(r, 0x00C2FF)));
+    // Updated orbit radii to match tightened PLANETS config
+    [100, 150, 200, 250, 300].forEach(r => scene.add(createOrbit(r, 0x00C2FF)));
 
-    // Milky Way Core Glow (Identity Sun)
     const coreGroup = new THREE.Group();
     const coreGeometry = new THREE.SphereGeometry(60, 64, 64);
     const coreMaterial = new THREE.MeshBasicMaterial({
@@ -84,12 +81,11 @@ export default function HeroScene() {
     const coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
     coreGroup.add(coreMesh);
 
-    // Add bright central light
     const light = new THREE.PointLight(0x00C2FF, 3, 1500);
     scene.add(light);
     scene.add(coreGroup);
 
-    camera.position.z = 800;
+    camera.position.z = 700;
     camera.position.y = 150;
 
     let targetX = 0;
@@ -119,7 +115,6 @@ export default function HeroScene() {
       dust.rotation.y += 0.00005;
       coreGroup.rotation.y += 0.002;
       
-      // Smooth world rotation
       currentX += (targetX - currentX) * 0.05;
       currentY += (targetY - currentY) * 0.05;
 

@@ -13,11 +13,11 @@ import { Shield, Globe, Trophy, Briefcase, Sparkles, User, Cpu, MousePointer2 } 
 import { useRouter } from 'next/navigation';
 
 const PLANETS = [
-  { id: 'awards', name: 'Mercury: Distinction Belt', icon: Trophy, path: '/awards', color: 'from-orange-400 to-red-600', orbitRadius: 140, angle: 0, size: 'w-12 h-12' },
-  { id: 'internships', name: 'Venus: Growth Sector', icon: Globe, path: '/internships', color: 'from-emerald-400 to-teal-700', orbitRadius: 200, angle: 72, size: 'w-14 h-14' },
-  { id: 'projects', name: 'Earth: Mission Matrix', icon: Cpu, path: '/projects', color: 'from-blue-400 to-indigo-800', orbitRadius: 260, angle: 144, size: 'w-16 h-16' },
-  { id: 'experience', name: 'Mars: Orbital Deployments', icon: Briefcase, path: '/experience', color: 'from-red-500 to-red-900', orbitRadius: 320, angle: 216, size: 'w-14 h-14' },
-  { id: 'certifications', name: 'Jupiter: Credential Nebula', icon: Shield, path: '/certifications', color: 'from-cyan-400 to-blue-600', orbitRadius: 380, angle: 288, size: 'w-20 h-20' },
+  { id: 'certifications', name: 'Jupiter: Credential Nebula', icon: Shield, path: '/certifications', color: 'from-cyan-400 to-blue-600', orbitRadius: 100, angle: 0, size: 'w-16 h-16' },
+  { id: 'awards', name: 'Mercury: Distinction Belt', icon: Trophy, path: '/awards', color: 'from-orange-400 to-red-600', orbitRadius: 150, angle: 72, size: 'w-12 h-12' },
+  { id: 'internships', name: 'Venus: Growth Sector', icon: Globe, path: '/internships', color: 'from-emerald-400 to-teal-700', orbitRadius: 200, angle: 144, size: 'w-14 h-14' },
+  { id: 'projects', name: 'Earth: Mission Matrix', icon: Cpu, path: '/projects', color: 'from-blue-400 to-indigo-800', orbitRadius: 250, angle: 216, size: 'w-16 h-16' },
+  { id: 'experience', name: 'Mars: Orbital Deployments', icon: Briefcase, path: '/experience', color: 'from-red-500 to-red-900', orbitRadius: 300, angle: 288, size: 'w-14 h-14' },
 ];
 
 export default function Home() {
@@ -79,7 +79,6 @@ export default function Home() {
                   <p className="text-[10px] font-headline text-white tracking-widest uppercase">THE SUN</p>
                 </div>
               </div>
-              {/* Corona Effect */}
               <div className="absolute inset-[-40px] border border-orange-500/20 rounded-full animate-pulse pointer-events-none" />
             </motion.div>
           </Link>
@@ -152,14 +151,12 @@ function PlanetNode({ planet, index, isBooted, onHover }: { planet: any, index: 
         onClick={handleLanding}
         className="group relative flex flex-col items-center gap-4 cursor-none"
       >
-        {/* Realistic Planet Sphere */}
         <div className={`relative ${planet.size} rounded-full bg-gradient-to-br ${planet.color} shadow-[0_0_30px_currentColor] flex items-center justify-center transition-all duration-500 group-hover:shadow-[0_0_60px_currentColor] group-hover:scale-110 text-white ${isLanding ? 'animate-ping' : ''}`}>
           <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.2),transparent)]" />
           <planet.icon className="w-1/2 h-1/2 drop-shadow-lg" />
           
-          {/* Orbital Ring if Jupiter */}
           {planet.id === 'certifications' && (
-            <div className="absolute inset-[-10px] border-2 border-white/10 rounded-full scale-y-[0.3] rotate-[15deg] pointer-events-none" />
+            <div className="absolute inset-[-15px] border-2 border-white/20 rounded-full scale-y-[0.3] rotate-[15deg] pointer-events-none" />
           )}
         </div>
 
