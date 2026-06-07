@@ -3,7 +3,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Terminal, Send, X, Cpu, Sparkles, ShieldCheck, Lock, Unlock, Activity } from 'lucide-react';
+import { Terminal, Send, X, Cpu, ShieldCheck, Lock, Unlock, Activity } from 'lucide-react';
 import { obsidianChat } from '@/ai/flows/obsidian-agent';
 
 type Message = {
@@ -12,7 +12,7 @@ type Message = {
   type?: 'standard' | 'success' | 'update';
 };
 
-const OWNER_PASSWORD = "1507"; // Hardcoded tactical access key
+const OWNER_PASSWORD = "1507"; 
 
 export default function ObsidianChatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +24,6 @@ export default function ObsidianChatbot() {
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to latest message
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -38,7 +37,6 @@ export default function ObsidianChatbot() {
     const userMsg = input.trim();
     setInput('');
 
-    // Handle Owner Authentication Command
     if (userMsg.toLowerCase().startsWith('obsidian --owner')) {
       const parts = userMsg.split(' ');
       const pass = parts[2];
@@ -66,20 +64,17 @@ export default function ObsidianChatbot() {
       return;
     }
 
-    // Add user message to UI
     setMessages(prev => [...prev, { role: 'user', text: userMsg }]);
     setIsTyping(true);
 
     try {
-      // Build context history for the AI
       const history = messages
         .filter(m => m.role !== 'system')
         .map(m => ({
-          role: m.role === 'user' ? 'user' : 'model',
-          content: [{ text: m.text }]
+          role: m.role === 'user' ? 'user' : ('model' as const),
+          content: [{ text: m.text || '' }]
         }));
 
-      // Trigger the server-side agentic flow
       const response = await obsidianChat(userMsg, isOwner, history);
       
       setMessages(prev => [...prev, { role: 'obsidian', text: response.text }]);
@@ -121,7 +116,6 @@ export default function ObsidianChatbot() {
             exit={{ opacity: 0, scale: 0.9, y: 50 }}
             className="fixed bottom-24 right-8 w-[380px] h-[550px] z-[200] bg-black border-2 border-[#00ff9f]/30 flex flex-col overflow-hidden shadow-[0_0_50px_rgba(0,0,0,1)]"
           >
-            {/* Header */}
             <div className="bg-[#00ff9f]/10 p-4 flex justify-between items-center border-b border-[#00ff9f]/20">
               <div className="flex items-center gap-3">
                 <div className="relative">
@@ -142,7 +136,6 @@ export default function ObsidianChatbot() {
               </div>
             </div>
 
-            {/* Messages Area */}
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-5 space-y-4 font-code text-[11px] no-scrollbar bg-[#020408]">
               {messages.map((m, i) => (
                 <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -169,7 +162,6 @@ export default function ObsidianChatbot() {
               )}
             </div>
 
-            {/* Input Bar */}
             <form onSubmit={handleSend} className="p-4 border-t border-[#00ff9f]/20 bg-[#00ff9f]/5">
               <div className="flex items-center gap-2">
                 <span className="text-[#00ff9f] font-bold">{'>'}</span>
@@ -186,7 +178,6 @@ export default function ObsidianChatbot() {
               </div>
             </form>
 
-            {/* Footer Stats */}
             <div className="p-2 px-4 bg-black flex justify-between items-center text-[7px] text-[#00ff9f]/30 uppercase tracking-[0.2em] font-code">
               <span className="flex items-center gap-1">
                 <ShieldCheck className={`w-2 h-2 ${isOwner ? 'text-[#00ff9f]' : 'text-white/10'}`} /> 

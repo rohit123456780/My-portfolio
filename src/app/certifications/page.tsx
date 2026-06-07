@@ -10,19 +10,40 @@ import { db } from '@/lib/firebase';
 import { useCollection } from 'react-firebase-hooks/firestore';
 
 const FALLBACK_CERTS = [
-  { name: "APISEC Certified Professional", issuer: "APIsec University", category: "API & Web Security", date: "Apr 2025" },
-  { name: "Certified API Security Analyst", issuer: "APIsec University", category: "API & Web Security", date: "Apr 2025" },
+  // API & Web Security
+  { name: "APISEC Certified Professional", issuer: "APIsec University", category: "API & Web Security", date: "Apr 2025", id: "01733775-8dc0-41f1-8133-185e919d4e46" },
+  { name: "Certified API Security Analyst", issuer: "APIsec University", category: "API & Web Security", date: "Apr 2025", id: "8c4bbbea-3e23-4c8d-9b49-469bf1c4c8a1" },
   { name: "API Security Fundamentals", issuer: "APIsec University", category: "API & Web Security" },
-  { name: "Certified REST Engineer", issuer: "Cyber NOW Education", category: "API & Web Security", date: "Jul 2024" },
-  { name: "Certified AppSec Practitioner (CAP)", issuer: "The SecOps Group", category: "API & Web Security", date: "Feb 2024" },
-  { name: "C)PTE: Certified Penetration Testing Engineer", issuer: "Mile2 Cybersecurity Institute", category: "Penetration Testing & Ethical Hacking", date: "Oct 2023" },
+  { name: "Certified REST Engineer", issuer: "Cyber NOW Education", category: "API & Web Security", date: "Jul 2024", id: "2ec1040114748" },
+  { name: "Certified AppSec Practitioner (CAP)", issuer: "The SecOps Group", category: "API & Web Security", date: "Feb 2024", id: "8366839" },
+  // Penetration Testing & Ethical Hacking
+  { name: "C)PTE: Certified Penetration Testing Engineer", issuer: "Mile2 Cybersecurity Institute", category: "Penetration Testing & Ethical Hacking", date: "Oct 2023", id: "23231-169-796-7246" },
+  { name: "Certified Red Team Operations Management (CRTOM)", issuer: "Red Team Leaders", category: "Penetration Testing & Ethical Hacking", date: "Dec 2025" },
+  { name: "Certified Cybersecurity Educator Professional (CCEP)", issuer: "Red Team Leaders", category: "Penetration Testing & Ethical Hacking", date: "Dec 2025" },
+  { name: "Certified Phishing Prevention Specialist (CPPS)", issuer: "Hack & Fix", category: "Penetration Testing & Ethical Hacking", date: "Dec 2025", id: "2347-2827-4889-2127" },
+  { name: "Certified Vulnerability Analyst (C-VA)", issuer: "Sturtle Security Pvt Ltd", category: "Penetration Testing & Ethical Hacking", date: "Apr 2024", id: "STURSEC/CVA/2024/009" },
+  { name: "Ethical Hacking Essentials (EHE)", issuer: "EC-Council", category: "Penetration Testing & Ethical Hacking", date: "Jul 2023", id: "233321" },
   { name: "Ethical Hacker", issuer: "Cisco Networking Academy", category: "Penetration Testing & Ethical Hacking", date: "Jan 2024" },
-  { name: "Fortinet Certified Associate in Cybersecurity", issuer: "Fortinet", category: "Network & Infrastructure Security", date: "Feb 2024" },
-  { name: "Google Cybersecurity Professional Certificate", issuer: "Coursera", category: "Google Cybersecurity Professional (Coursera)", date: "May 2024" },
+  // Network & Infrastructure
+  { name: "Certified Network Security Practitioner (CNSP)", issuer: "The SecOps Group", category: "Network & Infrastructure Security", date: "Jun 2024", id: "8813475" },
+  { name: "Network Defense Essentials (NDE)", issuer: "EC-Council", category: "Network & Infrastructure Security", date: "Jul 2023", id: "236975" },
+  { name: "Networking Essentials", issuer: "Cisco Networking Academy", category: "Network & Infrastructure Security", date: "Jan 2022" },
+  { name: "Introduction to Cybersecurity", issuer: "Cisco Networking Academy", category: "Network & Infrastructure Security", date: "Aug 2022" },
+  { name: "CCNAv7: Enterprise Networking Security and Automation", issuer: "Cisco Networking Academy", category: "Network & Infrastructure Security", date: "Apr 2024" },
+  { name: "Cybersecurity Essentials (LFC108)", issuer: "The Linux Foundation", category: "Network & Infrastructure Security", date: "Jul 2023", id: "LF-gqojdj219m" },
+  { name: "Certified Linux File System Professional", issuer: "CCSSR", category: "Network & Infrastructure Security", date: "Jul 2024" },
+  { name: "Fortinet Certified Associate in Cybersecurity", issuer: "Fortinet", category: "Network & Infrastructure Security", date: "Feb 2024", id: "2001131314RR" },
+  // SOC & Forensics
+  { name: "Threat Intelligence Fundamentals for SOC Analysts", issuer: "SOCRadar", category: "SOC, Threat Intelligence & Digital Forensics", date: "Dec 2025" },
   { name: "CSI Linux Certified Investigator", issuer: "CSI Linux", category: "SOC, Threat Intelligence & Digital Forensics", date: "Jul 2025" },
-  { name: "JGRC – Junior GRC Analyst", issuer: "VibeSecurity", category: "GRC, Compliance & Governance", date: "Apr 2026" },
-  { name: "Baserow Expert", issuer: "Baserow", category: "Collaboration & Operations Platforms", date: "Nov 2025" },
-  { name: "Geo-data Sharing and Cyber Security", issuer: "ISRO", category: "Specialist & Miscellaneous Certifications", date: "Dec 2023" }
+  { name: "Digital Forensics Essentials (DFE)", issuer: "EC-Council", category: "SOC, Threat Intelligence & Digital Forensics", date: "Jul 2023" },
+  // GRC & Compliance
+  { name: "JGRC – Junior GRC Analyst", issuer: "VibeSecurity", category: "GRC, Compliance & Governance", date: "Apr 2026", id: "VS-JGRC-CERT7519" },
+  { name: "ISO/IEC 27001 Information Security Associate", issuer: "SkillFront", category: "GRC, Compliance & Governance", date: "Jan 2022" },
+  { name: "SC-900: Microsoft Security, Compliance & Identity Fundamentals", issuer: "Microsoft", category: "GRC, Compliance & Governance", date: "Jul 2025" },
+  // Government & Misc
+  { name: "Geo-data Sharing and Cyber Security", issuer: "ISRO", category: "Specialist & Miscellaneous Certifications", date: "Dec 2023", id: "2023233862177" },
+  { name: "Certified Cyber Warrior", issuer: "HackingFlix", category: "Specialist & Miscellaneous Certifications", date: "Jan 2024" }
 ];
 
 export default function CertificationsPage() {

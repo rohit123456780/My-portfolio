@@ -107,18 +107,25 @@ OBJECTIVE:
 - Rohit Roy is a Technical Engineer (OT/ICS, SOC, Quantum Tech).
 - Data Context: 27+ Internships, 97+ Certifications, 14 Projects.
 
+{{#if history}}
+CHRONICLE_OF_PREVIOUS_TURNS:
+{{#each history}}
+- {{role}}: {{#each content}}{{text}}{{/each}}
+{{/each}}
+{{/if}}
+
 Current System Time: ${new Date().toISOString()}
 
 User Input: {{{query}}}`
 });
 
-export async function obsidianChat(query: string, isOwner: boolean = false, history?: any[]) {
+export async function obsidianChat(query: string, isOwner: boolean = false, history: any[] = []) {
   try {
     const response = await ai.generate({
-      prompt: obsidianPrompt({ query, isOwner, history }),
+      prompt: obsidianPrompt({ query, isOwner, history: history || [] }),
     });
 
-    const wasUpdated = response.toolResponses.some(tr => (tr.output as any)?.wasUpdated === true);
+    const wasUpdated = response.toolResponses?.some(tr => (tr.output as any)?.wasUpdated === true) ?? false;
 
     return {
       text: response.text || "SYSTEM_IDLE: Awaiting valid parameters.",
@@ -126,7 +133,7 @@ export async function obsidianChat(query: string, isOwner: boolean = false, hist
     };
   } catch (error: any) {
     return {
-      text: `SYSTEM_FAILURE: Neural link interrupted. [REASON: ${error.message}]`,
+      text: `SYSTEM_FAILURE: Neural link interrupted. [REASON: ${error.message || 'UNKNOWN_ERROR'}]`,
       wasUpdated: false
     };
   }

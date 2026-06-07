@@ -19,7 +19,23 @@ const FALLBACK_INTERNSHIPS = [
   { org: "Brainwave Matrix Solutions", role: "Cybersecurity Intern", period: "Sep 2024 – Oct 2024", domain: "Cybersecurity" },
   { org: "GrowIntern", role: "Cybersecurity Intern", period: "Aug 2024 – Aug 2024", domain: "Cybersecurity" },
   { org: "Edunet Foundation / IBM SkillsBuild", role: "AI & Cloud Intern", period: "Jun 2024 – Jul 2024", domain: "AI & Cloud" },
+  { org: "BH Security Plus", role: "Penetration Testing Intern", period: "Apr 2024 – May 2024", domain: "Penetration Testing" },
+  { org: "Sutantras.in", role: "Cyber Law Intern", period: "Feb 2024 – Mar 2024", domain: "Cyber Law" },
+  { org: "Trimbak Infotech", role: "Cyber Security Intern", period: "Dec 2023 – Jan 2024", domain: "Cybersecurity" },
+  { org: "TechnoTrench", role: "Cybersecurity & Ethical Hacking Intern", period: "Oct 2023 – Nov 2023", domain: "Ethical Hacking" },
+  { org: "ITPS", role: "Cyber Security Intern", period: "Sep 2023 – Sep 2023", domain: "Cybersecurity" },
+  { org: "Msinterface Technologies Pvt Ltd", role: "Cybersecurity Intern", period: "Jul 2023 – Aug 2023", domain: "Cybersecurity" },
+  { org: "StartHere", role: "Cybersecurity Intern", period: "Jun 2023 – Jun 2023", domain: "Cybersecurity" },
+  { org: "NexaSynergy Innovations", role: "Cybersecurity Intern", period: "Apr 2023 – May 2023", domain: "Cybersecurity" },
+  { org: "Sturtle Security Pvt Ltd", role: "Cybersecurity Intern", period: "Feb 2023 – Mar 2023", domain: "Cybersecurity" },
   { org: "ShadowFox", role: "Cybersecurity Intern", period: "Dec 2022 – Jan 2023", domain: "Cybersecurity" },
+  { org: "Pinnacle Labs", role: "Cybersecurity Intern", period: "Oct 2022 – Nov 2022", domain: "Cybersecurity" },
+  { org: "Let's We Hack", role: "Cybersecurity & Ethical Hacking Intern", period: "Aug 2022 – Sep 2022", domain: "Ethical Hacking" },
+  { org: "SecureSphere Foundation", role: "Cybersecurity Intern", period: "May 2022 – Jul 2022", domain: "Cybersecurity" },
+  { org: "Cyber Secured India", role: "Cybersecurity & Digital Forensics Intern", period: "Feb 2022 – Apr 2022", domain: "Digital Forensics" },
+  { org: "DeltaClause", role: "Cybersecurity & Ethical Hacking Intern", period: "Dec 2021 – Jan 2022", domain: "Ethical Hacking" },
+  { org: "TechnoHacks EduTech", role: "Cybersecurity Intern", period: "Oct 2021 – Nov 2021", domain: "Ethical Hacking" },
+  { org: "Springboard", role: "Cybersecurity Career Track Intern", period: "Jan 2021 – Sep 2021", domain: "Cybersecurity" },
   { org: "CyberDosti", role: "Cybersecurity & Ethical Hacking Intern", period: "Oct 2020 – Dec 2020", domain: "Ethical Hacking" }
 ];
 
