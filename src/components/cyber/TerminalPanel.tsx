@@ -1,14 +1,15 @@
+
 "use client";
 
 import React, { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 const storyLogs = [
-  "SYSTEM INITIALIZED",
-  "NEURAL LINK ESTABLISHED",
-  "SCANNING SECTOR 7G...",
-  "MAP GENERATED",
-  "READY FOR NAVIGATION"
+  "SYSTEM_ORBIT_STABLE",
+  "NEURAL_LINK_ESTABLISHED",
+  "MAP_GENERATED: MILKY_WAY_v2",
+  "SCANNING_PLANETARY_NODES...",
+  "READY_FOR_ORBITAL_DROP"
 ];
 
 export default function TerminalPanel() {
@@ -32,7 +33,7 @@ export default function TerminalPanel() {
       } else {
         clearInterval(interval);
       }
-    }, 200);
+    }, 400);
     return () => clearInterval(interval);
   }, []);
 
@@ -41,8 +42,8 @@ export default function TerminalPanel() {
   return (
     <div ref={containerRef} className="w-full font-code text-[10px] cyber-glass p-4 border-primary/10">
       <div className="flex items-center gap-2 border-b border-primary/20 pb-2 mb-3">
-        <div className="w-2 h-2 rounded-full bg-primary/30" />
-        <span className="text-[8px] text-primary/30 tracking-widest uppercase">system_log.sh</span>
+        <div className="w-2 h-2 rounded-full bg-primary/30 animate-pulse" />
+        <span className="text-[8px] text-primary/30 tracking-widest uppercase">navigation_relay.log</span>
       </div>
       
       <div className="space-y-1 min-h-[100px]">
@@ -54,13 +55,13 @@ export default function TerminalPanel() {
             className="flex gap-2"
           >
             <span className="text-primary/20">[{log.time}]</span>
-            <span className="text-primary/60">{log.text}</span>
+            <span className="text-primary/60 tracking-tighter uppercase">{log.text}</span>
           </motion.div>
         ))}
         <motion.div 
           animate={{ opacity: [0, 1] }} 
           transition={{ repeat: Infinity, duration: 0.8 }}
-          className="w-1.5 h-3 bg-primary/40 inline-block align-middle"
+          className="w-1.5 h-3 bg-primary/40 inline-block align-middle ml-1"
         />
       </div>
     </div>
