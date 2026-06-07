@@ -9,15 +9,15 @@ import HeroScene from '@/components/cyber/HeroScene';
 import TerminalPanel from '@/components/cyber/TerminalPanel';
 import SpaceshipCursor from '@/components/cyber/SpaceshipCursor';
 import Link from 'next/link';
-import { Shield, Cpu, Globe, Trophy, Briefcase, Sparkles, User, CircleDot } from 'lucide-react';
+import { Shield, Cpu, Globe, Trophy, Briefcase, Sparkles, User, MousePointer2 } from 'lucide-react';
 
 const PLANETS = [
-  { id: 'identity', name: 'Identity Node', icon: User, path: '/', color: 'text-primary', orbitRadius: 200, angle: 0 },
-  { id: 'experience', name: 'Orbital Deployments', icon: Briefcase, path: '/experience', color: 'text-blue-400', orbitRadius: 280, angle: 45 },
+  { id: 'identity', name: 'Identity Node', icon: User, path: '/identity', color: 'text-primary', orbitRadius: 200, angle: 0 },
+  { id: 'experience', name: 'Orbital Deployments', icon: Briefcase, path: '/experience', color: 'text-blue-400', orbitRadius: 280, angle: 60 },
   { id: 'projects', name: 'Mission Matrix', icon: Cpu, path: '/projects', color: 'text-accent', orbitRadius: 360, angle: 120 },
-  { id: 'awards', name: 'Distinction Belt', icon: Trophy, path: '/awards', color: 'text-yellow-400', orbitRadius: 440, angle: 190 },
-  { id: 'internships', name: 'Growth Sector', icon: Globe, path: '/internships', color: 'text-emerald-400', orbitRadius: 520, angle: 260 },
-  { id: 'certifications', name: 'Credential Nebula', icon: Shield, path: '/certifications', color: 'text-cyan-400', orbitRadius: 600, angle: 320 },
+  { id: 'awards', name: 'Distinction Belt', icon: Trophy, path: '/awards', color: 'text-yellow-400', orbitRadius: 440, angle: 180 },
+  { id: 'internships', name: 'Growth Sector', icon: Globe, path: '/internships', color: 'text-emerald-400', orbitRadius: 520, angle: 240 },
+  { id: 'certifications', name: 'Credential Nebula', icon: Shield, path: '/certifications', color: 'text-cyan-400', orbitRadius: 600, angle: 300 },
 ];
 
 export default function Home() {
@@ -51,6 +51,14 @@ export default function Home() {
           </motion.div>
         </div>
 
+        {/* DRAG TO EXPLORE HINT */}
+        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-40 opacity-30">
+          <div className="flex flex-col items-center gap-2">
+            <MousePointer2 className="w-6 h-6 text-primary animate-bounce" />
+            <p className="text-[8px] font-code text-primary uppercase tracking-[0.4em]">Drag to Navigate Galaxy</p>
+          </div>
+        </div>
+
         {/* ORBITAL NAVIGATION SYSTEM */}
         <section className="relative w-screen h-screen flex items-center justify-center">
           {/* Galactic Center / Sun */}
@@ -63,30 +71,15 @@ export default function Home() {
             <div className="w-48 h-48 rounded-full bg-primary/10 border border-primary/30 flex flex-col items-center justify-center backdrop-blur-2xl shadow-[0_0_80px_hsla(var(--primary),0.2)]">
               <Sparkles className="w-12 h-12 text-primary animate-pulse mb-2" />
               <div className="text-center">
-                <p className="text-[8px] font-code text-primary/60 uppercase tracking-widest">Core Status</p>
+                <p className="text-[8px] font-code text-primary/60 uppercase tracking-widest">Galaxy Core</p>
                 <p className="text-xs font-headline text-white tracking-widest uppercase">Operational</p>
               </div>
             </div>
             
-            {/* Inner Ring Glow */}
             <div className="absolute inset-[-40px] border border-primary/10 rounded-full animate-spin-slow pointer-events-none" />
           </motion.div>
 
-          {/* Planetary Orbits */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            {PLANETS.map((planet) => (
-              <div 
-                key={`orbit-${planet.id}`}
-                className="absolute border border-white/5 rounded-full"
-                style={{ 
-                  width: planet.orbitRadius * 2, 
-                  height: planet.orbitRadius * 2 
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Planets */}
+          {/* Planets UI Layer */}
           {PLANETS.map((planet, index) => (
             <PlanetNode key={planet.id} planet={planet} index={index} />
           ))}
@@ -105,7 +98,6 @@ export default function Home() {
 }
 
 function PlanetNode({ planet, index }: { planet: any, index: number }) {
-  // Convert polar coordinates to Cartesian for initial positioning
   const radian = (planet.angle * Math.PI) / 180;
   const x = Math.cos(radian) * planet.orbitRadius;
   const y = Math.sin(radian) * planet.orbitRadius;
@@ -124,27 +116,27 @@ function PlanetNode({ planet, index }: { planet: any, index: number }) {
     >
       <Link href={planet.path}>
         <motion.div
-          whileHover={{ scale: 1.1 }}
+          whileHover={{ scale: 1.15 }}
           className="group relative flex flex-col items-center gap-4 cursor-none"
         >
           {/* Planet Body */}
-          <div className={`relative w-16 h-16 rounded-full bg-black border-2 border-current shadow-[0_0_20px_currentColor] flex items-center justify-center transition-all duration-500 group-hover:shadow-[0_0_40px_currentColor] group-hover:border-white ${planet.color}`}>
-            <planet.icon className="w-8 h-8 group-hover:text-white transition-colors" />
+          <div className={`relative w-20 h-20 rounded-full bg-black border-2 border-current shadow-[0_0_30px_currentColor] flex items-center justify-center transition-all duration-500 group-hover:shadow-[0_0_50px_currentColor] group-hover:border-white ${planet.color}`}>
+            <planet.icon className="w-10 h-10 group-hover:text-white transition-colors" />
             
             {/* Atmospheric Ring */}
-            <div className="absolute inset-[-6px] border border-current opacity-20 rounded-full group-hover:opacity-100 group-hover:scale-110 transition-all" />
+            <div className="absolute inset-[-8px] border-2 border-current opacity-20 rounded-full group-hover:opacity-100 group-hover:scale-110 transition-all border-dashed animate-spin-slow" />
           </div>
 
           {/* Label */}
-          <div className="absolute top-20 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-y-2">
-            <span className="text-[10px] font-code text-white uppercase tracking-[0.3em] whitespace-nowrap bg-black/80 px-4 py-2 border border-white/10 backdrop-blur-md">
+          <div className="absolute top-24 flex flex-col items-center opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-y-2">
+            <span className="text-[10px] font-code text-white uppercase tracking-[0.3em] whitespace-nowrap bg-black/90 px-6 py-3 border border-primary/40 backdrop-blur-md shadow-[0_0_20px_hsla(var(--primary),0.2)]">
               {planet.name}
             </span>
-            <div className="w-[1px] h-6 bg-gradient-to-b from-white/40 to-transparent" />
+            <div className="w-[1px] h-8 bg-gradient-to-b from-primary to-transparent" />
           </div>
 
           {/* Coordinates Pointer */}
-          <div className="absolute -top-6 text-[8px] font-code text-primary/30 opacity-40 group-hover:opacity-100 transition-opacity">
+          <div className="absolute -top-8 text-[8px] font-code text-primary/30 opacity-40 group-hover:opacity-100 transition-opacity">
             X:{Math.round(x)} Y:{Math.round(y)}
           </div>
         </motion.div>
