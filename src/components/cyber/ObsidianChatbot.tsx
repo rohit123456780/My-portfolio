@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -19,7 +18,7 @@ export default function ObsidianChatbot() {
   const [input, setInput] = useState('');
   const [isOwner, setIsOwner] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'obsidian', text: 'SYSTEM_ONLINE: Obsidian Intelligence Subsystem active. Awaiting mission parameters.' }
+    { role: 'obsidian', text: 'SYSTEM_ONLINE: Obsidian Intelligence Core active. I am your mature GenAI assistant. Type "obsidian --owner 1507" to elevate permissions.' }
   ]);
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -37,6 +36,7 @@ export default function ObsidianChatbot() {
     const userMsg = input.trim();
     setInput('');
 
+    // Handle authentication command
     if (userMsg.toLowerCase().startsWith('obsidian --owner')) {
       const parts = userMsg.split(' ');
       const pass = parts[2];
@@ -68,6 +68,7 @@ export default function ObsidianChatbot() {
     setIsTyping(true);
 
     try {
+      // Structure history for the server action
       const history = messages
         .filter(m => m.role !== 'system')
         .map(m => ({
@@ -82,14 +83,14 @@ export default function ObsidianChatbot() {
       if (response.wasUpdated) {
         setMessages(prev => [...prev, { 
           role: 'system', 
-          text: 'PORTFOLIO_UPDATED: Changes synchronized to Firestore.', 
+          text: 'PORTFOLIO_UPDATED: Changes synchronized to Firestore matrix.', 
           type: 'update' 
         }]);
       }
     } catch (error: any) {
       setMessages(prev => [...prev, { 
         role: 'obsidian', 
-        text: `ERR: Neural link interrupted. [SYSTEM_RELAY: ${error.message}]` 
+        text: `ERR: Neural link interrupted. [SYSTEM_RELAY: ${error.message || 'COMMUNICATION_ERROR'}]` 
       }]);
     } finally {
       setIsTyping(false);
@@ -181,7 +182,7 @@ export default function ObsidianChatbot() {
             <div className="p-2 px-4 bg-black flex justify-between items-center text-[7px] text-[#00ff9f]/30 uppercase tracking-[0.2em] font-code">
               <span className="flex items-center gap-1">
                 <ShieldCheck className={`w-2 h-2 ${isOwner ? 'text-[#00ff9f]' : 'text-white/10'}`} /> 
-                {isOwner ? 'Clearance: Owner' : 'Clearance: Level_01'}
+                {isOwner ? 'Clearance: Owner' : 'Clearance: Visitor'}
               </span>
               <span>Obsidian_Link: Stable</span>
             </div>
