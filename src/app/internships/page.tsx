@@ -52,54 +52,50 @@ export default function InternshipsPage() {
   return (
     <main className="min-h-screen bg-[#02040a] p-6 pt-24 cyber-grid">
       <div className="max-w-5xl mx-auto space-y-16">
-        <Link href="/" className="inline-flex items-center gap-2 text-primary hover:text-accent transition-colors font-code text-xs group">
-          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> RETURN_TO_BASE
+        <Link href="/" className="inline-flex items-center gap-2 text-[#00ff9f] hover:text-[#00cfff] transition-colors font-code text-xs group">
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> BACK_TO_COMMAND
         </Link>
         
         <div className="space-y-4">
-          <div className="flex items-center gap-3 text-accent">
+          <div className="flex items-center gap-3 text-[#00cfff]">
             <Activity className="w-4 h-4 animate-pulse" />
             <span className="text-[10px] font-code uppercase tracking-widest">Infiltrating Deployment History...</span>
           </div>
-          <h1 className="text-5xl font-headline text-glow uppercase">Growth Sector</h1>
-          <p className="text-xs font-code text-primary/40 uppercase tracking-widest">{internships.length}+ Professional Deployments Identified.</p>
+          <h1 className="text-5xl font-headline text-glow uppercase text-[#00ff9f]">Internship Atlas</h1>
+          <p className="text-xs font-code text-[#00ff9f]/40 uppercase tracking-widest">{internships.length}+ Professional Deployments Identified.</p>
           <div className="h-px w-full bg-gradient-to-r from-blue-500/50 to-transparent" />
         </div>
 
         {loading && (
           <div className="text-center py-20">
-            <Activity className="w-8 h-8 text-primary animate-spin mx-auto mb-4" />
+            <Activity className="w-8 h-8 text-[#00ff9f] animate-spin mx-auto mb-4" />
           </div>
         )}
 
-        <div className="grid grid-cols-1 gap-6 pb-20">
+        <div className="grid grid-cols-1 gap-4 pb-20">
           {internships.map((intern: any, idx: number) => (
             <motion.div 
               key={idx}
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="cyber-glass p-8 border border-primary/10 hover:border-accent transition-all group flex flex-col md:flex-row md:items-center justify-between gap-6"
+              className="bg-black/60 backdrop-blur-md p-6 border border-[#00ff9f]/10 hover:border-[#00ff9f] transition-all group flex flex-col md:flex-row md:items-center justify-between gap-6"
             >
               <div className="flex items-center gap-6">
-                <div className="p-3 bg-primary/10 border border-primary/20 group-hover:border-accent transition-colors">
-                  <Briefcase className="w-6 h-6 text-primary group-hover:text-accent" />
+                <div className="p-3 bg-[#00ff9f]/5 border border-[#00ff9f]/10 group-hover:border-[#00ff9f] transition-colors">
+                  <Briefcase className="w-6 h-6 text-[#00ff9f]" />
                 </div>
                 <div className="space-y-1">
-                  <h3 className="text-xl font-headline uppercase group-hover:text-glow tracking-tight">{intern.org}</h3>
-                  <div className="flex flex-wrap gap-4 text-[9px] font-code text-primary/40 uppercase">
-                    <span className="flex items-center gap-1 text-accent"><Zap className="w-3 h-3" /> {intern.domain || 'Cybersecurity'}</span>
+                  <h3 className="text-xl font-headline uppercase group-hover:text-glow tracking-tight text-[#00ff9f]">{intern.org}</h3>
+                  <div className="flex flex-wrap gap-4 text-[9px] font-code text-[#00ff9f]/40 uppercase">
+                    <span className="flex items-center gap-1 text-[#00cfff]"><Zap className="w-3 h-3" /> {intern.domain || 'Cybersecurity'}</span>
                     <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {intern.period}</span>
                   </div>
                 </div>
               </div>
 
               <div className="flex flex-col md:items-end gap-2 shrink-0">
-                <span className="px-3 py-1 border border-primary/30 text-[9px] font-code text-primary uppercase bg-primary/5">{intern.role}</span>
-                <div className="flex items-center gap-2">
-                   <Terminal className="w-3 h-3 text-primary/20" />
-                   <span className="text-[7px] font-code text-primary/20 uppercase">Auth Verified Node</span>
-                </div>
+                <span className="px-3 py-1 border border-[#00ff9f]/20 text-[9px] font-code text-[#00ff9f] uppercase bg-[#00ff9f]/5">{intern.role}</span>
               </div>
             </motion.div>
           ))}

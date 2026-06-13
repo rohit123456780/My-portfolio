@@ -5,10 +5,9 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useUIStore } from '@/lib/store';
-import { Shield, Activity, Zap, Lock, Terminal, ChevronRight } from 'lucide-react';
+import { Shield, Activity, Zap, Lock, Terminal, ChevronRight, Cpu, Globe } from 'lucide-react';
 import Link from 'next/link';
 
-// Dynamically import 3D components to avoid hydration and constructor issues
 const Hero3D = dynamic(() => import('@/components/cyber/Hero3D'), { ssr: false });
 const BootSequence = dynamic(() => import('@/components/cyber/BootSequence'), { ssr: false });
 
@@ -84,6 +83,12 @@ export default function Home() {
                   </button>
                 </Link>
               </div>
+
+              <div className="flex gap-4 pt-4">
+                <QuickLink href="/projects" icon={Cpu} label="PROJECTS" />
+                <QuickLink href="/internships" icon={Globe} label="INTERNSHIPS" />
+                <QuickLink href="/certifications" icon={Shield} label="CERTS" />
+              </div>
             </div>
 
             <div className="hidden lg:block w-1/3">
@@ -101,14 +106,9 @@ export default function Home() {
                   <div className="space-y-1">
                     <p className="text-[#00cfff]">> DECRYPTING_BIOMETRICS...</p>
                     <p className="pl-4">SUBJECT: ROHIT ROY</p>
-                    <p className="pl-4">CLEARANCE: LEVEL_01</p>
+                    <p className="pl-4">CERTIFICATIONS: 97+</p>
+                    <p className="pl-4">INTERNSHIPS: 27+</p>
                     <p className="pl-4">LOC: WB_INDIA</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-[#00cfff]">> SCANNING_SPECIALIZATIONS...</p>
-                    <p className="pl-4">OT/ICS_SECURITY: 94%</p>
-                    <p className="pl-4">SOC_OPERATIONS: 89%</p>
-                    <p className="pl-4">QUANTUM_TECH: 72%</p>
                   </div>
                 </div>
               </div>
@@ -134,7 +134,17 @@ function StatusCard({ icon: Icon, label, value }: { icon: any, label: string, va
         <span className="text-[9px] font-code text-[#00ff9f]/40 uppercase tracking-widest font-bold">{label}</span>
       </div>
       <div className="text-sm font-headline tracking-widest text-[#00ff9f] group-hover:text-[#00cfff] transition-all uppercase">{value}</div>
-      <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-[#00ff9f]/20" />
     </div>
+  );
+}
+
+function QuickLink({ href, icon: Icon, label }: { href: string, icon: any, label: string }) {
+  return (
+    <Link href={href} className="flex flex-col items-center gap-1 group">
+      <div className="w-10 h-10 border border-[#00ff9f]/20 flex items-center justify-center group-hover:border-[#00ff9f] group-hover:bg-[#00ff9f]/10 transition-all">
+        <Icon className="w-5 h-5 text-[#00ff9f]/60 group-hover:text-[#00ff9f]" />
+      </div>
+      <span className="text-[8px] font-code text-[#00ff9f]/40 uppercase tracking-tighter">{label}</span>
+    </Link>
   );
 }
