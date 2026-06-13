@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useMemo } from 'react';
@@ -116,7 +117,7 @@ export default function CertificationsPage() {
             <span className="text-[10px] font-code uppercase tracking-widest">Scanning Credential Nebula...</span>
           </div>
           <h1 className="text-5xl font-headline text-glow uppercase">Credential Nebula</h1>
-          <p className="text-xs font-code text-primary/40 uppercase tracking-widest">97+ Professional Nodes Verified in Neural Matrix.</p>
+          <p className="text-xs font-code text-primary/40 uppercase tracking-widest">{certs.length}+ Professional Nodes Verified in Neural Matrix.</p>
           <div className="h-px w-full bg-gradient-to-r from-primary/50 to-transparent" />
         </div>
 

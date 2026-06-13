@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useMemo } from 'react';
@@ -48,7 +49,7 @@ export default function ProjectsPage() {
             <span className="text-[10px] font-code uppercase tracking-widest">Accessing Mission Matrix...</span>
           </div>
           <h1 className="text-5xl font-headline text-glow uppercase">Mission Matrix</h1>
-          <p className="text-xs font-code text-primary/40 uppercase tracking-widest">14 High-impact technical mission case studies verified.</p>
+          <p className="text-xs font-code text-primary/40 uppercase tracking-widest">{projects.length} High-impact technical mission case studies verified.</p>
           <div className="h-px w-full bg-gradient-to-r from-accent/50 to-transparent" />
         </div>
 

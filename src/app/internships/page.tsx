@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useMemo } from 'react';
@@ -61,7 +62,7 @@ export default function InternshipsPage() {
             <span className="text-[10px] font-code uppercase tracking-widest">Infiltrating Deployment History...</span>
           </div>
           <h1 className="text-5xl font-headline text-glow uppercase">Growth Sector</h1>
-          <p className="text-xs font-code text-primary/40 uppercase tracking-widest">27+ Professional Deployments Identified in Neural Archives.</p>
+          <p className="text-xs font-code text-primary/40 uppercase tracking-widest">{internships.length}+ Professional Deployments Identified in Neural Archives.</p>
           <div className="h-px w-full bg-gradient-to-r from-blue-500/50 to-transparent" />
         </div>
 
