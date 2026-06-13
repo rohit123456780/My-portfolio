@@ -1,8 +1,7 @@
-
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, ArrowLeft, Terminal, Cpu, Globe, Zap, Lock, User, Shield, Linkedin, Mail, Phone, Unlock } from 'lucide-react';
 import Link from 'next/link';
 import { collection, query, orderBy } from 'firebase/firestore';
@@ -90,7 +89,6 @@ export default function IdentityPage() {
           {/* Hero Header */}
           <div className="flex flex-col md:flex-row gap-8 items-center border-b border-primary/20 pb-12">
             <div className="w-44 h-56 border-2 border-primary/40 bg-primary/5 relative overflow-hidden group flex items-center justify-center">
-              {/* Tactical Default Avatar (No Photos) */}
               <div className="w-full h-full flex flex-col items-center justify-center relative overflow-hidden">
                 <Terminal className="w-20 h-20 text-primary opacity-10 absolute" />
                 <Shield className="w-24 h-24 text-primary opacity-5 absolute animate-pulse" />
@@ -145,47 +143,67 @@ export default function IdentityPage() {
                 <MapPin className="w-3 h-3" /> Deployment Intel
               </h3>
               
-              {!isVaultUnlocked ? (
-                <div className="grid grid-cols-1 gap-3">
-                  <div className="flex items-center gap-3 p-3 border border-primary/20 bg-primary/5">
-                     <MapPin className="w-4 h-4 text-primary" />
-                     <div>
-                       <p className="text-[8px] font-code text-primary/40 uppercase">Base Location</p>
-                       <p className="text-xs font-code text-primary/80">West Bengal, India</p>
-                     </div>
-                  </div>
-                  <Link href="/vault" className="block p-3 border border-primary/20 bg-primary/5 hover:border-accent group transition-all">
-                    <div className="flex items-center gap-3">
-                      <Lock className="w-4 h-4 text-primary group-hover:text-accent" />
-                      <div>
-                        <p className="text-[8px] font-code text-primary/40 uppercase">Secure Contact Intel</p>
-                        <p className="text-[10px] font-code text-accent uppercase tracking-widest">SOLVE_CTF_FOR_ACCESS</p>
+              <AnimatePresence mode="wait">
+                {!isVaultUnlocked ? (
+                  <motion.div 
+                    key="locked"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="grid grid-cols-1 gap-3"
+                  >
+                    <div className="flex items-center gap-3 p-3 border border-primary/20 bg-primary/5">
+                       <MapPin className="w-4 h-4 text-primary" />
+                       <div>
+                         <p className="text-[8px] font-code text-primary/40 uppercase">Base Location</p>
+                         <p className="text-xs font-code text-primary/80">West Bengal, India</p>
+                       </div>
+                    </div>
+                    <Link href="/vault" className="block p-3 border border-primary/20 bg-primary/5 hover:border-accent group transition-all relative overflow-hidden">
+                      <div className="absolute inset-0 bg-primary/5 animate-pulse" />
+                      <div className="flex items-center gap-3 relative z-10">
+                        <Lock className="w-4 h-4 text-primary group-hover:text-glow" />
+                        <div>
+                          <p className="text-[8px] font-code text-primary/40 uppercase">Secure Contact Intel</p>
+                          <p className="text-[10px] font-code text-accent uppercase tracking-widest">SOLVE_CTF_FOR_ACCESS</p>
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                ) : (
+                  <motion.div 
+                    key="unlocked"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="grid grid-cols-1 gap-3"
+                  >
+                    <div className="flex items-center gap-3 p-3 border border-accent/20 bg-accent/5">
+                      <Unlock className="w-4 h-4 text-accent" />
+                      <span className="text-[10px] font-code text-accent uppercase tracking-widest">SECURE_INTEL_DECRYPTED</span>
+                    </div>
+                    <div className="space-y-2 p-3 border border-primary/10 bg-black/40">
+                      <div className="flex items-center gap-3 group">
+                        <div className="p-1.5 border border-primary/20 bg-primary/5 group-hover:bg-accent/10 transition-colors">
+                          <Linkedin className="w-3 h-3 text-accent" />
+                        </div>
+                        <span className="text-xs font-code text-primary/80">linkedin.com/in/rohit-roy-rrr</span>
+                      </div>
+                      <div className="flex items-center gap-3 group">
+                        <div className="p-1.5 border border-primary/20 bg-primary/5 group-hover:bg-accent/10 transition-colors">
+                          <Mail className="w-3 h-3 text-accent" />
+                        </div>
+                        <span className="text-xs font-code text-primary/80">dashingraj447@gmail.com</span>
+                      </div>
+                      <div className="flex items-center gap-3 group">
+                        <div className="p-1.5 border border-primary/20 bg-primary/5 group-hover:bg-accent/10 transition-colors">
+                          <Phone className="w-3 h-3 text-accent" />
+                        </div>
+                        <span className="text-xs font-code text-primary/80">+91-6294067930</span>
                       </div>
                     </div>
-                  </Link>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 gap-3">
-                  <div className="flex items-center gap-3 p-3 border border-accent/20 bg-accent/5">
-                    <Unlock className="w-4 h-4 text-accent" />
-                    <span className="text-[10px] font-code text-accent uppercase tracking-widest">SECURE_INTEL_DECRYPTED</span>
-                  </div>
-                  <div className="space-y-2 p-2 border border-primary/10 bg-black/40">
-                    <div className="flex items-center gap-3 p-2">
-                      <Linkedin className="w-4 h-4 text-accent" />
-                      <span className="text-xs font-code text-primary/80">linkedin.com/in/rohit-roy-rrr</span>
-                    </div>
-                    <div className="flex items-center gap-3 p-2">
-                      <Mail className="w-4 h-4 text-accent" />
-                      <span className="text-xs font-code text-primary/80">dashingraj447@gmail.com</span>
-                    </div>
-                    <div className="flex items-center gap-3 p-2">
-                      <Phone className="w-4 h-4 text-accent" />
-                      <span className="text-xs font-code text-primary/80">+91-6294067930</span>
-                    </div>
-                  </div>
-                </div>
-              )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
 

@@ -1,9 +1,8 @@
-
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Terminal as TerminalIcon, ShieldAlert, Lock, Unlock, ArrowLeft, Mail, Linkedin, Phone } from 'lucide-react';
+import { Terminal as TerminalIcon, ShieldAlert, Lock, Unlock, ArrowLeft, Mail, Linkedin, Phone, Activity } from 'lucide-react';
 import Link from 'next/link';
 import { useUIStore } from '@/lib/store';
 
@@ -83,15 +82,20 @@ export default function VaultPage() {
         <div className="flex justify-between items-end border-b border-primary/20 pb-4">
           <div className="space-y-1">
             <h1 className="text-4xl font-headline flex items-center gap-3">
-              <Lock className={`w-8 h-8 ${isVaultUnlocked ? 'text-accent' : 'text-primary'}`} />
+              {isVaultUnlocked ? (
+                <Unlock className="w-8 h-8 text-accent" />
+              ) : (
+                <Lock className="w-8 h-8 text-primary" />
+              )}
               {isVaultUnlocked ? 'VAULT_UNLOCKED' : 'BLACK_OPS_VAULT'}
             </h1>
             <p className="text-[10px] font-code text-primary/40 uppercase tracking-widest">
-              Capture The Flag: Bruteforce authorization to access secure intel.
+              {isVaultUnlocked ? 'MISSION_SUCCESS: ALL_INTEL_DECRYPTED' : 'Capture The Flag: Bruteforce authorization to access secure intel.'}
             </p>
           </div>
-          <Link href="/" className="text-[10px] font-code text-primary/60 hover:text-primary flex items-center gap-2">
-            <ArrowLeft className="w-3 h-3" /> ABORT_MISSION
+          <Link href="/" className="text-[10px] font-code text-primary/60 hover:text-primary flex items-center gap-2 group transition-colors">
+            <ArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" /> 
+            {isVaultUnlocked ? 'RETURN_TO_BASE' : 'ABORT_MISSION'}
           </Link>
         </div>
 
@@ -132,8 +136,13 @@ export default function VaultPage() {
                  </form>
                )}
                {isVaultUnlocked && (
-                 <div className="text-accent font-bold mt-4 border-t border-accent/20 pt-2 animate-pulse">
-                   MISSION_COMPLETE: SECURE_INTEL_DECRYPTED. ALL_SYSTEMS_GO.
+                 <div className="mt-4 p-4 border border-accent/20 bg-accent/5 space-y-2">
+                   <div className="text-accent font-bold tracking-widest flex items-center gap-2">
+                     <Activity className="w-4 h-4 animate-pulse" /> DECRYPTION_COMPLETE
+                   </div>
+                   <p className="text-[10px] font-code text-accent/60 uppercase">
+                     ALL SECURE CONTACT NODES HAVE BEEN BROADCAST TO THE IDENTITY CORE.
+                   </p>
                  </div>
                )}
              </div>
@@ -169,6 +178,9 @@ export default function VaultPage() {
                     <IntelRow icon={Mail} label="SECURE_MAIL" value="dashingraj447@gmail.com" />
                     <IntelRow icon={Phone} label="COMM_LINK" value="+91-6294067930" />
                   </div>
+                  <Link href="/identity" className="block w-full py-3 bg-accent text-accent-foreground font-headline uppercase tracking-widest text-[10px] hover:bg-white transition-colors">
+                    View Identity Core
+                  </Link>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -182,8 +194,8 @@ export default function VaultPage() {
 function IntelRow({ icon: Icon, label, value }: { icon: any, label: string, value: string }) {
   return (
     <div className="flex flex-col items-center gap-1 group">
-      <div className="p-2 border border-accent/20 bg-accent/5 rounded-full">
-        <Icon className="w-4 h-4 text-accent" />
+      <div className="p-2 border border-accent/20 bg-accent/5 rounded-full group-hover:bg-accent group-hover:text-accent-foreground transition-all">
+        <Icon className="w-4 h-4" />
       </div>
       <p className="text-[8px] font-code text-accent/40 uppercase tracking-widest">{label}</p>
       <p className="text-xs font-code text-primary break-all">{value}</p>

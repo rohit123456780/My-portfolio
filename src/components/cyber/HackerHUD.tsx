@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Activity, Shield, Cpu, Globe, Trophy, User, Terminal, Lock, FileText } from 'lucide-react';
+import { Activity, Shield, Cpu, Globe, Trophy, User, Terminal, Lock, FileText, Unlock } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { useUIStore } from '@/lib/store';
 
 const navItems = [
   { label: 'IDENTITY', path: '/identity', id: '01', icon: User },
@@ -28,6 +29,7 @@ export default function HackerHUD() {
   const [currentAlert, setCurrentAlert] = useState(0);
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
+  const { isVaultUnlocked } = useUIStore();
 
   useEffect(() => {
     setMounted(true);
@@ -59,10 +61,18 @@ export default function HackerHUD() {
             </motion.div>
           </AnimatePresence>
         </div>
-        <a href="/vault" className="px-6 text-primary/60 flex items-center gap-2 tracking-widest border-l border-primary/10 hover:text-primary transition-colors">
-          <Lock className="w-3 h-3" />
-          SECURE_VAULT
-        </a>
+        
+        {!isVaultUnlocked ? (
+          <a href="/vault" className="px-6 text-primary/60 flex items-center gap-2 tracking-widest border-l border-primary/10 hover:text-primary transition-colors group">
+            <Lock className="w-3 h-3 group-hover:animate-pulse" />
+            SECURE_VAULT
+          </a>
+        ) : (
+          <div className="px-6 text-accent flex items-center gap-2 tracking-widest border-l border-primary/10 bg-accent/5">
+            <Unlock className="w-3 h-3" />
+            VAULT_DECRYPTED
+          </div>
+        )}
       </div>
 
       <nav className="fixed top-8 left-0 right-0 z-[90] p-4 flex justify-between items-center pointer-events-none">
