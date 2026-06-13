@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { User, MapPin, Shield, Lock, ArrowLeft, Terminal, Activity, GraduationCap } from 'lucide-react';
+import { User, MapPin, Shield, Lock, ArrowLeft, Terminal, UserCheck } from 'lucide-react';
 import Link from 'next/link';
 import { collection, query, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
@@ -28,12 +28,6 @@ const FALLBACK_EDU = [
     school: "Brainware University, Kolkata",
     period: "2023 - 2027",
     score: "8.86 SGPA"
-  },
-  {
-    degree: "Diploma in Computer Science & Technology",
-    school: "SVS College",
-    period: "2019 - 2022",
-    score: "9.1 CGPA"
   }
 ];
 
@@ -103,22 +97,9 @@ export default function IdentityPage() {
                   <div key={edu.id || idx} className="space-y-2">
                     <h4 className="text-xl font-headline text-glow uppercase leading-tight">{edu.degree}</h4>
                     <p className="text-xs font-code text-primary/60 uppercase">{edu.school} | {edu.period}</p>
-                    {edu.score && (
-                      <div className="mt-4 space-y-2">
-                        <div className="flex justify-between text-[10px] font-code text-primary/40 uppercase">
-                          <span>Performance Matrix</span>
-                          <span>{edu.score}</span>
-                        </div>
-                        <div className="h-1 w-full bg-primary/10 overflow-hidden">
-                          <motion.div 
-                            initial={{ width: 0 }} 
-                            whileInView={{ width: "88%" }} 
-                            transition={{ duration: 1.5 }} 
-                            className="h-full bg-primary shadow-[0_0_10px_hsla(var(--primary),0.5)]" 
-                          />
-                        </div>
-                      </div>
-                    )}
+                    <div className="mt-2 text-[10px] font-code text-primary/40 uppercase">
+                      Final Node Performance: {edu.score}
+                    </div>
                   </div>
                 ))}
               </div>
