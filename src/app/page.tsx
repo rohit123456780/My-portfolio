@@ -106,7 +106,7 @@ export default function Home() {
                   <div className="space-y-1">
                     <p className="text-[#00cfff]">> DECRYPTING_BIOMETRICS...</p>
                     <p className="pl-4">SUBJECT: ROHIT ROY</p>
-                    <p className="pl-4">CERTIFICATIONS: 97+</p>
+                    <p className="pl-4">CERTIFICATIONS: 111+</p>
                     <p className="pl-4">INTERNSHIPS: 27+</p>
                     <p className="pl-4">LOC: WB_INDIA</p>
                   </div>
