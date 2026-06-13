@@ -46,8 +46,7 @@ export default function CyberCursor() {
             }}
             className="w-8 h-8 flex items-center justify-center"
           >
-            <div className="absolute w-full h-[1px] bg-primary/30" />
-            <div className="absolute h-full w-[1px] bg-primary/30" />
+            {/* Tactical Corners Only - Crosshair removed per request */}
             <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary" />
             <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary" />
             <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-primary" />
