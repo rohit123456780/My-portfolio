@@ -34,7 +34,7 @@
 
 @layer base {
   * {
-    @apply border-white/10 cursor-none selection:bg-primary/30 selection:text-white transition-all duration-300 ease-in-out;
+    @apply border-white/10 cursor-none selection:bg-primary/30 selection:text-white;
   }
   body {
     @apply bg-background text-foreground font-body overflow-x-hidden antialiased;

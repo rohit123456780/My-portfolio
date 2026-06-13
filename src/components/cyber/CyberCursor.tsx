@@ -1,70 +1,75 @@
 
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useRef } from 'react';
 
 export default function CyberCursor() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
-  const [trail, setTrail] = useState<{ x: number, y: number, id: number }[]>([]);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const trailRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    const moveCursor = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-      setTrail(prev => [{ x: e.clientX, y: e.clientY, id: Math.random() }, ...prev].slice(0, 10));
-    };
+    const cursor = cursorRef.current;
+    if (!cursor) return;
 
-    const handleOver = (e: MouseEvent) => {
+    const trailCount = 8;
+    const trailPositions = Array(trailCount).fill({ x: 0, y: 0 });
+
+    const moveCursor = (e: MouseEvent) => {
+      const { clientX: x, clientY: y } = e;
+      
+      // Update main cursor instantly using transform for performance
+      cursor.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+
+      // Update trail positions
+      trailPositions.unshift({ x, y });
+      trailPositions.pop();
+
+      // Update trail elements
+      trailRefs.current.forEach((ref, i) => {
+        if (ref) {
+          const pos = trailPositions[i];
+          ref.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
+          ref.style.opacity = `${(1 - i / trailCount) * 0.4}`;
+          ref.style.scale = `${1 - i / trailCount}`;
+        }
+      });
+
+      // Hover check
       const target = e.target as HTMLElement;
       if (target.closest('button, a, input, [role="button"]')) {
-        setIsHovering(true);
+        cursor.classList.add('scale-150', 'rotate-45');
       } else {
-        setIsHovering(false);
+        cursor.classList.remove('scale-150', 'rotate-45');
       }
     };
 
     window.addEventListener('mousemove', moveCursor);
-    window.addEventListener('mouseover', handleOver);
-    return () => {
-      window.removeEventListener('mousemove', moveCursor);
-      window.removeEventListener('mouseover', handleOver);
-    };
+    return () => window.removeEventListener('mousemove', moveCursor);
   }, []);
 
   return (
     <>
+      {/* Optimized Main Cursor */}
       <div 
-        className="fixed top-0 left-0 pointer-events-none z-[9999] hidden md:block"
-        style={{ transform: `translate3d(${position.x}px, ${position.y}px, 0) translate(-50%, -50%)` }}
+        ref={cursorRef}
+        className="fixed top-0 left-0 pointer-events-none z-[9999] hidden md:block transition-transform duration-150 ease-out"
       >
-        <div className="relative">
-          <motion.div 
-            animate={{ 
-              scale: isHovering ? 1.4 : 1,
-              rotate: isHovering ? 45 : 0
-            }}
-            className="w-8 h-8 flex items-center justify-center"
-          >
-            {/* Tactical Corners Only - Crosshair removed per request */}
-            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary" />
-            <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary" />
-            <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-primary" />
-            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary" />
-            <div className="w-1 h-1 bg-accent rounded-full shadow-[0_0_10px_rgba(0,207,255,1)]" />
-          </motion.div>
+        <div className="relative w-8 h-8 flex items-center justify-center">
+          <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary" />
+          <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary" />
+          <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-primary" />
+          <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary" />
+          <div className="w-1 h-1 bg-accent rounded-full shadow-[0_0_10px_rgba(0,207,255,1)]" />
         </div>
       </div>
 
-      {trail.map((p, i) => (
+      {/* Neural Trail Nodes */}
+      {Array.from({ length: 8 }).map((_, i) => (
         <div
-          key={p.id}
+          key={i}
+          ref={el => { trailRefs.current[i] = el; }}
           className="fixed top-0 left-0 w-0.5 h-0.5 bg-accent/40 rounded-full pointer-events-none z-[9998] hidden md:block"
-          style={{ 
-            transform: `translate3d(${p.x}px, ${p.y}px, 0)`,
-            opacity: 1 - (i / 10),
-            scale: 1 - (i / 10)
-          }}
+          style={{ transition: 'none' }}
         />
       ))}
     </>
