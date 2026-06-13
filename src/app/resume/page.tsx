@@ -1,6 +1,7 @@
+
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FileText, Download, ArrowLeft, Shield, Activity, Lock, Terminal } from 'lucide-react';
 import Link from 'next/link';
@@ -10,7 +11,7 @@ export default function ResumePage() {
 
   const handleDownload = () => {
     setIsDownloading(true);
-    // Simulate fetch/auth process before download
+    // Simulate tactical decryption before download
     setTimeout(() => {
       const link = document.createElement('a');
       link.href = '/Rohit_Roy_Resume.pdf';
@@ -31,7 +32,6 @@ export default function ResumePage() {
         </Link>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {/* Action Panel */}
           <div className="lg:col-span-1 space-y-8">
             <div className="space-y-4">
               <div className="flex items-center gap-3 text-accent">
@@ -75,21 +75,6 @@ export default function ResumePage() {
                   Format: PDF (A4) | Encryption: AES-256-RSC
                 </div>
               </div>
-
-              <div className="pt-4 space-y-2">
-                <div className="flex justify-between text-[9px] font-code text-primary/60 uppercase">
-                  <span>File Integrity</span>
-                  <span className="text-accent">VERIFIED</span>
-                </div>
-                <div className="h-1 w-full bg-primary/10 overflow-hidden">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    animate={{ width: "100%" }}
-                    transition={{ duration: 2 }}
-                    className="h-full bg-primary"
-                  />
-                </div>
-              </div>
             </div>
 
             <div className="p-4 border border-primary/10 bg-primary/5 text-[9px] font-code text-primary/40 uppercase space-y-2">
@@ -98,19 +83,13 @@ export default function ResumePage() {
             </div>
           </div>
 
-          {/* Preview Panel */}
           <div className="lg:col-span-2 h-[800px] cyber-glass border border-primary/20 relative group">
             <div className="absolute inset-0 bg-primary/5 pointer-events-none group-hover:bg-transparent transition-colors" />
             
-            {/* Tactics UI Overlay */}
             <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-10 pointer-events-none">
               <div className="bg-black/80 px-3 py-1 border border-primary/20 text-[8px] font-code text-primary uppercase tracking-widest flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                 Live_Preview_Stream
-              </div>
-              <div className="flex gap-1">
-                <div className="w-2 h-2 border border-primary/20 bg-primary/10" />
-                <div className="w-2 h-2 border border-primary/20 bg-primary/10" />
               </div>
             </div>
 
@@ -120,7 +99,6 @@ export default function ResumePage() {
               title="Resume Preview"
             />
             
-            {/* Scanning line for visual effect */}
             <div className="absolute top-0 left-0 w-full h-[1px] bg-primary/20 animate-[scanline_4s_linear_infinite] pointer-events-none" />
           </div>
         </div>

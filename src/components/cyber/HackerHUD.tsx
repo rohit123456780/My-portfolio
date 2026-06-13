@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -5,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Activity, Shield, Cpu, Globe, Trophy, User, Terminal, Lock, FileText, Unlock } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useUIStore } from '@/lib/store';
+import Link from 'next/link';
 
 const navItems = [
   { label: 'IDENTITY', path: '/identity', id: '01', icon: User },
@@ -62,21 +64,16 @@ export default function HackerHUD() {
           </AnimatePresence>
         </div>
         
-        {!isVaultUnlocked ? (
-          <a href="/vault" className="px-6 text-primary/60 flex items-center gap-2 tracking-widest border-l border-primary/10 hover:text-primary transition-colors group">
+        {!isVaultUnlocked && (
+          <Link href="/vault" className="px-6 text-primary/60 flex items-center gap-2 tracking-widest border-l border-primary/10 hover:text-primary transition-colors group h-full">
             <Lock className="w-3 h-3 group-hover:animate-pulse" />
             SECURE_VAULT
-          </a>
-        ) : (
-          <div className="px-6 text-accent flex items-center gap-2 tracking-widest border-l border-primary/10 bg-accent/5">
-            <Unlock className="w-3 h-3" />
-            VAULT_DECRYPTED
-          </div>
+          </Link>
         )}
       </div>
 
       <nav className="fixed top-8 left-0 right-0 z-[90] p-4 flex justify-between items-center pointer-events-none">
-        <a href="/" className="pointer-events-auto">
+        <Link href="/" className="pointer-events-auto">
           <div className="flex items-center gap-4 group">
             <div className="w-10 h-10 border border-primary/40 bg-black/90 flex items-center justify-center relative">
               <Terminal className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
@@ -88,11 +85,11 @@ export default function HackerHUD() {
               <div className="text-[7px] font-code text-primary/40 tracking-[0.2em] uppercase">OT_SECURITY_ENGINEER</div>
             </div>
           </div>
-        </a>
+        </Link>
 
         <div className="hidden lg:flex items-center gap-2 pointer-events-auto">
           {navItems.map((item) => (
-            <a key={item.id} href={item.path}>
+            <Link key={item.id} href={item.path}>
               <div className={`px-4 py-1.5 border transition-all flex items-center gap-2 group relative overflow-hidden ${
                 pathname === item.path 
                   ? 'border-primary bg-primary/10 text-primary' 
@@ -101,7 +98,7 @@ export default function HackerHUD() {
                 <span className="text-[8px] font-code opacity-40">[{item.id}]</span>
                 <span className="text-[9px] font-headline tracking-[0.2em] uppercase">{item.label}</span>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </nav>

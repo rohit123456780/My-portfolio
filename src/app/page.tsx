@@ -1,10 +1,11 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useUIStore } from '@/lib/store';
-import { Shield, Activity, Zap, Lock, ChevronRight, Cpu, Globe } from 'lucide-react';
+import { Shield, Activity, Zap, Lock, ChevronRight, Cpu, Globe, FileText } from 'lucide-react';
 import Link from 'next/link';
 
 const Hero3D = dynamic(() => import('@/components/cyber/Hero3D'), { ssr: false });
@@ -42,7 +43,6 @@ export default function Home() {
         >
           <Hero3D />
 
-          {/* Tactical HUD Overlay - axis lines removed for cleaner UI */}
           <div className="relative z-10 w-full max-w-7xl flex flex-col lg:flex-row items-center justify-between gap-12">
             <div className="w-full lg:w-1/2 space-y-12">
               <div className="space-y-6">
@@ -77,9 +77,9 @@ export default function Home() {
                     IDENTITY CORE <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </Link>
-                <Link href="/experience">
-                  <button className="px-10 py-4 border border-primary/40 text-primary font-headline uppercase tracking-widest hover:bg-primary/10 transition-all">
-                    MISSION LOGS
+                <Link href="/resume">
+                  <button className="px-10 py-4 border border-primary/40 text-primary font-headline uppercase tracking-widest hover:bg-primary/10 transition-all flex items-center gap-3 group">
+                    <FileText className="w-4 h-4" /> RESUME SECTOR
                   </button>
                 </Link>
               </div>
