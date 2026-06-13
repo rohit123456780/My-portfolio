@@ -11,10 +11,10 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 
 const FALLBACK_PROJECTS = [
   { 
-    title: "SquaredUp Dashboard Project", 
+    title: "SquaredUp MSS Dashboard", 
     org: "Radian Generation", 
     period: "Feb 2026 – Present", 
-    details: "Creating and validating site-level security and operations dashboards for real-time visibility into Zendesk and Splunk data. Involves building dashboards, applying site mappings, and identifying telemetry gaps.", 
+    details: "Creating and validating site-level security and operations dashboards for real-time visibility into Zendesk and Splunk data. Involves building dashboards, applying filters/mappings, and identifying telemetry gaps.", 
     category: "Infrastructure", 
     tools: ["SquaredUp", "Splunk", "Zendesk", "Data Validation"] 
   },
@@ -22,7 +22,7 @@ const FALLBACK_PROJECTS = [
     title: "Baserow Database Transition", 
     org: "Radian Generation", 
     period: "Jan 2026 – Present", 
-    details: "Administrative cybersecurity migration in Baserow, transforming the Ops List into a clean, role-based Sites and Contacts system to support compliance tracking and security administration.", 
+    details: "Administrative cybersecurity migration in Baserow, transforming the Ops List into a clean, role-based Sites and Contacts system for compliance tracking and security administration.", 
     category: "Data Systems", 
     tools: ["Baserow", "Data Governance", "RBAC", "Normalization"] 
   },
@@ -38,7 +38,7 @@ const FALLBACK_PROJECTS = [
     title: "AI-Based XSS Detection System", 
     org: "Sturtle Security", 
     period: "May 2024 – Jul 2024", 
-    details: "Designed a machine learning-based system to detect cross-site scripting (XSS) vulnerabilities in web applications with high classification accuracy.", 
+    details: "Designed a machine learning-based system to detect cross-site scripting (XSS) vulnerabilities in web applications.", 
     category: "AI Security", 
     tools: ["Python", "Machine Learning", "TensorFlow", "Web Security"] 
   },
@@ -46,7 +46,7 @@ const FALLBACK_PROJECTS = [
     title: "Basic Keylogger", 
     org: "Personal Lab", 
     period: "Jun 2024 – Jul 2024", 
-    details: "Developed a basic keylogging application to record keystrokes for educational purposes in understanding endpoint security risks.", 
+    details: "Developed a basic keylogging application to record keystrokes for educational purposes in understanding security risks.", 
     category: "Offensive", 
     tools: ["Python", "Pynput", "Security Awareness"] 
   },
@@ -54,7 +54,7 @@ const FALLBACK_PROJECTS = [
     title: "Caesar Cipher Encryption Tool", 
     org: "HackingFlix", 
     period: "Jun 2024 – Jul 2024", 
-    details: "Created a Python tool for encrypting and decrypting text using the Caesar Cipher algorithm with customizable shift values for educational use.", 
+    details: "Created a Python tool for encrypting and decrypting text using the Caesar Cipher algorithm with customizable shift values.", 
     category: "Crypto", 
     tools: ["Python", "Cryptography", "Algorithms"] 
   },
@@ -62,7 +62,7 @@ const FALLBACK_PROJECTS = [
     title: "Image Encryption using Pixel Manipulation", 
     org: "ShadowFox", 
     period: "Jun 2024 – Jul 2024", 
-    details: "Developed an image encryption system using pixel-level XOR operations to secure visual data with reversible decryption capability.", 
+    details: "Developed an image encryption system using pixel-level XOR operations to secure visual data and allow reversible decryption.", 
     category: "Crypto", 
     tools: ["Python", "Pillow", "XOR Operations"] 
   },
@@ -70,7 +70,7 @@ const FALLBACK_PROJECTS = [
     title: "Network Packet Analyzer", 
     org: "Msinterface Technologies", 
     period: "Jun 2024 – Jul 2024", 
-    details: "Created a tool to analyze captured packets and display relevant network details such as source/destination IPs and protocol headers.", 
+    details: "Created a tool to analyze captured packets and display relevant network details such as source/destination IPs and protocols.", 
     category: "Networking", 
     tools: ["Scapy", "Python", "Wireshark"] 
   },
@@ -78,7 +78,7 @@ const FALLBACK_PROJECTS = [
     title: "Network Sniffer", 
     org: "Msinterface Technologies", 
     period: "Jun 2024 – Jul 2024", 
-    details: "Built a Python-based packet sniffer to capture real-time network traffic, extracting key data such as IP addresses, protocols, and payloads.", 
+    details: "Built a Python-based packet sniffer to capture and analyze real-time network traffic, extracting IP/protocol data.", 
     category: "Networking", 
     tools: ["Python", "Raw Sockets", "Packet Capture"] 
   },
@@ -86,7 +86,7 @@ const FALLBACK_PROJECTS = [
     title: "Password Complexity Checker", 
     org: "ShadowFox", 
     period: "Jun 2024 – Jul 2024", 
-    details: "Built a tool to evaluate password strength based on criteria such as length, character diversity, and entropy-based complexity analysis.", 
+    details: "Built a tool to evaluate password strength based on criteria such as length, character diversity, and entropy.", 
     category: "Security", 
     tools: ["Python", "Regex", "Entropy Analysis"] 
   },
@@ -94,7 +94,7 @@ const FALLBACK_PROJECTS = [
     title: "Secure Login Page Development", 
     org: "StartHere", 
     period: "Jul 2024 – Jul 2024", 
-    details: "Developed a secure authentication system implementing input validation, password hashing (bcrypt), and session management to protect against OWASP Top 10.", 
+    details: "Developed a secure authentication system implementing input validation, password hashing (bcrypt), and session management.", 
     category: "DevSecOps", 
     tools: ["Node.js", "bcrypt", "Session Management"] 
   },
@@ -102,7 +102,7 @@ const FALLBACK_PROJECTS = [
     title: "Web Vulnerability Scanner", 
     org: "Msinterface Technologies", 
     period: "Jun 2024 – Jul 2024", 
-    details: "Developed an automated scanner capable of crawling web applications for XSS, SQLi, and IDOR vulnerabilities using custom fuzzing techniques.", 
+    details: "Developed an automated scanner capable of crawling web applications for XSS, SQLi, and IDOR vulnerabilities using custom fuzzing.", 
     category: "Offensive", 
     tools: ["Python", "Fuzzing", "Requests", "Vuln Scanning"] 
   },
@@ -110,7 +110,7 @@ const FALLBACK_PROJECTS = [
     title: "Network Security Monitor", 
     org: "SecureSphere", 
     period: "Jun 2024 – Jun 2024", 
-    details: "Set up monitoring systems to detect suspicious traffic patterns and respond to potential intrusions using IDS/IPS methodologies.", 
+    details: "Set up monitoring systems to detect suspicious traffic and respond to potential intrusions using IDS/IPS methodologies.", 
     category: "Defensive", 
     tools: ["Snort", "IDS/IPS", "Monitoring"] 
   },
@@ -118,7 +118,7 @@ const FALLBACK_PROJECTS = [
     title: "Cybersecurity Operations & Threat Analysis Lab", 
     org: "TechnoTrench", 
     period: "Mar 2023 – Dec 2023", 
-    details: "Designed and implemented a comprehensive 10-month lab environment focusing on real-world security operations, threat detection, digital forensics, and automation scripts.", 
+    details: "Designed and implemented a comprehensive 10-month lab environment focusing on security operations, threat detection, and digital forensics.", 
     category: "Ops", 
     tools: ["Virtualization", "SIEM", "Python", "Digital Forensics", "PowerShell"] 
   }

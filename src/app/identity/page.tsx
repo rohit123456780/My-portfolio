@@ -24,6 +24,12 @@ const FALLBACK_SKILLS = [
 
 const FALLBACK_EDU = [
   {
+    degree: "B.Sc Honours in Advanced Networking and Cyber Security",
+    school: "Brainware University, Kolkata",
+    period: "2023 - 2027",
+    score: "8.86 SGPA"
+  },
+  {
     degree: "Diploma in Computer Science & Technology",
     school: "SVS College",
     period: "2019 - 2022",
@@ -92,10 +98,10 @@ export default function IdentityPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="cyber-glass p-8 space-y-6 border border-primary/10 hover:border-accent transition-all group">
               <h3 className="text-xs font-code text-primary/40 uppercase tracking-[0.5em] border-b border-primary/10 pb-2">Academic Node</h3>
-              <div className="space-y-6">
+              <div className="space-y-8">
                 {education.map((edu: any, idx: number) => (
-                  <div key={edu.id || idx}>
-                    <h4 className="text-xl font-headline text-glow uppercase">{edu.degree}</h4>
+                  <div key={edu.id || idx} className="space-y-2">
+                    <h4 className="text-xl font-headline text-glow uppercase leading-tight">{edu.degree}</h4>
                     <p className="text-xs font-code text-primary/60 uppercase">{edu.school} | {edu.period}</p>
                     {edu.score && (
                       <div className="mt-4 space-y-2">
@@ -104,7 +110,12 @@ export default function IdentityPage() {
                           <span>{edu.score}</span>
                         </div>
                         <div className="h-1 w-full bg-primary/10 overflow-hidden">
-                          <motion.div initial={{ width: 0 }} whileInView={{ width: "91%" }} transition={{ duration: 1.5 }} className="h-full bg-primary shadow-[0_0_10px_hsla(var(--primary),0.5)]" />
+                          <motion.div 
+                            initial={{ width: 0 }} 
+                            whileInView={{ width: "88%" }} 
+                            transition={{ duration: 1.5 }} 
+                            className="h-full bg-primary shadow-[0_0_10px_hsla(var(--primary),0.5)]" 
+                          />
                         </div>
                       </div>
                     )}

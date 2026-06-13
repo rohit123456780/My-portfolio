@@ -11,20 +11,20 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 
 const FULL_CERTIFICATIONS_LIST = [
   // New Certifications (Added Jun 2026)
-  { name: "Certified Cybersecurity Apprentice", issuer: "Palo Alto Networks", category: "Infrastructure", date: "May 2026" },
-  { name: "Cybersecurity Fundamentals", issuer: "Palo Alto Networks", category: "Infrastructure", date: "May 2026" },
-  { name: "Endpoint Security", issuer: "Palo Alto Networks", category: "Infrastructure", date: "May 2026" },
-  { name: "Network Security", issuer: "Palo Alto Networks", category: "Infrastructure", date: "May 2026" },
-  { name: "Cloud Security", issuer: "Palo Alto Networks", category: "Infrastructure", date: "May 2026" },
-  { name: "Security Operations & SOC Fundamentals", issuer: "Palo Alto Networks", category: "Infrastructure", date: "May 2026" },
-  { name: "Nutanix Certified Professional – Network & Security 7", issuer: "Nutanix", category: "Infrastructure", date: "Jun 2026" },
-  { name: "Certified LLM Security Professional (CLLMSP)", issuer: "Red Team Leaders", category: "Cloud & AI", date: "Jun 2026" },
-  { name: "Certified Implementation Specialist – Data Foundations", issuer: "ServiceNow", category: "Cloud & AI", date: "Jun 2026" },
-  { name: "Introduction to Networking for Cyber Professionals (EDU-101)", issuer: "Zscaler", category: "Infrastructure", date: "Jun 2026" },
-  { name: "Zscaler for Users – Administrator (EDU-200)", issuer: "Zscaler", category: "Infrastructure", date: "Jun 2026" },
-  { name: "Fundamentals of AI Security (EDU-111)", issuer: "Zscaler", category: "Cloud & AI", date: "Jun 2026" },
-  { name: "Fundamentals of Cybersecurity (EDU-102)", issuer: "Zscaler", category: "Infrastructure", date: "Jun 2026" },
-  { name: "Zero Trust Cyber Associate (ZTCA)", issuer: "Zscaler", category: "Infrastructure", date: "Jun 2026" },
+  { name: "Certified Cybersecurity Apprentice", issuer: "Palo Alto Networks", category: "Palo Alto Nodes", date: "May 2026" },
+  { name: "Cybersecurity Fundamentals", issuer: "Palo Alto Networks", category: "Palo Alto Nodes", date: "May 2026" },
+  { name: "Endpoint Security", issuer: "Palo Alto Networks", category: "Palo Alto Nodes", date: "May 2026" },
+  { name: "Network Security", issuer: "Palo Alto Networks", category: "Palo Alto Nodes", date: "May 2026" },
+  { name: "Cloud Security", issuer: "Palo Alto Networks", category: "Palo Alto Nodes", date: "May 2026" },
+  { name: "Security Operations & SOC Fundamentals", issuer: "Palo Alto Networks", category: "Palo Alto Nodes", date: "May 2026" },
+  { name: "Nutanix Certified Professional – Network & Security 7", issuer: "Nutanix", category: "Nutanix Nodes", date: "Jun 2026" },
+  { name: "Certified LLM Security Professional (CLLMSP)", issuer: "Red Team Leaders", category: "Next-Gen AI", date: "Jun 2026" },
+  { name: "Certified Implementation Specialist – Data Foundations", issuer: "ServiceNow", category: "Data Ops", date: "Jun 2026" },
+  { name: "Introduction to Networking for Cyber Professionals (EDU-101)", issuer: "Zscaler", category: "Zscaler Nodes", date: "Jun 2026" },
+  { name: "Zscaler for Users – Administrator (EDU-200)", issuer: "Zscaler", category: "Zscaler Nodes", date: "Jun 2026" },
+  { name: "Fundamentals of AI Security (EDU-111)", issuer: "Zscaler", category: "Zscaler Nodes", date: "Jun 2026" },
+  { name: "Fundamentals of Cybersecurity (EDU-102)", issuer: "Zscaler", category: "Zscaler Nodes", date: "Jun 2026" },
+  { name: "Zero Trust Cyber Associate (ZTCA)", issuer: "Zscaler", category: "Zscaler Nodes", date: "Jun 2026" },
 
   // API & Web Security
   { name: "APISEC Certified Professional", issuer: "APIsec University", category: "API & Web Security", date: "Apr 2025", id: "01733775-8dc0-41f1-8133-185e919d4e46" },
@@ -126,7 +126,7 @@ const FULL_CERTIFICATIONS_LIST = [
   { name: "Cybersecurity Experience", issuer: "Telstra / Forage", category: "Simulations", date: "May 2023", id: "mavdMjvK24sJApXWT" },
   { name: "Cybersecurity Virtual Program", issuer: "Mastercard / Forage", category: "Simulations", date: "Mar 2022", id: "M2P9pvryzaJmaJcqT" },
   { name: "Cybersecurity Virtual Program", issuer: "JPMorgan Chase & Co. / Forage", category: "Simulations", date: "Mar 2022", id: "YvHJsxmr5rCLmM8qy" },
-  { name: "Cyber@ANZ Program", issuer: "ANZ / Forage", category: "Simulations", date: "Jan 2022", id: "ttZCNJdMfFHgq9kex" },
+  { name: "Cyber@ANZ Program", issuer: "ANZ / Forage", category: "Jan 2022", id: "ttZCNJdMfFHgq9kex" },
   { name: "Cyber Security Global Internship", issuer: "Clifford Chance", category: "Simulations", date: "Jan 2022", id: "WidqRupGNxtiBexvP" },
 
   // Cybersecurity Awareness (MeitY)
