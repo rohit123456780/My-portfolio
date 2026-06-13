@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useUIStore } from '@/lib/store';
-import { Shield, Activity, Zap, Lock, ChevronRight, Cpu, Globe, FileText } from 'lucide-react';
+import { Shield, Activity, Zap, Lock, ChevronRight, Cpu, Globe, FileText, Briefcase } from 'lucide-react';
 import Link from 'next/link';
 
 const Hero3D = dynamic(() => import('@/components/cyber/Hero3D'), { ssr: false });
@@ -85,6 +85,7 @@ export default function Home() {
               </div>
 
               <div className="flex gap-4 pt-4 relative">
+                <QuickLink href="/experience" icon={Briefcase} label="EXPERIENCE" />
                 <QuickLink href="/projects" icon={Cpu} label="PROJECTS" />
                 <QuickLink href="/internships" icon={Globe} label="INTERNSHIPS" />
                 <QuickLink href="/certifications" icon={Shield} label="CERTS" />
