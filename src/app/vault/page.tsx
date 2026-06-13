@@ -5,16 +5,17 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Terminal as TerminalIcon, ShieldAlert, Lock, Unlock, ArrowLeft, Mail, Linkedin, Phone } from 'lucide-react';
 import Link from 'next/link';
+import { useUIStore } from '@/lib/store';
 
 export default function VaultPage() {
+  const { isVaultUnlocked, setVaultUnlocked } = useUIStore();
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<{ type: 'cmd' | 'resp' | 'error' | 'success', text: string }[]>([
     { type: 'resp', text: 'ROHIT_ROY_SECURE_VAULT_v4.2.0' },
     { type: 'resp', text: 'ENCRYPTION: AES-256-GCM' },
-    { type: 'resp', text: 'STATUS: LOCKED' },
-    { type: 'resp', text: 'TYPE "help" TO LIST AVAILABLE EXPLOIT COMMANDS.' }
+    { type: 'resp', text: `STATUS: ${isVaultUnlocked ? 'UNLOCKED' : 'LOCKED'}` },
+    { type: 'resp', text: isVaultUnlocked ? 'ACCESS_GRANTED. SECURE_INTEL_LOADED.' : 'TYPE "help" TO LIST AVAILABLE EXPLOIT COMMANDS.' }
   ]);
-  const [isCracked, setIsCracked] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -47,12 +48,15 @@ export default function VaultPage() {
       const pin = args[pinIndex + 1];
       if (pin === '1507') {
         setHistory(prev => [...prev, { type: 'success', text: 'ACCESS_GRANTED. DECRYPTING_VAULT...' }]);
-        setTimeout(() => setIsCracked(true), 1500);
+        setTimeout(() => setVaultUnlocked(true), 1500);
       } else {
         setHistory(prev => [...prev, { type: 'error', text: 'ERR: INVALID_SIGNATURE. SYSTEM_LOCKDOWN_IMMINENT.' }]);
       }
     },
     'clear': () => setHistory([{ type: 'resp', text: 'SESSION_RESET.' }]),
+    'exit': () => {
+       window.location.href = '/';
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -79,8 +83,8 @@ export default function VaultPage() {
         <div className="flex justify-between items-end border-b border-primary/20 pb-4">
           <div className="space-y-1">
             <h1 className="text-4xl font-headline flex items-center gap-3">
-              <Lock className={`w-8 h-8 ${isCracked ? 'text-accent' : 'text-primary'}`} />
-              {isCracked ? 'VAULT_UNLOCKED' : 'BLACK_OPS_VAULT'}
+              <Lock className={`w-8 h-8 ${isVaultUnlocked ? 'text-accent' : 'text-primary'}`} />
+              {isVaultUnlocked ? 'VAULT_UNLOCKED' : 'BLACK_OPS_VAULT'}
             </h1>
             <p className="text-[10px] font-code text-primary/40 uppercase tracking-widest">
               Capture The Flag: Bruteforce authorization to access secure intel.
@@ -116,21 +120,28 @@ export default function VaultPage() {
                    {h.text}
                  </div>
                ))}
-               <form onSubmit={handleSubmit} className="flex gap-2">
-                 <span className="text-primary/40">root@vault:~#</span>
-                 <input 
-                   autoFocus
-                   value={input}
-                   onChange={(e) => setInput(e.target.value)}
-                   className="bg-transparent border-none outline-none flex-1 text-primary"
-                 />
-               </form>
+               {!isVaultUnlocked && (
+                 <form onSubmit={handleSubmit} className="flex gap-2">
+                   <span className="text-primary/40">root@vault:~#</span>
+                   <input 
+                     autoFocus
+                     value={input}
+                     onChange={(e) => setInput(e.target.value)}
+                     className="bg-transparent border-none outline-none flex-1 text-primary"
+                   />
+                 </form>
+               )}
+               {isVaultUnlocked && (
+                 <div className="text-accent font-bold mt-4 border-t border-accent/20 pt-2 animate-pulse">
+                   MISSION_COMPLETE: SECURE_INTEL_DECRYPTED. ALL_SYSTEMS_GO.
+                 </div>
+               )}
              </div>
           </div>
 
           <div className="cyber-glass p-6 border-primary/20 flex flex-col justify-center items-center text-center space-y-6">
             <AnimatePresence mode="wait">
-              {!isCracked ? (
+              {!isVaultUnlocked ? (
                 <motion.div 
                   key="locked"
                   initial={{ opacity: 0 }}

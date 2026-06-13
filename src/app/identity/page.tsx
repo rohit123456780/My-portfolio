@@ -1,12 +1,14 @@
+
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, ArrowLeft, Terminal, Cpu, Globe, Zap, Lock, User, Shield } from 'lucide-react';
+import { MapPin, ArrowLeft, Terminal, Cpu, Globe, Zap, Lock, User, Shield, Linkedin, Mail, Phone, Unlock } from 'lucide-react';
 import Link from 'next/link';
 import { collection, query, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useCollection } from 'react-firebase-hooks/firestore';
+import { useUIStore } from '@/lib/store';
 
 const SKILL_CATEGORIES = [
   {
@@ -59,6 +61,7 @@ const FALLBACK_EDU = [
 
 export default function IdentityPage() {
   const [mounted, setMounted] = useState(false);
+  const { isVaultUnlocked } = useUIStore();
 
   const [eduValue] = useCollection(
     query(collection(db, 'education'), orderBy('period', 'desc'))
@@ -87,15 +90,14 @@ export default function IdentityPage() {
           {/* Hero Header */}
           <div className="flex flex-col md:flex-row gap-8 items-center border-b border-primary/20 pb-12">
             <div className="w-44 h-56 border-2 border-primary/40 bg-primary/5 relative overflow-hidden group flex items-center justify-center">
-              {/* No-Photo Tactical Avatar */}
+              {/* Tactical Default Avatar (No Photos) */}
               <div className="w-full h-full flex flex-col items-center justify-center relative overflow-hidden">
                 <Terminal className="w-20 h-20 text-primary opacity-10 absolute" />
                 <Shield className="w-24 h-24 text-primary opacity-5 absolute animate-pulse" />
                 <div className="relative z-10 flex flex-col items-center">
-                  <User className="w-24 h-24 text-primary group-hover:text-accent transition-colors" />
-                  <div className="text-[8px] font-code text-primary/40 mt-2 uppercase tracking-[0.2em]">Sig_Authorized</div>
+                  <User className="w-24 h-24 text-primary group-hover:text-glow transition-all" />
+                  <div className="text-[8px] font-code text-primary/40 mt-2 uppercase tracking-[0.2em]">Authorized_Identity</div>
                 </div>
-                {/* Visual scanline */}
                 <div className="absolute top-0 left-0 w-full h-[1px] bg-primary/40 animate-[scanline_3s_linear_infinite]" />
               </div>
               <div className="absolute inset-0 border border-primary/20 pointer-events-none" />
@@ -142,24 +144,48 @@ export default function IdentityPage() {
               <h3 className="text-[10px] font-code text-primary/40 uppercase tracking-[0.5em] border-b border-primary/10 pb-2 flex items-center gap-2">
                 <MapPin className="w-3 h-3" /> Deployment Intel
               </h3>
-              <div className="grid grid-cols-1 gap-3">
-                <div className="flex items-center gap-3 p-3 border border-primary/20 bg-primary/5">
-                   <MapPin className="w-4 h-4 text-primary" />
-                   <div>
-                     <p className="text-[8px] font-code text-primary/40 uppercase">Base Location</p>
-                     <p className="text-xs font-code text-primary/80">West Bengal, India</p>
-                   </div>
+              
+              {!isVaultUnlocked ? (
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="flex items-center gap-3 p-3 border border-primary/20 bg-primary/5">
+                     <MapPin className="w-4 h-4 text-primary" />
+                     <div>
+                       <p className="text-[8px] font-code text-primary/40 uppercase">Base Location</p>
+                       <p className="text-xs font-code text-primary/80">West Bengal, India</p>
+                     </div>
+                  </div>
+                  <Link href="/vault" className="block p-3 border border-primary/20 bg-primary/5 hover:border-accent group transition-all">
+                    <div className="flex items-center gap-3">
+                      <Lock className="w-4 h-4 text-primary group-hover:text-accent" />
+                      <div>
+                        <p className="text-[8px] font-code text-primary/40 uppercase">Secure Contact Intel</p>
+                        <p className="text-[10px] font-code text-accent uppercase tracking-widest">SOLVE_CTF_FOR_ACCESS</p>
+                      </div>
+                    </div>
+                  </Link>
                 </div>
-                <Link href="/vault" className="block p-3 border border-primary/20 bg-primary/5 hover:border-accent group transition-all">
-                  <div className="flex items-center gap-3">
-                    <Lock className="w-4 h-4 text-primary group-hover:text-accent" />
-                    <div>
-                      <p className="text-[8px] font-code text-primary/40 uppercase">Secure Contact Intel</p>
-                      <p className="text-[10px] font-code text-accent uppercase tracking-widest">SOLVE_CTF_FOR_ACCESS</p>
+              ) : (
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="flex items-center gap-3 p-3 border border-accent/20 bg-accent/5">
+                    <Unlock className="w-4 h-4 text-accent" />
+                    <span className="text-[10px] font-code text-accent uppercase tracking-widest">SECURE_INTEL_DECRYPTED</span>
+                  </div>
+                  <div className="space-y-2 p-2 border border-primary/10 bg-black/40">
+                    <div className="flex items-center gap-3 p-2">
+                      <Linkedin className="w-4 h-4 text-accent" />
+                      <span className="text-xs font-code text-primary/80">linkedin.com/in/rohit-roy-rrr</span>
+                    </div>
+                    <div className="flex items-center gap-3 p-2">
+                      <Mail className="w-4 h-4 text-accent" />
+                      <span className="text-xs font-code text-primary/80">dashingraj447@gmail.com</span>
+                    </div>
+                    <div className="flex items-center gap-3 p-2">
+                      <Phone className="w-4 h-4 text-accent" />
+                      <span className="text-xs font-code text-primary/80">+91-6294067930</span>
                     </div>
                   </div>
-                </Link>
-              </div>
+                </div>
+              )}
             </div>
           </div>
 

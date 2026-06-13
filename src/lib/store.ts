@@ -10,6 +10,10 @@ interface UIState {
   setAccentColor: (val: string) => void;
   activeSection: string;
   setActiveSection: (val: string) => void;
+  isVaultUnlocked: boolean;
+  setVaultUnlocked: (val: boolean) => void;
+  commandPaletteOpen: boolean;
+  setCommandPaletteOpen: (val: boolean) => void;
 }
 
 export const useUIStore = create<UIState>((set) => ({
@@ -21,4 +25,8 @@ export const useUIStore = create<UIState>((set) => ({
   setAccentColor: (val) => set({ accentColor: val }),
   activeSection: '01',
   setActiveSection: (val) => set({ activeSection: val }),
+  isVaultUnlocked: false,
+  setVaultUnlocked: (val) => set({ isVaultUnlocked: val }),
+  commandPaletteOpen: false,
+  setCommandPaletteOpen: (val) => set({ commandPaletteOpen: val }),
 }));
