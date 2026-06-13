@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Activity, Shield, Cpu, Globe, Trophy, User, Terminal, Lock } from 'lucide-react';
-import Link from 'next/navigation';
+import { Activity, Shield, Cpu, Globe, Trophy, User, Terminal, Lock, FileText } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 const navItems = [
@@ -13,12 +12,13 @@ const navItems = [
   { label: 'AWARDS', path: '/awards', id: '04', icon: Trophy },
   { label: 'INTERNSHIPS', path: '/internships', id: '05', icon: Globe },
   { label: 'CERTS', path: '/certifications', id: '06', icon: Shield },
+  { label: 'RESUME', path: '/resume', id: '07', icon: FileText },
 ];
 
 const alerts = [
   "INTRUSION ATTEMPT BLOCKED - IP: 192.168.1.44",
   "CVE-2024-4421 PATCHED IN MAIN NODE",
-  "OT_SECURITY_PROTOCOL_v2.0 ACTIVE",
+  "OT_SECURITY_PROTOCOL_v3.0 ACTIVE",
   "THREAT_LEVEL: MINIMAL",
   "DDoS MITIGATION ACTIVE",
   "SECURE_ENCRYPTION_LINK_STABLE",
@@ -75,7 +75,7 @@ export default function HackerHUD() {
             </div>
             <div>
               <div className="text-xs font-headline text-glow tracking-[0.3em] uppercase">ROHIT_ROY</div>
-              <div className="text-[7px] font-code text-primary/40 tracking-[0.2em] uppercase">OT_SECURITY_COMMAND</div>
+              <div className="text-[7px] font-code text-primary/40 tracking-[0.2em] uppercase">OT_SECURITY_ENGINEER</div>
             </div>
           </div>
         </a>
@@ -89,7 +89,7 @@ export default function HackerHUD() {
                   : 'border-white/5 text-primary/40 hover:border-primary/40 hover:text-primary'
               }`}>
                 <span className="text-[8px] font-code opacity-40">[{item.id}]</span>
-                <span className="text-[9px] font-headline tracking-[0.2em]">{item.label}</span>
+                <span className="text-[9px] font-headline tracking-[0.2em] uppercase">{item.label}</span>
               </div>
             </a>
           ))}

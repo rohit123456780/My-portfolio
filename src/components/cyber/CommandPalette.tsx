@@ -2,20 +2,23 @@
 
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Command, X, Shield, Terminal, BookOpen, User, Trophy, Briefcase } from 'lucide-react';
+import { Search, Command, X, Shield, Terminal, BookOpen, User, Trophy, Briefcase, FileText } from 'lucide-react';
 import { useUIStore } from '@/lib/store';
+import { useRouter } from 'next/navigation';
 
 const items = [
-  { icon: User, label: "Identity", path: "#hero" },
-  { icon: BookOpen, label: "Mission Logs", path: "#missions" },
-  { icon: Briefcase, label: "Mission Select (Projects)", path: "#projects" },
-  { icon: Trophy, label: "Awards & Honours", path: "#achievements" },
-  { icon: Terminal, label: "Internship Atlas", path: "#atlas" },
-  { icon: Shield, label: "Certifications Vault", path: "#certs" },
+  { icon: User, label: "Identity", path: "/identity" },
+  { icon: BookOpen, label: "Mission Logs", path: "/experience" },
+  { icon: Briefcase, label: "Mission Select (Projects)", path: "/projects" },
+  { icon: Trophy, label: "Awards & Honours", path: "/awards" },
+  { icon: Terminal, label: "Internship Atlas", path: "/internships" },
+  { icon: Shield, label: "Certifications Vault", path: "/certifications" },
+  { icon: FileText, label: "Download Resume", path: "/resume" },
 ];
 
 export default function CommandPalette() {
   const { commandPaletteOpen, setCommandPaletteOpen } = useUIStore();
+  const router = useRouter();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -66,10 +69,9 @@ export default function CommandPalette() {
                     key={i}
                     onClick={() => {
                       setCommandPaletteOpen(false);
-                      const el = document.querySelector(item.path);
-                      if (el) el.scrollIntoView({ behavior: 'smooth' });
+                      router.push(item.path);
                     }}
-                    className="w-full flex items-center gap-3 p-3 hover:bg-primary/10 group transition-colors rounded-sm"
+                    className="w-full flex items-center gap-3 p-3 hover:bg-primary/10 group transition-colors rounded-sm text-left"
                   >
                     <item.icon className="w-4 h-4 text-primary group-hover:text-glow" />
                     <span className="text-sm font-code uppercase tracking-wider">{item.label}</span>
