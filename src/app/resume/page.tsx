@@ -1,8 +1,9 @@
+
 'use client';
 
 import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { FileText, Download, ArrowLeft, Shield, Activity, Terminal, Mail, Linkedin, Phone, MapPin, Briefcase, GraduationCap, Cpu } from 'lucide-react';
+import { FileText, Download, ArrowLeft, Shield, Activity, Terminal, Mail, Linkedin, Phone, MapPin, Briefcase, GraduationCap, Cpu, Globe } from 'lucide-react';
 import Link from 'next/link';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -38,20 +39,20 @@ const INTERNSHIPS = [
 ];
 
 const PROJECTS = [
-  { title: "SquaredUp MSS Dashboard", desc: "Real-time security visibility integrating Zendesk and Splunk for MSS customers." },
-  { title: "Baserow Database Transition", desc: "Migration of Ops List into a role-based Sites and Contacts system for compliance." },
-  { title: "Secure Mail & Outlook Hardening", desc: "Deployment of domain emails using cPanel and hardening Outlook via SSL/TLS." },
-  { title: "AI-Based XSS Detection", desc: "Machine learning classification models for real-time web attack identification." },
-  { title: "Network Packet Analyzer & Sniffer", desc: "Python-based tool for real-time traffic extraction and protocol auditing." },
-  { title: "Cybersecurity Ops Lab", desc: "10-month lab environment for threat detection, forensics, and IDS/IPS." },
-  { title: "Web Vulnerability Scanner", desc: "Automated scanner for XSS, SQLi, and IDOR using custom fuzzing techniques." },
-  { title: "Image Encryption (Pixel XOR)", desc: "Encryption system using pixel-level XOR operations for secure visual data." },
-  { title: "Caesar Cipher Tool", desc: "Python tool for classical encryption and decryption with custom shift values." },
-  { title: "Password Complexity Checker", desc: "Evaluator for password strength based on character diversity and entropy." },
-  { title: "Secure Login Page", desc: "Authentication system with bcrypt hashing and session management." },
-  { title: "Network Security Monitor", desc: "Monitoring system to detect suspicious traffic using IDS/IPS methodologies." },
-  { title: "Basic Keylogger", desc: "Educational Python tool for recording keystrokes to analyze security risks." },
-  { title: "Metasploit Payload Dev", desc: "Lab-based payload development and analysis for signature identification." }
+  { title: "SquaredUp MSS Dashboard", desc: "Real-time visibility into Zendesk and Splunk for MSS customers." },
+  { title: "Baserow Database Transition", desc: "Migration of Ops List into a role-based system for compliance." },
+  { title: "Secure Mail & Outlook Hardening", desc: "cPanel email management and hardening Outlook via SSL/TLS." },
+  { title: "AI-Based XSS Detection", desc: "ML models for real-time web attack identification." },
+  { title: "Network Packet Analyzer", desc: "Python tool for real-time traffic extraction and protocol auditing." },
+  { title: "Cybersecurity Ops Lab", desc: "10-month lab for threat detection, forensics, and IDS/IPS." },
+  { title: "Web Vulnerability Scanner", desc: "Automated scanner for XSS, SQLi, and IDOR." },
+  { title: "Image Encryption (Pixel XOR)", desc: "XOR-based pixel encryption for secure visual data." },
+  { title: "Caesar Cipher Tool", desc: "Python tool for classical encryption and decryption." },
+  { title: "Password Complexity Checker", desc: "Evaluator for password strength based on entropy." },
+  { title: "Secure Login Page", desc: "Auth system with bcrypt hashing and session management." },
+  { title: "Network Security Monitor", desc: "Traffic monitoring system using IDS/IPS methodologies." },
+  { title: "Basic Keylogger", desc: "Python tool for recording keystrokes to analyze security risks." },
+  { title: "Metasploit Payload Dev", desc: "Lab-based payload development and analysis." }
 ];
 
 export default function ResumePage() {
@@ -118,8 +119,8 @@ export default function ResumePage() {
           
           <div 
             ref={resumeRef}
-            className="bg-white text-slate-900 p-8 md:p-12 shadow-2xl mx-auto w-full max-w-[900px] font-sans selection:bg-primary/20"
-            style={{ minHeight: '1100px' }}
+            className="bg-white text-slate-900 p-8 md:p-12 shadow-2xl mx-auto w-full max-w-[950px] font-sans selection:bg-primary/20"
+            style={{ minHeight: '1300px' }}
           >
             {/* HEADER */}
             <header className="border-b-4 border-slate-900 pb-6 mb-8 text-center">
@@ -139,7 +140,7 @@ export default function ResumePage() {
                   <Terminal className="w-3 h-3" /> Professional Summary
                 </h2>
                 <p className="text-[11px] leading-relaxed text-slate-700 text-justify">
-                  Dedicated cybersecurity practitioner with hands-on experience in VAPT, incident response, network security, digital forensics, and OT/ICS environments. Skilled in managing secure IT infrastructures, email systems, cloud integrations, and segmentation-based network hardening across enterprise and industrial control system settings. Track record of real-world security assessments, exploit development, packet analysis, secure coding, and compliance-driven system administration. Backed by an extensive certification portfolio spanning AppSec, cloud, API security, and penetration testing.
+                  Dedicated cybersecurity practitioner with hands-on experience in VAPT, incident response, network security, digital forensics, and OT/ICS environments. Skilled in managing secure IT infrastructures, email systems, cloud integrations, and segmentation-based network hardening across enterprise and industrial control system settings. Track record of real-world security assessments, exploit development, packet analysis, secure coding, and compliance-driven system administration.
                 </p>
               </section>
 
@@ -152,7 +153,7 @@ export default function ResumePage() {
                   <div>
                     <p className="text-[10px] font-bold text-slate-900 uppercase">B.Sc. (Hons) Adv. Networking & Cyber Security</p>
                     <p className="text-[9px] text-slate-500">Brainware University, Kolkata</p>
-                    <p className="text-[9px] font-bold text-primary">2023 – 2027 | 8.86 SGPA</p>
+                    <p className="text-[9px] font-bold text-primary">2023 – 2027 | 63% (Year 3)</p>
                   </div>
                   <div>
                     <p className="text-[10px] font-bold text-slate-900 uppercase">Class XII (Arts)</p>
@@ -172,43 +173,53 @@ export default function ResumePage() {
                 <h2 className="text-xs font-bold uppercase tracking-[0.3em] text-slate-400 mb-6 flex items-center gap-2">
                   <Briefcase className="w-3 h-3" /> Work Experience
                 </h2>
-                <div className="space-y-6">
+                <div className="space-y-8">
                   <div>
                     <div className="flex justify-between items-baseline mb-1">
                       <h3 className="text-[11px] font-bold uppercase text-slate-900">OT Engineering Administrator L1</h3>
                       <span className="text-[9px] font-bold text-slate-500">Oct 2025 – Present</span>
                     </div>
                     <p className="text-[9px] font-bold text-primary uppercase mb-2">Radian Generation | Hybrid</p>
-                    <ul className="text-[9px] text-slate-600 space-y-1 list-disc pl-4">
-                      <li>Strengthen cybersecurity posture and documentation governance in renewable energy OT environments.</li>
-                      <li>Develop and standardize OT security SOPs and support audit readiness for industrial control systems.</li>
-                      <li>Govern engineering changes with a security-first approach to minimize operational risk and exposure.</li>
-                      <li>Lead data governance migration from spreadsheets to structured, role-based databases in Baserow.</li>
-                    </ul>
+                    <p className="text-[9px] text-slate-600 mb-2 leading-relaxed">Working within OT and industrial control system (ICS) environments to strengthen cybersecurity posture, documentation governance, and compliance-driven engineering processes supporting renewable energy operations.</p>
+                    <div className="grid grid-cols-1 gap-2 pl-4">
+                      <p className="text-[9px] text-slate-700"><strong>OT / ICS Cybersecurity:</strong> Enforce security-aligned engineering practices across OT environments, emphasizing risk awareness, access governance, and operational integrity.</p>
+                      <p className="text-[9px] text-slate-700"><strong>Security Documentation & SOPs:</strong> Develop, maintain, and standardize OT security documentation, SOPs, and change records to support audit readiness and regulatory compliance.</p>
+                      <p className="text-[9px] text-slate-700"><strong>Change & Risk Management:</strong> Govern OT engineering changes with a security-first approach, ensuring traceability, approval control, and minimized operational risk.</p>
+                      <p className="text-[9px] text-slate-700"><strong>Data Governance:</strong> Implement structured data management practices, transitioning from spreadsheet-based tracking to controlled databases.</p>
+                      <p className="text-[9px] text-slate-700"><strong>Compliance Alignment:</strong> Support adherence to internal security standards and industry best practices relevant to OT/ICS environments.</p>
+                      <p className="text-[9px] text-slate-700"><strong>Process Hardening:</strong> Continuously improve documentation, workflows, and controls to enhance resilience and reliability.</p>
+                    </div>
                   </div>
+
                   <div>
                     <div className="flex justify-between items-baseline mb-1">
                       <h3 className="text-[11px] font-bold uppercase text-slate-900">IT Administrator</h3>
                       <span className="text-[9px] font-bold text-slate-500">May 2025 – Jul 2025</span>
                     </div>
                     <p className="text-[9px] font-bold text-primary uppercase mb-2">Tech Trek Events | Remote</p>
-                    <ul className="text-[9px] text-slate-600 space-y-1 list-disc pl-4">
-                      <li>Managed secure email infrastructure using cPanel and hardened Outlook via IMAP/SMTP secure ports.</li>
-                      <li>Enforced domain-based security rules and handled SSL/TLS configurations for marketing accounts.</li>
-                      <li>Configured SKF and DKNIM rules for network governance and system stability.</li>
-                    </ul>
+                    <p className="text-[9px] text-slate-600 mb-2 leading-relaxed">Responsible for managing and securing the organization’s email and network infrastructure, ensuring smooth communication and reliable configurations.</p>
+                    <div className="grid grid-cols-1 gap-2 pl-4">
+                      <p className="text-[9px] text-slate-700"><strong>Email Administration:</strong> Created and configured Outlook accounts with secure incoming/outgoing mail servers.</p>
+                      <p className="text-[9px] text-slate-700"><strong>cPanel & Domain Management:</strong> Integrated cPanel domain-based emails with Outlook mailboxes for delivery efficiency.</p>
+                      <p className="text-[9px] text-slate-700"><strong>Policy & Rules Implementation:</strong> Designed and enforced security rules for domain-based emails.</p>
+                      <p className="text-[9px] text-slate-700"><strong>Marketing Email Configuration:</strong> Set up marketing accounts with reliable delivery parameters.</p>
+                      <p className="text-[9px] text-slate-700"><strong>Network Administration:</strong> Configured and maintained SKF and DKNIM rules for network governance.</p>
+                    </div>
                   </div>
+
                   <div>
                     <div className="flex justify-between items-baseline mb-1">
                       <h3 className="text-[11px] font-bold uppercase text-slate-900">Technical Support Administrator</h3>
                       <span className="text-[9px] font-bold text-slate-500">Jun 2023 – May 2025</span>
                     </div>
                     <p className="text-[9px] font-bold text-primary uppercase mb-2">HackingFlix | Remote</p>
-                    <ul className="text-[9px] text-slate-600 space-y-1 list-disc pl-4">
-                      <li>Provided end-to-end technical support and access control management for student platform.</li>
-                      <li>Implemented Segregation of Duties (SoD) and access control practices to ensure compliance.</li>
-                      <li>Contributed to technical documentation and security monitoring protocols.</li>
-                    </ul>
+                    <div className="grid grid-cols-1 gap-1.5 pl-4 mt-2">
+                      <p className="text-[9px] text-slate-700">• Resolved technical issues and provided prompt support to a diverse user base.</p>
+                      <p className="text-[9px] text-slate-700">• Contributed to technical documentation and knowledge content.</p>
+                      <p className="text-[9px] text-slate-700">• Managed user accounts, access permissions, and security monitoring.</p>
+                      <p className="text-[9px] text-slate-700">• Gained exposure to Segregation of Duties (SoD) and access control practices.</p>
+                      <p className="text-[9px] text-slate-700">• Collaborated with cross-functional teams to enhance platform security.</p>
+                    </div>
                   </div>
                 </div>
               </section>
@@ -219,10 +230,10 @@ export default function ResumePage() {
                   <h2 className="text-xs font-bold uppercase tracking-[0.3em] text-slate-400 mb-4 flex items-center gap-2">
                     <Shield className="w-3 h-3" /> Internships
                   </h2>
-                  <div className="space-y-1.5">
+                  <div className="space-y-1">
                     {INTERNSHIPS.map((intern, idx) => (
-                      <div key={idx} className="flex justify-between items-center text-[8px] font-medium text-slate-600 uppercase border-b border-slate-50 pb-1">
-                        <span className="truncate mr-2"><span className="text-slate-400 font-bold mr-1">[{idx + 1}]</span> {intern.org}</span>
+                      <div key={idx} className="flex justify-between items-center text-[8px] font-medium text-slate-600 uppercase border-b border-slate-50 pb-0.5">
+                        <span className="truncate mr-2"><span className="text-slate-300 font-bold mr-1">[{idx + 1}]</span> {intern.org}</span>
                         <span className="text-slate-400 shrink-0">{intern.period}</span>
                       </div>
                     ))}
@@ -234,11 +245,11 @@ export default function ResumePage() {
                   <h2 className="text-xs font-bold uppercase tracking-[0.3em] text-slate-400 mb-4 flex items-center gap-2">
                     <Cpu className="w-3 h-3" /> Key Projects
                   </h2>
-                  <div className="grid grid-cols-1 gap-3">
+                  <div className="grid grid-cols-1 gap-2">
                     {PROJECTS.map((proj, idx) => (
-                      <div key={idx} className="p-3 bg-slate-50 border-l-2 border-slate-900">
-                        <h4 className="text-[9px] font-bold uppercase text-slate-900 mb-0.5">{proj.title}</h4>
-                        <p className="text-[8px] text-slate-600 leading-tight italic">{proj.desc}</p>
+                      <div key={idx} className="p-2 bg-slate-50 border-l-2 border-slate-900">
+                        <h4 className="text-[8px] font-bold uppercase text-slate-900 mb-0.5">{proj.title}</h4>
+                        <p className="text-[7px] text-slate-500 leading-tight italic">{proj.desc}</p>
                       </div>
                     ))}
                   </div>
@@ -247,7 +258,7 @@ export default function ResumePage() {
 
             </div>
 
-            <footer className="mt-auto pt-12 border-t border-slate-100 text-center">
+            <footer className="mt-auto pt-8 border-t border-slate-100 text-center">
               <p className="text-[8px] font-bold text-slate-300 uppercase tracking-[0.5em]">Digitally Verified Intelligence Node • Rohit Roy CV</p>
             </footer>
           </div>
