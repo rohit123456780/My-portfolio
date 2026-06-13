@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -14,7 +13,7 @@ const BootSequence = dynamic(() => import('@/components/cyber/BootSequence'), { 
 export default function Home() {
   const { isBooted } = useUIStore();
   const [typedText, setTypedText] = useState('');
-  const fullText = "TECHNICAL_ENGINEER | OT/ICS_SPECIALIST | CYBER_PRACTITIONER";
+  const fullText = "OT SECURITY ENGINEER";
 
   useEffect(() => {
     if (isBooted) {
@@ -23,7 +22,7 @@ export default function Home() {
         setTypedText(fullText.slice(0, i));
         i++;
         if (i > fullText.length) clearInterval(timer);
-      }, 40);
+      }, 60);
       return () => clearInterval(timer);
     }
   }, [isBooted]);
@@ -68,7 +67,7 @@ export default function Home() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <StatusCard icon={Activity} label="MISSION_STATUS" value="ACTIVE_NODE" />
-                <StatusCard icon={Zap} label="PRIMARY_DOMAIN" value="OT/ICS_SECURITY" />
+                <StatusCard icon={Shield} label="PRIMARY_DOMAIN" value="OT_SECURITY" />
               </div>
 
               <div className="flex flex-wrap gap-6">
@@ -106,8 +105,8 @@ export default function Home() {
                   <div className="space-y-1">
                     <p className="text-[#00cfff]">> DECRYPTING_BIOMETRICS...</p>
                     <p className="pl-4">SUBJECT: ROHIT ROY</p>
-                    <p className="pl-4">CERTIFICATIONS: 111+</p>
-                    <p className="pl-4">INTERNSHIPS: 27+</p>
+                    <p className="pl-4">ROLE: OT SECURITY ENGINEER</p>
+                    <p className="pl-4">NODES: 138+ VERIFIED</p>
                     <p className="pl-4">LOC: WB_INDIA</p>
                   </div>
                 </div>

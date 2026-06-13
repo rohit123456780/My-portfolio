@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -96,13 +95,13 @@ export default function IdentityPage() {
               <div className="space-y-2">
                 <h1 className="text-5xl md:text-6xl font-headline tracking-tighter text-glow uppercase">ROHIT ROY</h1>
                 <p className="text-base md:text-lg font-code text-primary/80 uppercase tracking-widest flex items-center justify-center md:justify-start gap-2">
-                   <Terminal className="w-4 h-4 text-accent" /> Technical Engineer | OT/ICS Specialist
+                   <Terminal className="w-4 h-4 text-accent" /> OT Security Engineer
                 </p>
               </div>
               <div className="flex flex-wrap justify-center md:justify-start gap-2">
-                <span className="px-2 py-0.5 border border-primary/20 text-[9px] font-code text-primary uppercase bg-primary/5">Quantum Tech</span>
-                <span className="px-2 py-0.5 border border-accent/20 text-[9px] font-code text-accent uppercase bg-accent/5">OT/ICS Security</span>
-                <span className="px-2 py-0.5 border border-primary/20 text-[9px] font-code text-primary uppercase bg-primary/5">SOC Analyst</span>
+                <span className="px-3 py-1 border border-[#00ff9f]/40 text-[10px] font-code text-[#00ff9f] uppercase bg-[#00ff9f]/5 tracking-widest">
+                  OT Security Engineer
+                </span>
               </div>
             </div>
           </div>
@@ -119,7 +118,7 @@ export default function IdentityPage() {
                     <h4 className="text-lg font-headline text-glow uppercase leading-tight">{edu.degree}</h4>
                     <p className="text-[10px] font-code text-primary/60 uppercase">{edu.school} | {edu.period}</p>
                     <div className="text-[10px] font-code text-accent uppercase flex items-center gap-2">
-                      <Zap className="w-3 h-3" /> Final Node Performance: {edu.score}
+                      <Zap className="w-3 h-3" /> Node performance: {edu.score}
                     </div>
                   </div>
                 ))}

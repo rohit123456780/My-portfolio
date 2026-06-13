@@ -1,4 +1,3 @@
-
 import type { Metadata } from 'next';
 import './globals.css';
 import HackerHUD from '@/components/cyber/HackerHUD';
@@ -6,8 +5,8 @@ import CyberCursor from '@/components/cyber/CyberCursor';
 import TerminalEasterEgg from '@/components/cyber/TerminalEasterEgg';
 
 export const metadata: Metadata = {
-  title: 'ROHIT ROY | CYBER OPS COMMAND',
-  description: 'Technical Engineer | OT/ICS Specialist | Cybersecurity Practitioner',
+  title: 'ROHIT ROY | OT SECURITY ENGINEER',
+  description: 'OT Security Engineer',
 };
 
 export default function RootLayout({
