@@ -1,15 +1,12 @@
-
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, ArrowLeft, Terminal, Cpu, Globe, Zap, Lock } from 'lucide-react';
+import { MapPin, ArrowLeft, Terminal, Cpu, Globe, Zap, Lock, User, Shield } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { collection, query, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useCollection } from 'react-firebase-hooks/firestore';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const SKILL_CATEGORIES = [
   {
@@ -62,7 +59,6 @@ const FALLBACK_EDU = [
 
 export default function IdentityPage() {
   const [mounted, setMounted] = useState(false);
-  const avatarImage = PlaceHolderImages.find(img => img.id === 'profile-avatar');
 
   const [eduValue] = useCollection(
     query(collection(db, 'education'), orderBy('period', 'desc'))
@@ -90,19 +86,18 @@ export default function IdentityPage() {
         <div className="space-y-12">
           {/* Hero Header */}
           <div className="flex flex-col md:flex-row gap-8 items-center border-b border-primary/20 pb-12">
-            <div className="w-44 h-56 border-2 border-primary/40 bg-primary/5 relative overflow-hidden group">
-              {avatarImage && (
-                <Image 
-                  src={avatarImage.imageUrl} 
-                  alt={avatarImage.description} 
-                  fill 
-                  className="object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-in-out scale-110 group-hover:scale-100"
-                  priority
-                  data-ai-hint={avatarImage.imageHint}
-                />
-              )}
-              <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors duration-500" />
-              <div className="absolute top-0 left-0 w-full h-[1px] bg-primary/60 animate-[scanline_4s_linear_infinite] z-10" />
+            <div className="w-44 h-56 border-2 border-primary/40 bg-primary/5 relative overflow-hidden group flex items-center justify-center">
+              {/* No-Photo Tactical Avatar */}
+              <div className="w-full h-full flex flex-col items-center justify-center relative overflow-hidden">
+                <Terminal className="w-20 h-20 text-primary opacity-10 absolute" />
+                <Shield className="w-24 h-24 text-primary opacity-5 absolute animate-pulse" />
+                <div className="relative z-10 flex flex-col items-center">
+                  <User className="w-24 h-24 text-primary group-hover:text-accent transition-colors" />
+                  <div className="text-[8px] font-code text-primary/40 mt-2 uppercase tracking-[0.2em]">Sig_Authorized</div>
+                </div>
+                {/* Visual scanline */}
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-primary/40 animate-[scanline_3s_linear_infinite]" />
+              </div>
               <div className="absolute inset-0 border border-primary/20 pointer-events-none" />
             </div>
 

@@ -1,11 +1,3 @@
-
 {
-  "placeholderImages": [
-    {
-      "id": "profile-avatar",
-      "description": "Cyberpunk Hacker Avatar",
-      "imageUrl": "https://picsum.photos/seed/cyber-hacker-42/400/500",
-      "imageHint": "cyberpunk hacker"
-    }
-  ]
+  "placeholderImages": []
 }
