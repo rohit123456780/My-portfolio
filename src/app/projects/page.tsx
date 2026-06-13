@@ -10,20 +10,118 @@ import { db } from '@/lib/firebase';
 import { useCollection } from 'react-firebase-hooks/firestore';
 
 const FALLBACK_PROJECTS = [
-  { title: "SquaredUp MSS Dashboard", org: "Radian Generation", period: "2026", details: "Real-time visibility into Zendesk and Splunk for MSS customers. Focused on data ingestion validation and telemetry troubleshooting.", category: "Infrastructure", tools: ["Splunk", "Zendesk", "SquaredUp"] },
-  { title: "Baserow Database Transition", org: "Radian Generation", period: "2025", details: "Spreadsheet-to-database migration for Operational Systems. Hardened data governance and access controls.", category: "Data Systems", tools: ["Baserow", "Python", "SQL"] },
-  { title: "Secure Mail Infrastructure", org: "Tech Trek Events", period: "2025", details: "cPanel/Outlook hardening with SSL/TLS implementation and advanced mail security rules.", category: "Infrastructure", tools: ["cPanel", "Outlook", "SSL/TLS"] },
-  { title: "AI-Based XSS Detection", org: "Sturtle Security", period: "2024", details: "ML classification models for real-time XSS detection with 98% accuracy on payload datasets.", category: "AI Security", tools: ["Python", "TensorFlow", "Scikit-Learn"] },
-  { title: "Web Pentest - Juice Shop", org: "ShadowFox", period: "2024", details: "OWASP-based penetration testing with CVSS-verified reporting and exploit documentation.", category: "Offensive", tools: ["Burp Suite", "ZAP", "CVSS"] },
-  { title: "Web Vulnerability Scanner", org: "Msinterface", period: "2024", details: "Python-based fuzzing tool for automated XSS/SQLi/IDOR identification.", category: "Tools", tools: ["Python", "Requests", "Fuzzing"] },
-  { title: "Network Packet Analyzer", org: "Msinterface", period: "2024", details: "Real-time traffic sniffing and security protocol auditing for IDS rule validation.", category: "Networking", tools: ["Scapy", "Python", "Wireshark"] },
-  { title: "Image Encryption (Pixel XOR)", org: "ShadowFox", period: "2023", details: "Symmetric cryptography tool for visual data protection using XOR algorithms.", category: "Crypto", tools: ["Python", "Pillow", "XOR"] },
-  { title: "Caesar Cipher Tool", org: "HackingFlix", period: "2023", details: "Educational encryption tool for understanding basic shift ciphers and frequency analysis.", category: "Crypto", tools: ["Python", "Terminal UI"] },
-  { title: "Password Complexity Checker", org: "ShadowFox", period: "2023", details: "Entropy-based evaluator for password strength mapping and security posture analysis.", category: "Security", tools: ["Python", "RegEx"] },
-  { title: "Secure Login Page", org: "StartHere", period: "2023", details: "Implementation of bcrypt-based authentication with OWASP Top 10 protections.", category: "DevSecOps", tools: ["Node.js", "Express", "bcrypt"] },
-  { title: "Metasploit Payload Dev", org: "Pinnacle Labs", period: "2022", details: "Lab-based payload development and signature identification for antivirus evasion research.", category: "Offensive", tools: ["Metasploit", "Msfvenom"] },
-  { title: "Network Security Monitor", org: "SecureSphere", period: "2022", details: "IDS/IPS rule validation against simulated attack vectors in controlled lab environments.", category: "Defensive", tools: ["Snort", "Suricata"] },
-  { title: "Cyber Ops Lab", org: "TechnoTrench", period: "2021", details: "10-month hands-on security operations lab focused on threat analysis and incident response.", category: "Ops", tools: ["Kali", "Parrot OS", "SIEM"] }
+  { 
+    title: "SquaredUp Dashboard Project", 
+    org: "Radian Generation", 
+    period: "Feb 2026 – Present", 
+    details: "Creating and validating site-level security and operations dashboards for real-time visibility into Zendesk and Splunk data. Involves building dashboards, applying site mappings, and identifying telemetry gaps.", 
+    category: "Infrastructure", 
+    tools: ["SquaredUp", "Splunk", "Zendesk", "Data Validation"] 
+  },
+  { 
+    title: "Baserow Database Transition", 
+    org: "Radian Generation", 
+    period: "Jan 2026 – Present", 
+    details: "Administrative cybersecurity migration in Baserow, transforming the Ops List into a clean, role-based Sites and Contacts system to support compliance tracking and security administration.", 
+    category: "Data Systems", 
+    tools: ["Baserow", "Data Governance", "RBAC", "Normalization"] 
+  },
+  { 
+    title: "Secure Mail Infrastructure & Outlook Hardening", 
+    org: "Tech Trek Events", 
+    period: "Jun 2025 – Aug 2025", 
+    details: "Deployment of domain-based email systems using cPanel and hardening Microsoft Outlook via IMAP/SMTP secure ports and SSL configurations.", 
+    category: "Infrastructure", 
+    tools: ["cPanel", "Outlook", "IMAP/SMTP", "SSL/TLS", "DNS"] 
+  },
+  { 
+    title: "AI-Based XSS Detection System", 
+    org: "Sturtle Security", 
+    period: "May 2024 – Jul 2024", 
+    details: "Designed a machine learning-based system to detect cross-site scripting (XSS) vulnerabilities in web applications with high classification accuracy.", 
+    category: "AI Security", 
+    tools: ["Python", "Machine Learning", "TensorFlow", "Web Security"] 
+  },
+  { 
+    title: "Basic Keylogger", 
+    org: "Personal Lab", 
+    period: "Jun 2024 – Jul 2024", 
+    details: "Developed a basic keylogging application to record keystrokes for educational purposes in understanding endpoint security risks.", 
+    category: "Offensive", 
+    tools: ["Python", "Pynput", "Security Awareness"] 
+  },
+  { 
+    title: "Caesar Cipher Encryption Tool", 
+    org: "HackingFlix", 
+    period: "Jun 2024 – Jul 2024", 
+    details: "Created a Python tool for encrypting and decrypting text using the Caesar Cipher algorithm with customizable shift values for educational use.", 
+    category: "Crypto", 
+    tools: ["Python", "Cryptography", "Algorithms"] 
+  },
+  { 
+    title: "Image Encryption using Pixel Manipulation", 
+    org: "ShadowFox", 
+    period: "Jun 2024 – Jul 2024", 
+    details: "Developed an image encryption system using pixel-level XOR operations to secure visual data with reversible decryption capability.", 
+    category: "Crypto", 
+    tools: ["Python", "Pillow", "XOR Operations"] 
+  },
+  { 
+    title: "Network Packet Analyzer", 
+    org: "Msinterface Technologies", 
+    period: "Jun 2024 – Jul 2024", 
+    details: "Created a tool to analyze captured packets and display relevant network details such as source/destination IPs and protocol headers.", 
+    category: "Networking", 
+    tools: ["Scapy", "Python", "Wireshark"] 
+  },
+  { 
+    title: "Network Sniffer", 
+    org: "Msinterface Technologies", 
+    period: "Jun 2024 – Jul 2024", 
+    details: "Built a Python-based packet sniffer to capture real-time network traffic, extracting key data such as IP addresses, protocols, and payloads.", 
+    category: "Networking", 
+    tools: ["Python", "Raw Sockets", "Packet Capture"] 
+  },
+  { 
+    title: "Password Complexity Checker", 
+    org: "ShadowFox", 
+    period: "Jun 2024 – Jul 2024", 
+    details: "Built a tool to evaluate password strength based on criteria such as length, character diversity, and entropy-based complexity analysis.", 
+    category: "Security", 
+    tools: ["Python", "Regex", "Entropy Analysis"] 
+  },
+  { 
+    title: "Secure Login Page Development", 
+    org: "StartHere", 
+    period: "Jul 2024 – Jul 2024", 
+    details: "Developed a secure authentication system implementing input validation, password hashing (bcrypt), and session management to protect against OWASP Top 10.", 
+    category: "DevSecOps", 
+    tools: ["Node.js", "bcrypt", "Session Management"] 
+  },
+  { 
+    title: "Web Vulnerability Scanner", 
+    org: "Msinterface Technologies", 
+    period: "Jun 2024 – Jul 2024", 
+    details: "Developed an automated scanner capable of crawling web applications for XSS, SQLi, and IDOR vulnerabilities using custom fuzzing techniques.", 
+    category: "Offensive", 
+    tools: ["Python", "Fuzzing", "Requests", "Vuln Scanning"] 
+  },
+  { 
+    title: "Network Security Monitor", 
+    org: "SecureSphere", 
+    period: "Jun 2024 – Jun 2024", 
+    details: "Set up monitoring systems to detect suspicious traffic patterns and respond to potential intrusions using IDS/IPS methodologies.", 
+    category: "Defensive", 
+    tools: ["Snort", "IDS/IPS", "Monitoring"] 
+  },
+  { 
+    title: "Cybersecurity Operations & Threat Analysis Lab", 
+    org: "TechnoTrench", 
+    period: "Mar 2023 – Dec 2023", 
+    details: "Designed and implemented a comprehensive 10-month lab environment focusing on real-world security operations, threat detection, digital forensics, and automation scripts.", 
+    category: "Ops", 
+    tools: ["Virtualization", "SIEM", "Python", "Digital Forensics", "PowerShell"] 
+  }
 ];
 
 export default function ProjectsPage() {
