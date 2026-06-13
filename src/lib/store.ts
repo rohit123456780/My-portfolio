@@ -14,8 +14,8 @@ interface UIState {
   setVaultUnlocked: (val: boolean) => void;
   commandPaletteOpen: boolean;
   setCommandPaletteOpen: (val: boolean) => void;
-  theme: 'blue-team' | 'red-team';
-  setTheme: (theme: 'blue-team' | 'red-team') => void;
+  mode: 'defensive' | 'offensive';
+  setMode: (mode: 'defensive' | 'offensive') => void;
 }
 
 export const useUIStore = create<UIState>((set) => ({
@@ -31,12 +31,12 @@ export const useUIStore = create<UIState>((set) => ({
   setVaultUnlocked: (val) => set({ isVaultUnlocked: val }),
   commandPaletteOpen: false,
   setCommandPaletteOpen: (val) => set({ commandPaletteOpen: val }),
-  theme: 'blue-team',
-  setTheme: (theme) => {
-    set({ theme });
+  mode: 'defensive',
+  setMode: (mode) => {
+    set({ mode });
     if (typeof window !== 'undefined') {
-      localStorage.setItem('cyberdeck-theme', theme);
-      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('cyberdeck-mode', mode);
+      document.documentElement.setAttribute('data-mode', mode);
     }
   },
 }));
