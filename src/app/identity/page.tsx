@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { User, MapPin, Shield, Lock, ArrowLeft, Terminal, Cpu, Globe, Zap, Search } from 'lucide-react';
+import { MapPin, ArrowLeft, Terminal, Cpu, Globe, Zap, Lock } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { collection, query, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useCollection } from 'react-firebase-hooks/firestore';
@@ -60,7 +61,7 @@ const FALLBACK_EDU = [
 export default function IdentityPage() {
   const [mounted, setMounted] = useState(false);
 
-  const [eduValue, eduLoading] = useCollection(
+  const [eduValue] = useCollection(
     query(collection(db, 'education'), orderBy('period', 'desc'))
   );
 
@@ -86,21 +87,32 @@ export default function IdentityPage() {
         <div className="space-y-12">
           {/* Hero Header */}
           <div className="flex flex-col md:flex-row gap-8 items-center border-b border-primary/20 pb-12">
-            <div className="w-40 h-40 border-2 border-primary/40 bg-primary/5 flex items-center justify-center p-4 relative overflow-hidden">
-              <User className="w-24 h-24 text-primary/20" />
-              <div className="absolute top-0 left-0 w-full h-[1px] bg-primary/40 animate-[scanline_3s_linear_infinite]" />
+            <div className="w-44 h-56 border-2 border-primary/40 bg-primary/5 relative overflow-hidden group">
+              <Image 
+                src="/me.jpg" 
+                alt="Rohit Roy Profile" 
+                fill 
+                className="object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-in-out scale-110 group-hover:scale-100"
+                priority
+              />
+              <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors duration-500" />
+              <div className="absolute top-0 left-0 w-full h-[1px] bg-primary/60 animate-[scanline_4s_linear_infinite] z-10" />
+              <div className="absolute inset-0 border border-primary/20 pointer-events-none" />
             </div>
 
             <div className="flex-1 space-y-4 text-center md:text-left">
               <div className="space-y-2">
-                <h1 className="text-5xl md:text-6xl font-headline tracking-tighter text-glow uppercase">ROHIT ROY</h1>
-                <p className="text-base md:text-lg font-code text-primary/80 uppercase tracking-widest flex items-center justify-center md:justify-start gap-2">
-                   <Terminal className="w-4 h-4 text-accent" /> OT Security Engineer
+                <h1 className="text-5xl md:text-6xl font-headline tracking-tighter text-glow uppercase text-primary">ROHIT ROY</h1>
+                <p className="text-base md:text-lg font-code text-accent uppercase tracking-[0.3em] flex items-center justify-center md:justify-start gap-2">
+                   <Terminal className="w-4 h-4" /> OT Security Engineer
                 </p>
               </div>
               <div className="flex flex-wrap justify-center md:justify-start gap-2">
-                <span className="px-3 py-1 border border-[#00ff9f]/40 text-[10px] font-code text-[#00ff9f] uppercase bg-[#00ff9f]/5 tracking-widest">
-                  OT Security Engineer
+                <span className="px-3 py-1 border border-primary/40 text-[10px] font-code text-primary uppercase bg-primary/5 tracking-widest">
+                  Active Node
+                </span>
+                <span className="px-3 py-1 border border-accent/40 text-[10px] font-code text-accent uppercase bg-accent/5 tracking-widest">
+                  Verified Intel
                 </span>
               </div>
             </div>
@@ -115,10 +127,10 @@ export default function IdentityPage() {
               <div className="space-y-4">
                 {education.map((edu: any, idx: number) => (
                   <div key={edu.id || idx} className="space-y-1">
-                    <h4 className="text-lg font-headline text-glow uppercase leading-tight">{edu.degree}</h4>
+                    <h4 className="text-lg font-headline text-glow uppercase leading-tight text-primary">{edu.degree}</h4>
                     <p className="text-[10px] font-code text-primary/60 uppercase">{edu.school} | {edu.period}</p>
                     <div className="text-[10px] font-code text-accent uppercase flex items-center gap-2">
-                      <Zap className="w-3 h-3" /> Node performance: {edu.score}
+                      <Zap className="w-3 h-3" /> Performance: {edu.score}
                     </div>
                   </div>
                 ))}
@@ -150,7 +162,7 @@ export default function IdentityPage() {
             </div>
           </div>
 
-          {/* Skill Matrix Alignment - High Density One-View Layout */}
+          {/* Skill Matrix Alignment */}
           <div className="space-y-6">
             <h3 className="text-[10px] font-code text-primary/40 uppercase tracking-[0.5em] border-b border-primary/10 pb-2 flex items-center gap-2">
               <Cpu className="w-3 h-3" /> Skill Matrix Alignment (111+ Points)
@@ -166,8 +178,8 @@ export default function IdentityPage() {
                     {cat.skills.map((skill, sIdx) => (
                       <motion.span 
                         key={sIdx}
-                        whileHover={{ scale: 1.05, borderColor: 'hsla(var(--primary), 0.5)' }}
-                        className="px-2 py-0.5 border border-primary/10 bg-primary/5 text-[9px] font-code text-primary/70 uppercase transition-colors hover:text-primary hover:bg-primary/10 cursor-default"
+                        whileHover={{ scale: 1.05, borderColor: 'hsla(var(--primary), 0.5)', backgroundColor: 'hsla(var(--primary), 0.1)' }}
+                        className="px-2 py-0.5 border border-primary/10 bg-primary/5 text-[9px] font-code text-primary/70 uppercase transition-colors hover:text-primary cursor-default"
                       >
                         {skill}
                       </motion.span>
@@ -182,8 +194,8 @@ export default function IdentityPage() {
 
       <style jsx global>{`
         @keyframes scanline {
-          0% { transform: translateY(0); }
-          100% { transform: translateY(160px); }
+          0% { transform: translateY(-100%); }
+          100% { transform: translateY(100%); }
         }
       `}</style>
     </main>
