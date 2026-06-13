@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -8,6 +9,7 @@ import Image from 'next/image';
 import { collection, query, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useCollection } from 'react-firebase-hooks/firestore';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const SKILL_CATEGORIES = [
   {
@@ -60,6 +62,7 @@ const FALLBACK_EDU = [
 
 export default function IdentityPage() {
   const [mounted, setMounted] = useState(false);
+  const avatarImage = PlaceHolderImages.find(img => img.id === 'profile-avatar');
 
   const [eduValue] = useCollection(
     query(collection(db, 'education'), orderBy('period', 'desc'))
@@ -88,13 +91,16 @@ export default function IdentityPage() {
           {/* Hero Header */}
           <div className="flex flex-col md:flex-row gap-8 items-center border-b border-primary/20 pb-12">
             <div className="w-44 h-56 border-2 border-primary/40 bg-primary/5 relative overflow-hidden group">
-              <Image 
-                src="/me.jpg" 
-                alt="Rohit Roy Profile" 
-                fill 
-                className="object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-in-out scale-110 group-hover:scale-100"
-                priority
-              />
+              {avatarImage && (
+                <Image 
+                  src={avatarImage.imageUrl} 
+                  alt={avatarImage.description} 
+                  fill 
+                  className="object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-in-out scale-110 group-hover:scale-100"
+                  priority
+                  data-ai-hint={avatarImage.imageHint}
+                />
+              )}
               <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors duration-500" />
               <div className="absolute top-0 left-0 w-full h-[1px] bg-primary/60 animate-[scanline_4s_linear_infinite] z-10" />
               <div className="absolute inset-0 border border-primary/20 pointer-events-none" />
