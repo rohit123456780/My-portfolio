@@ -12,18 +12,16 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 const FALLBACK_PROJECTS = [
   { title: "SquaredUp MSS Dashboard", org: "Radian Generation", period: "2026", details: "Real-time visibility into Zendesk and Splunk for MSS customers.", category: "Infrastructure", tools: ["Splunk", "Zendesk", "SquaredUp"] },
   { title: "Baserow Database Transition", org: "Radian Generation", period: "2025", details: "Spreadsheet-to-database migration for Ops Lists.", category: "Data Architecture", tools: ["Baserow", "Python"] },
-  { title: "Secure Mail Infrastructure", org: "Tech Trek Events", period: "2025", details: "cPanel/Outlook hardening with SSL/TLS and security rule implementation.", category: "Infrastructure", tools: ["cPanel", "Outlook", "Network Security"] },
-  { title: "Cyber Ops & Threat Analysis Lab", org: "Personal", period: "2024", details: "10-month hands-on lab environment for simulating security operations and attacks.", category: "Education", tools: ["Kali Linux", "Metasploit", "Splunk"] },
+  { title: "Secure Mail Infrastructure", org: "Tech Trek Events", period: "2025", details: "cPanel/Outlook hardening with SSL/TLS implementation.", category: "Infrastructure", tools: ["cPanel", "Outlook"] },
   { title: "AI-Based XSS Detection", org: "Sturtle Security", period: "2024", details: "ML classification models for real-time XSS detection.", category: "AI Security", tools: ["Python", "TensorFlow"] },
-  { title: "Web Pentest - Juice Shop", org: "Msinterface", period: "2024", details: "CVSS-based reporting and PoC exploits for OWASP Juice Shop vulnerable app.", category: "Offensive Security", tools: ["Burp Suite", "OWASP"] },
+  { title: "Web Pentest - Juice Shop", org: "Msinterface", period: "2024", details: "CVSS-based reporting and PoC exploits for OWASP Juice Shop.", category: "Offensive Security", tools: ["Burp Suite", "OWASP"] },
   { title: "Web Vulnerability Scanner", org: "Msinterface", period: "2024", details: "Python-based fuzzing tool for XSS/SQLi/IDOR.", category: "Offensive Security", tools: ["Python", "Requests"] },
   { title: "Network Packet Analyzer", org: "Msinterface", period: "2024", details: "Real-time traffic sniffing and security analysis.", category: "Networking", tools: ["Scapy", "Python"] },
   { title: "Image Encryption (Pixel XOR)", org: "Personal", period: "2023", details: "Symmetric cryptography for visual data using Pixel XOR.", category: "Cryptography", tools: ["Python", "PIL"] },
-  { title: "Caesar Cipher Tool", org: "Personal", period: "2023", details: "Educational text encryption tool for classical cryptography.", category: "Cryptography", tools: ["Python"] },
-  { title: "Password Complexity Checker", org: "Personal", period: "2023", details: "Entropy-based password strength evaluator and feedback tool.", category: "Security Tools", tools: ["Python", "Zxcvbn"] },
-  { title: "Secure Login Page", org: "Personal", period: "2023", details: "bcrypt-based authentication with OWASP protections and CSRF handling.", category: "Web Security", tools: ["NodeJS", "bcrypt"] },
-  { title: "Metasploit Payload Dev", org: "Personal", period: "2022", details: "Lab-based payload analysis and signature identification using Metasploit.", category: "Offensive Security", tools: ["Metasploit", "C++"] },
-  { title: "Network Security Monitor", org: "Personal", period: "2022", details: "IDS/IPS rule validation against simulated attacks in a home lab.", category: "Security Ops", tools: ["Snort", "Zeek"] }
+  { title: "Password Complexity Checker", org: "Personal", period: "2023", details: "Entropy-based password strength evaluator.", category: "Security Tools", tools: ["Python"] },
+  { title: "Secure Login Page", org: "Personal", period: "2023", details: "bcrypt-based authentication with OWASP protections.", category: "Web Security", tools: ["NodeJS", "bcrypt"] },
+  { title: "Metasploit Payload Dev", org: "Personal", period: "2022", details: "Lab-based payload analysis and signature identification.", category: "Offensive Security", tools: ["Metasploit"] },
+  { title: "Network Security Monitor", org: "Personal", period: "2022", details: "IDS/IPS rule validation against simulated attacks.", category: "Security Ops", tools: ["Snort", "Zeek"] }
 ];
 
 export default function ProjectsPage() {
@@ -49,7 +47,7 @@ export default function ProjectsPage() {
             <span className="text-[10px] font-code uppercase tracking-widest">Accessing Mission Matrix...</span>
           </div>
           <h1 className="text-5xl font-headline text-glow uppercase">Mission Matrix</h1>
-          <p className="text-xs font-code text-primary/40 uppercase tracking-widest">{projects.length} High-impact technical mission case studies verified.</p>
+          <p className="text-xs font-code text-primary/40 uppercase tracking-widest">{projects.length} High-impact missions verified.</p>
           <div className="h-px w-full bg-gradient-to-r from-accent/50 to-transparent" />
         </div>
 

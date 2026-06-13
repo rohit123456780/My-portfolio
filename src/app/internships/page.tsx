@@ -24,14 +24,14 @@ const FULL_INTERNSHIP_LIST = [
   { org: "Trimbak Infotech", role: "Cyber Security Intern", period: "Dec 2023 – Jan 2024", domain: "Cybersecurity" },
   { org: "TechnoTrench", role: "Cybersecurity & Ethical Hacking Intern", period: "Oct 2023 – Nov 2023", domain: "Ethical Hacking" },
   { org: "ITPS", role: "Cyber Security Intern", period: "Sep 2023 – Sep 2023", domain: "Cybersecurity" },
-  { org: "Msinterface Technologies", role: "Cybersecurity Intern", period: "Jul 2023 – Aug 2023", domain: "Cybersecurity" },
+  { org: "Msinterface Technologies Pvt Ltd", role: "Cybersecurity Intern", period: "Jul 2023 – Aug 2023", domain: "Cybersecurity" },
   { org: "StartHere", role: "Cybersecurity Intern", period: "Jun 2023 – Jun 2023", domain: "Cybersecurity" },
   { org: "NexaSynergy Innovations", role: "Cybersecurity Intern", period: "Apr 2023 – May 2023", domain: "Cybersecurity" },
-  { org: "Sturtle Security", role: "Cybersecurity Intern", period: "Feb 2023 – Mar 2023", domain: "Cybersecurity" },
+  { org: "Sturtle Security Pvt Ltd", role: "Cybersecurity Intern", period: "Feb 2023 – Mar 2023", domain: "Cybersecurity" },
   { org: "ShadowFox", role: "Cybersecurity Intern", period: "Dec 2022 – Jan 2023", domain: "Cybersecurity" },
   { org: "Pinnacle Labs", role: "Cybersecurity Intern", period: "Oct 2022 – Nov 2022", domain: "Cybersecurity" },
   { org: "Let's We Hack", role: "Cybersecurity & Ethical Hacking Intern", period: "Aug 2022 – Sep 2022", domain: "Ethical Hacking" },
-  { org: "SecureSphere Foundation", role: "Cybersecurity Intern", period: "May 2022 – Jul 2022", domain: "Cybersecurity" },
+  { org: "SecureSphere Foundation / CFCS2R", role: "Cybersecurity Intern", period: "May 2022 – Jul 2022", domain: "Cybersecurity" },
   { org: "Cyber Secured India", role: "Cybersecurity & Digital Forensics Intern", period: "Feb 2022 – Apr 2022", domain: "Digital Forensics" },
   { org: "DeltaClause", role: "Cybersecurity & Ethical Hacking Intern", period: "Dec 2021 – Jan 2022", domain: "Ethical Hacking" },
   { org: "TechnoHacks EduTech", role: "Cybersecurity & Ethical Hacking Intern", period: "Oct 2021 – Nov 2021", domain: "Ethical Hacking" },
@@ -62,7 +62,7 @@ export default function InternshipsPage() {
             <span className="text-[10px] font-code uppercase tracking-widest">Infiltrating Deployment History...</span>
           </div>
           <h1 className="text-5xl font-headline text-glow uppercase">Growth Sector</h1>
-          <p className="text-xs font-code text-primary/40 uppercase tracking-widest">{internships.length}+ Professional Deployments Identified in Neural Archives.</p>
+          <p className="text-xs font-code text-primary/40 uppercase tracking-widest">{internships.length}+ Professional Deployments Identified.</p>
           <div className="h-px w-full bg-gradient-to-r from-blue-500/50 to-transparent" />
         </div>
 
