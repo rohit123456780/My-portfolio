@@ -46,8 +46,7 @@ const FALLBACK_ACHIEVEMENTS = [
 
 export default function AwardsPage() {
   const [value, loading] = useCollection(
-    query(collection(db, 'achievements'), orderBy('title', 'asc')),
-    { snapshotListenOptions: { includeMetadataChanges: true } }
+    query(collection(db, 'achievements'), orderBy('title', 'asc'))
   );
 
   const achievements = useMemo(() => {

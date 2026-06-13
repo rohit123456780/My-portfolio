@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -9,19 +8,47 @@ import { collection, query, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useCollection } from 'react-firebase-hooks/firestore';
 
+const FALLBACK_SKILLS = [
+  { name: "Technical Engineering" },
+  { name: "OT/ICS Security" },
+  { name: "VAPT" },
+  { name: "SOC Monitoring" },
+  { name: "Python" },
+  { name: "Kali Linux" },
+  { name: "Wireshark" },
+  { name: "Metasploit" },
+  { name: "Quantum Technology" },
+  { name: "GRC" }
+];
+
+const FALLBACK_EDU = [
+  {
+    degree: "Diploma in Computer Science & Technology",
+    school: "SVS College",
+    period: "2019 - 2022",
+    score: "9.1 CGPA"
+  }
+];
+
 export default function IdentityPage() {
   const [mounted, setMounted] = useState(false);
 
-  // Real-time fetches for skills and education
   const [skillsValue, skillsLoading] = useCollection(
-    query(collection(db, 'skills'), orderBy('level', 'desc'))
+    query(collection(db, 'skills'), orderBy('name', 'asc'))
   );
   const [eduValue, eduLoading] = useCollection(
     query(collection(db, 'education'), orderBy('period', 'desc'))
   );
 
-  const skills = useMemo(() => skillsValue?.docs.map(d => ({ id: d.id, ...d.data() })) || [], [skillsValue]);
-  const education = useMemo(() => eduValue?.docs.map(d => ({ id: d.id, ...d.data() })) || [], [eduValue]);
+  const skills = useMemo(() => {
+    const dbSkills = skillsValue?.docs.map(d => ({ id: d.id, ...d.data() })) || [];
+    return dbSkills.length > 0 ? dbSkills : FALLBACK_SKILLS;
+  }, [skillsValue]);
+
+  const education = useMemo(() => {
+    const dbEdu = eduValue?.docs.map(d => ({ id: d.id, ...d.data() })) || [];
+    return dbEdu.length > 0 ? dbEdu : FALLBACK_EDU;
+  }, [eduValue]);
 
   useEffect(() => {
     setMounted(true);
@@ -65,8 +92,8 @@ export default function IdentityPage() {
             <div className="cyber-glass p-8 space-y-6 border border-primary/10 hover:border-accent transition-all group">
               <h3 className="text-xs font-code text-primary/40 uppercase tracking-[0.5em] border-b border-primary/10 pb-2">Academic Node</h3>
               <div className="space-y-6">
-                {education.map((edu: any) => (
-                  <div key={edu.id}>
+                {education.map((edu: any, idx: number) => (
+                  <div key={edu.id || idx}>
                     <h4 className="text-xl font-headline text-glow uppercase">{edu.degree}</h4>
                     <p className="text-xs font-code text-primary/60 uppercase">{edu.school} | {edu.period}</p>
                     {edu.score && (
@@ -82,7 +109,6 @@ export default function IdentityPage() {
                     )}
                   </div>
                 ))}
-                {education.length === 0 && !eduLoading && <p className="text-[10px] font-code text-primary/20 uppercase">Awaiting Academic Uplink...</p>}
               </div>
             </div>
 
@@ -115,9 +141,9 @@ export default function IdentityPage() {
           <div className="space-y-8">
             <h3 className="text-xs font-code text-primary/40 uppercase tracking-[0.5em] border-b border-primary/10 pb-2">Skill Matrix Alignment</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {skills.map((skill: any) => (
+              {skills.map((skill: any, idx: number) => (
                 <motion.div 
-                  key={skill.id}
+                  key={skill.id || idx}
                   whileHover={{ scale: 1.05 }}
                   className="p-6 border border-primary/10 bg-primary/5 hover:border-primary/40 hover:bg-primary/10 transition-all text-center group"
                 >
@@ -125,7 +151,6 @@ export default function IdentityPage() {
                   <span className="text-[10px] font-code text-primary uppercase tracking-widest">{skill.name}</span>
                 </motion.div>
               ))}
-              {skills.length === 0 && !skillsLoading && <p className="col-span-full text-center text-[10px] font-code text-primary/20 uppercase">No active skill nodes. Invoke Obsidian.</p>}
             </div>
           </div>
         </div>
