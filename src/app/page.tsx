@@ -42,6 +42,7 @@ export default function Home() {
         >
           <Hero3D />
 
+          {/* Tactical HUD Overlay - axis lines removed for cleaner UI */}
           <div className="relative z-10 w-full max-w-7xl flex flex-col lg:flex-row items-center justify-between gap-12">
             <div className="w-full lg:w-1/2 space-y-12">
               <div className="space-y-6">
@@ -83,7 +84,7 @@ export default function Home() {
                 </Link>
               </div>
 
-              <div className="flex gap-4 pt-4">
+              <div className="flex gap-4 pt-4 relative">
                 <QuickLink href="/projects" icon={Cpu} label="PROJECTS" />
                 <QuickLink href="/internships" icon={Globe} label="INTERNSHIPS" />
                 <QuickLink href="/certifications" icon={Shield} label="CERTS" />

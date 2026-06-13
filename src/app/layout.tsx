@@ -22,7 +22,6 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet" />
       </head>
       <body className="font-code antialiased bg-[#020408] text-[#e0ffe8] selection:bg-primary/30" suppressHydrationWarning>
-        <div className="scanline" />
         <CyberCursor />
         <HackerHUD />
         <TerminalEasterEgg />
