@@ -67,10 +67,20 @@ const FULL_CERTIFICATIONS_LIST = [
   { name: "AI Agent Fundamentals", issuer: "Databricks", category: "Cloud, AI & Data Platforms", date: "Apr 2026", id: "181010117" },
   { name: "JDE – Junior DevOps Engineer", issuer: "VibeSecurity", category: "Cloud, AI & Data Platforms", date: "Apr 2026", id: "VS-JDE-CERT1485" },
 
+  // Google Professional
+  { name: "Foundations of Cybersecurity", issuer: "Google", category: "Google Cybersecurity Professional", date: "Jan 2024" },
+  { name: "Play It Safe: Manage Security Risks", issuer: "Google", category: "Google Cybersecurity Professional", date: "Jan 2024" },
+  { name: "Connect and Protect: Networks", issuer: "Google", category: "Google Cybersecurity Professional", date: "Jan 2024" },
+  { name: "Tools and Trade: Linux and SQL", issuer: "Google", category: "Google Cybersecurity Professional", date: "Jan 2024" },
+  { name: "Assets, Threats & Vulnerabilities", issuer: "Google", category: "Google Cybersecurity Professional" },
+  { name: "Sound the Alarm: Detection", issuer: "Google", category: "Google Cybersecurity Professional", date: "May 2024" },
+  { name: "Automate Tasks with Python", issuer: "Google", category: "Google Cybersecurity Professional", date: "May 2024" },
+  { name: "Google Cybersecurity Professional", issuer: "Coursera", category: "Google Cybersecurity Professional", date: "May 2024" },
+
   // Specialist & Gov
-  { name: "Geo-data Sharing and Cyber Security", issuer: "ISRO", category: "Specialist & Miscellaneous Certifications", date: "Dec 2023", id: "2023233862177" },
-  { name: "IoT: Internet of Things", issuer: "SVS College", category: "Specialist & Miscellaneous Certifications", date: "Jan 2022", id: "GCBSQ8-CE001977" },
-  { name: "Certified Cyber Warrior", issuer: "HackingFlix", category: "Specialist & Miscellaneous Certifications", date: "Jan 2024", id: "01223493800975" }
+  { name: "Geo-data Sharing", issuer: "ISRO", category: "Specialist Certifications", date: "Dec 2023", id: "2023233862177" },
+  { name: "IoT: Internet of Things", issuer: "SVS College", category: "Specialist Certifications", date: "Jan 2022", id: "GCBSQ8-CE001977" },
+  { name: "Certified Cyber Warrior", issuer: "HackingFlix", category: "Specialist Certifications", date: "Jan 2024", id: "01223493800975" }
 ];
 
 export default function CertificationsPage() {

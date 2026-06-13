@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useMemo } from 'react';
@@ -12,10 +11,18 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 const FALLBACK_PROJECTS = [
   { title: "SquaredUp MSS Dashboard", org: "Radian Generation", period: "2026", details: "Real-time visibility into Zendesk and Splunk for MSS customers.", category: "Infrastructure", tools: ["Splunk", "Zendesk", "SquaredUp"] },
   { title: "Baserow Database Transition", org: "Radian Generation", period: "2025", details: "Spreadsheet-to-database migration for Ops Lists.", category: "Data Architecture", tools: ["Baserow", "Python"] },
+  { title: "Secure Mail Infrastructure", org: "Tech Trek Events", period: "2025", details: "cPanel/Outlook hardening with SSL/TLS and security rule implementation.", category: "Infrastructure", tools: ["cPanel", "Outlook", "Network Security"] },
+  { title: "Cyber Ops & Threat Analysis Lab", org: "Personal", period: "2024", details: "10-month hands-on lab environment for simulating security operations and attacks.", category: "Education", tools: ["Kali Linux", "Metasploit", "Splunk"] },
   { title: "AI-Based XSS Detection", org: "Sturtle Security", period: "2024", details: "ML classification models for real-time XSS detection.", category: "AI Security", tools: ["Python", "TensorFlow"] },
+  { title: "Web Pentest - Juice Shop", org: "Msinterface", period: "2024", details: "CVSS-based reporting and PoC exploits for OWASP Juice Shop vulnerable app.", category: "Offensive Security", tools: ["Burp Suite", "OWASP"] },
   { title: "Web Vulnerability Scanner", org: "Msinterface", period: "2024", details: "Python-based fuzzing tool for XSS/SQLi/IDOR.", category: "Offensive Security", tools: ["Python", "Requests"] },
   { title: "Network Packet Analyzer", org: "Msinterface", period: "2024", details: "Real-time traffic sniffing and security analysis.", category: "Networking", tools: ["Scapy", "Python"] },
-  { title: "Image Encryption (Pixel XOR)", org: "Personal", period: "2023", details: "Symmetric cryptography for visual data.", category: "Cryptography", tools: ["Python", "PIL"] }
+  { title: "Image Encryption (Pixel XOR)", org: "Personal", period: "2023", details: "Symmetric cryptography for visual data using Pixel XOR.", category: "Cryptography", tools: ["Python", "PIL"] },
+  { title: "Caesar Cipher Tool", org: "Personal", period: "2023", details: "Educational text encryption tool for classical cryptography.", category: "Cryptography", tools: ["Python"] },
+  { title: "Password Complexity Checker", org: "Personal", period: "2023", details: "Entropy-based password strength evaluator and feedback tool.", category: "Security Tools", tools: ["Python", "Zxcvbn"] },
+  { title: "Secure Login Page", org: "Personal", period: "2023", details: "bcrypt-based authentication with OWASP protections and CSRF handling.", category: "Web Security", tools: ["NodeJS", "bcrypt"] },
+  { title: "Metasploit Payload Dev", org: "Personal", period: "2022", details: "Lab-based payload analysis and signature identification using Metasploit.", category: "Offensive Security", tools: ["Metasploit", "C++"] },
+  { title: "Network Security Monitor", org: "Personal", period: "2022", details: "IDS/IPS rule validation against simulated attacks in a home lab.", category: "Security Ops", tools: ["Snort", "Zeek"] }
 ];
 
 export default function ProjectsPage() {

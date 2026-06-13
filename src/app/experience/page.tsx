@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useMemo } from 'react';
@@ -15,6 +14,36 @@ const ICON_MAP: Record<string, any> = {
   Terminal
 };
 
+const FALLBACK_EXP = [
+  {
+    title: "OT Engineering Administrator L1",
+    org: "Radian Generation",
+    period: "Oct 2025 – Present",
+    type: "Hybrid",
+    location: "West Bengal, India",
+    focus: "OT/ICS cybersecurity posture, security documentation & SOPs, change & risk governance, data governance migration, compliance alignment, process hardening.",
+    icon: "Shield"
+  },
+  {
+    title: "IT Administrator",
+    org: "Tech Trek Events",
+    period: "May 2025 – Jul 2025",
+    type: "Remote",
+    location: "Global",
+    focus: "Outlook email administration, incoming/outgoing servers, cPanel domain email integration, email security rules, marketing email accounts, network governance rules.",
+    icon: "Server"
+  },
+  {
+    title: "Technical Support Administrator",
+    org: "HackingFlix",
+    period: "Jun 2023 – May 2025",
+    type: "Remote",
+    location: "Global",
+    focus: "End-to-end technical support, documentation, access permissions, security monitoring exposure, segregation of duties awareness, cross-team collaboration.",
+    icon: "Terminal"
+  }
+];
+
 export default function ExperiencePage() {
   const [value, loading] = useCollection(
     query(collection(db, 'experience'), orderBy('period', 'desc')),
@@ -22,7 +51,8 @@ export default function ExperiencePage() {
   );
 
   const experiences = useMemo(() => {
-    return value?.docs.map(doc => ({ id: doc.id, ...doc.data() })) || [];
+    const dbExp = value?.docs.map(doc => ({ id: doc.id, ...doc.data() })) || [];
+    return dbExp.length > 0 ? dbExp : FALLBACK_EXP;
   }, [value]);
 
   return (
@@ -49,7 +79,7 @@ export default function ExperiencePage() {
             const Icon = ICON_MAP[exp.icon || 'Shield'] || Shield;
             return (
               <motion.div 
-                key={exp.id}
+                key={exp.id || idx}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
@@ -103,12 +133,6 @@ export default function ExperiencePage() {
               </motion.div>
             );
           })}
-          
-          {!loading && experiences.length === 0 && (
-            <div className="text-center py-20 border border-dashed border-primary/10">
-              <p className="text-[10px] font-code text-primary/30 uppercase">No experience nodes detected. Synchronize via Obsidian.</p>
-            </div>
-          )}
         </div>
       </div>
     </main>

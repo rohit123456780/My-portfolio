@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useMemo } from 'react';
@@ -13,6 +12,38 @@ const ICON_MAP: Record<string, any> = {
   Trophy, Target, Award, Star, BookOpen, Zap, ShieldCheck
 };
 
+const FALLBACK_ACHIEVEMENTS = [
+  {
+    title: "Featured Contributor – Stronger Together",
+    description: "Recognized as a contributing professional in an international publication highlighting diverse voices in the cybersecurity domain.",
+    category: "Publication",
+    meta: "ISBN-Verified",
+    isMajor: true,
+    icon: "BookOpen"
+  },
+  {
+    title: "Global CTF Competitor (Since 2023)",
+    description: "Active participation in TryHackMe and HackTheBox. Completed advanced labs: King of the Hill, Basic Pentesting, and Privilege Escalation.",
+    category: "Offensive Security",
+    isMajor: true,
+    icon: "Target"
+  },
+  {
+    title: "27+ Cybersecurity Internships",
+    description: "Extensive hands-on exposure across VAPT, Digital Forensics, SOC, and GRC domains, showcasing commitment to continuous learning.",
+    category: "Professional Growth",
+    isMajor: true,
+    icon: "ShieldCheck"
+  },
+  {
+    title: "97+ Industry Certifications",
+    description: "Deep domain competency across API Security, Cloud, SOC, and Network Defense, verified by global certifying bodies.",
+    category: "Credentials",
+    isMajor: true,
+    icon: "Award"
+  }
+];
+
 export default function AwardsPage() {
   const [value, loading] = useCollection(
     query(collection(db, 'achievements'), orderBy('title', 'asc')),
@@ -20,7 +51,8 @@ export default function AwardsPage() {
   );
 
   const achievements = useMemo(() => {
-    return value?.docs.map(doc => ({ id: doc.id, ...doc.data() })) || [];
+    const dbAch = value?.docs.map(doc => ({ id: doc.id, ...doc.data() })) || [];
+    return dbAch.length > 0 ? dbAch : FALLBACK_ACHIEVEMENTS;
   }, [value]);
 
   return (
@@ -47,7 +79,7 @@ export default function AwardsPage() {
             const Icon = ICON_MAP[ach.icon || 'Award'] || Award;
             return (
               <motion.div 
-                key={ach.id}
+                key={ach.id || idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -84,12 +116,6 @@ export default function AwardsPage() {
               </motion.div>
             );
           })}
-          
-          {!loading && achievements.length === 0 && (
-            <div className="text-center py-20 border border-dashed border-primary/10">
-              <p className="text-[10px] font-code text-primary/30 uppercase">No distinctions detected. Deploy milestones via Obsidian.</p>
-            </div>
-          )}
         </div>
       </div>
     </main>
