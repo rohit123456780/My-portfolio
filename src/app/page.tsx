@@ -5,14 +5,15 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useUIStore } from '@/lib/store';
-import { Shield, Activity, Zap, Lock, ChevronRight, Cpu, Globe, FileText, Briefcase } from 'lucide-react';
+import { Shield, Activity, Lock, ChevronRight, Cpu, Globe, FileText, Briefcase, Zap } from 'lucide-react';
 import Link from 'next/link';
+import ThreatIntelligence from '@/components/cyber/ThreatIntelligence';
 
 const Hero3D = dynamic(() => import('@/components/cyber/Hero3D'), { ssr: false });
 const BootSequence = dynamic(() => import('@/components/cyber/BootSequence'), { ssr: false });
 
 export default function Home() {
-  const { isBooted } = useUIStore();
+  const { isBooted, theme } = useUIStore();
   const [typedText, setTypedText] = useState('');
   const fullText = "OT SECURITY ENGINEER";
 
@@ -39,82 +40,104 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
-          className="relative min-h-screen flex items-center justify-center p-8"
+          className="relative min-h-screen p-6 md:p-12 space-y-24"
         >
-          <Hero3D />
+          {/* Hero Section */}
+          <div className="min-h-[80vh] flex flex-col justify-center relative">
+            <Hero3D />
 
-          <div className="relative z-10 w-full max-w-7xl flex flex-col lg:flex-row items-center justify-between gap-12">
-            <div className="w-full lg:w-1/2 space-y-12">
-              <div className="space-y-6">
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="flex items-center gap-3 text-[10px] font-code text-accent tracking-[0.4em] uppercase"
-                >
-                  <Lock className="w-3 h-3" /> SECURE_ACCESS_ESTABLISHED
-                </motion.div>
-                
-                <h1 className="text-7xl md:text-9xl font-headline tracking-tighter text-primary leading-none text-glow uppercase">
-                  ROHIT<br/>ROY
-                </h1>
-                
-                <div className="text-sm font-code text-primary/80 border-l-2 border-primary/40 pl-6 h-12 flex items-center">
-                  <p>
-                    {typedText}
-                    <span className="w-2 h-5 bg-primary inline-block ml-1 animate-pulse" />
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <StatusCard icon={Activity} label="MISSION_STATUS" value="ACTIVE_NODE" />
-                <StatusCard icon={Shield} label="PRIMARY_DOMAIN" value="OT_SECURITY" />
-              </div>
-
-              <div className="flex flex-wrap gap-6">
-                <Link href="/identity">
-                  <button className="px-10 py-4 bg-primary text-primary-foreground font-headline uppercase tracking-widest hover:bg-accent hover:text-accent-foreground transition-all flex items-center gap-3 group shadow-[0_0_25px_hsla(var(--primary),0.3)]">
-                    IDENTITY CORE <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </button>
-                </Link>
-                <Link href="/resume">
-                  <button className="px-10 py-4 border border-primary/40 text-primary font-headline uppercase tracking-widest hover:bg-primary/10 transition-all flex items-center gap-3 group">
-                    <FileText className="w-4 h-4" /> RESUME SECTOR
-                  </button>
-                </Link>
-              </div>
-
-              <div className="flex gap-4 pt-4 relative">
-                <QuickLink href="/experience" icon={Briefcase} label="EXPERIENCE" />
-                <QuickLink href="/projects" icon={Cpu} label="PROJECTS" />
-                <QuickLink href="/internships" icon={Globe} label="INTERNSHIPS" />
-                <QuickLink href="/certifications" icon={Shield} label="CERTS" />
-              </div>
-            </div>
-
-            <div className="hidden lg:block w-1/3">
-              <div className="bg-black/80 backdrop-blur-xl border border-primary/20 p-8 space-y-6 relative overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
-                <div className="flex justify-between items-center border-b border-primary/20 pb-4">
-                  <span className="text-[10px] font-code text-primary/40 uppercase tracking-widest">TACTICAL_INTEL_v3</span>
-                  <div className="flex gap-1.5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-destructive/40" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/40" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-primary/40" />
+            <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 pt-20">
+              <div className="w-full lg:w-1/2 space-y-12">
+                <div className="space-y-6">
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="flex items-center gap-3 text-[10px] font-code text-accent tracking-[0.4em] uppercase"
+                  >
+                    <Lock className="w-3 h-3" /> SECURE_ACCESS_ESTABLISHED
+                  </motion.div>
+                  
+                  <h1 className="text-7xl md:text-9xl font-headline tracking-tighter text-primary leading-none text-glow uppercase">
+                    ROHIT<br/>ROY
+                  </h1>
+                  
+                  <div className="text-sm font-code text-primary/80 border-l-2 border-primary/40 pl-6 h-12 flex items-center">
+                    <p>
+                      {typedText}
+                      <span className="w-2 h-5 bg-primary inline-block ml-1 animate-pulse" />
+                    </p>
                   </div>
                 </div>
-                <div className="space-y-4 text-[11px] font-code text-primary/70">
-                  <div className="space-y-1">
-                    <p className="text-accent">> DECRYPTING_BIOMETRICS...</p>
-                    <p className="pl-4">SUBJECT: ROHIT ROY</p>
-                    <p className="pl-4">ROLE: OT SECURITY ENGINEER</p>
-                    <p className="pl-4">NODES: 111+ VERIFIED</p>
-                    <p className="pl-4">LOC: WB_INDIA</p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <StatusCard icon={Activity} label="MISSION_STATUS" value="ACTIVE_NODE" />
+                  <StatusCard icon={Shield} label="PRIMARY_DOMAIN" value="OT_SECURITY" />
+                </div>
+
+                <div className="flex flex-wrap gap-6">
+                  <Link href="/identity">
+                    <button className="px-10 py-4 bg-primary text-primary-foreground font-headline uppercase tracking-widest hover:bg-accent hover:text-accent-foreground transition-all flex items-center gap-3 group shadow-[0_0_25px_hsla(var(--primary),0.3)]">
+                      IDENTITY CORE <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </button>
+                  </Link>
+                  <Link href="/resume">
+                    <button className="px-10 py-4 border border-primary/40 text-primary font-headline uppercase tracking-widest hover:bg-primary/10 transition-all flex items-center gap-3 group">
+                      <FileText className="w-4 h-4" /> RESUME SECTOR
+                    </button>
+                  </Link>
+                </div>
+
+                <div className="flex gap-4 pt-4 relative">
+                  <QuickLink href="/experience" icon={Briefcase} label="EXPERIENCE" />
+                  <QuickLink href="/projects" icon={Cpu} label="PROJECTS" />
+                  <QuickLink href="/internships" icon={Globe} label="INTERNSHIPS" />
+                  <QuickLink href="/certifications" icon={Shield} label="CERTS" />
+                </div>
+              </div>
+
+              <div className="hidden lg:block w-1/3">
+                <div className="bg-black/80 backdrop-blur-xl border border-primary/20 p-8 space-y-6 relative overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
+                  <div className="flex justify-between items-center border-b border-primary/20 pb-4">
+                    <span className="text-[10px] font-code text-primary/40 uppercase tracking-widest">TACTICAL_INTEL_v3</span>
+                    <div className="flex gap-1.5">
+                      <div className="w-2.5 h-2.5 rounded-full bg-destructive/40" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/40" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-primary/40" />
+                    </div>
+                  </div>
+                  <div className="space-y-4 text-[11px] font-code text-primary/70">
+                    <div className="space-y-1">
+                      <p className="text-accent">> DECRYPTING_BIOMETRICS...</p>
+                      <p className="pl-4">SUBJECT: ROHIT ROY</p>
+                      <p className="pl-4">ROLE: OT SECURITY ENGINEER</p>
+                      <p className="pl-4">NODES: 111+ VERIFIED</p>
+                      <p className="pl-4">LOC: WB_INDIA</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
+          {/* Threat Intelligence Matrix */}
+          <div className="max-w-7xl mx-auto w-full">
+            <ThreatIntelligence />
+          </div>
+
+          <footer className="max-w-7xl mx-auto w-full py-12 border-t border-primary/10 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="text-[10px] font-code text-primary/30 uppercase tracking-[0.2em]">
+              © 2024 ROHIT ROY // OT SECURITY PROTOCOL // MISSION_SUCCESS
+            </div>
+            <div className="flex gap-6">
+              <span className="text-[10px] font-code text-primary/20 uppercase tracking-widest flex items-center gap-2">
+                <Shield className="w-3 h-3" /> Integrity_Verified
+              </span>
+              <span className="text-[10px] font-code text-primary/20 uppercase tracking-widest flex items-center gap-2">
+                <Activity className="w-3 h-3" /> Latency: 12ms
+              </span>
+            </div>
+          </footer>
         </motion.div>
       )}
 

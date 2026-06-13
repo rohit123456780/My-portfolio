@@ -3,10 +3,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Activity, Shield, Cpu, Globe, Trophy, User, Terminal, Lock, FileText, Unlock } from 'lucide-react';
+import { Activity, Shield, Cpu, Globe, Trophy, User, Terminal, Lock, FileText } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useUIStore } from '@/lib/store';
 import Link from 'next/link';
+import ThemeSwitcher from './ThemeSwitcher';
 
 const navItems = [
   { label: 'IDENTITY', path: '/identity', id: '01', icon: User },
@@ -45,31 +46,39 @@ export default function HackerHUD() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 z-[100] bg-background/95 border-b border-primary/20 backdrop-blur-xl h-8 flex items-center overflow-hidden font-code text-[9px]">
-        <div className="bg-primary text-primary-foreground px-4 h-full flex items-center font-bold tracking-[0.2em] shrink-0 uppercase">
-          LIVE_THREAT_FEED
-        </div>
-        <div className="flex-1 whitespace-nowrap pl-6 flex items-center gap-8">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentAlert}
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              className="flex items-center gap-3 text-primary/80"
-            >
-              <Activity className="w-3 h-3 text-accent animate-pulse" />
-              <span className="tracking-widest uppercase font-bold">{alerts[currentAlert]}</span>
-            </motion.div>
-          </AnimatePresence>
+      <div className="fixed top-0 left-0 right-0 z-[100] bg-background/95 border-b border-primary/20 backdrop-blur-xl h-8 flex items-center justify-between overflow-hidden font-code text-[9px]">
+        <div className="flex items-center h-full">
+          <div className="bg-primary text-primary-foreground px-4 h-full flex items-center font-bold tracking-[0.2em] shrink-0 uppercase">
+            LIVE_THREAT_FEED
+          </div>
+          <div className="flex-1 whitespace-nowrap pl-6 flex items-center gap-8 min-w-[200px]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentAlert}
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                className="flex items-center gap-3 text-primary/80"
+              >
+                <Activity className="w-3 h-3 text-accent animate-pulse" />
+                <span className="tracking-widest uppercase font-bold">{alerts[currentAlert]}</span>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
         
-        {!isVaultUnlocked && (
-          <Link href="/vault" className="px-6 text-primary/60 flex items-center gap-2 tracking-widest border-l border-primary/10 hover:text-primary transition-colors group h-full">
-            <Lock className="w-3 h-3 group-hover:animate-pulse" />
-            SECURE_VAULT
-          </Link>
-        )}
+        <div className="flex items-center gap-4 pr-4">
+          <ThemeSwitcher />
+          
+          <AnimatePresence>
+            {!isVaultUnlocked && (
+              <Link href="/vault" className="px-6 text-primary/60 flex items-center gap-2 tracking-widest border-l border-primary/10 hover:text-primary transition-colors group h-full">
+                <Lock className="w-3 h-3 group-hover:animate-pulse" />
+                SECURE_VAULT
+              </Link>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
       <nav className="fixed top-8 left-0 right-0 z-[90] p-4 flex justify-between items-center pointer-events-none">
@@ -92,7 +101,7 @@ export default function HackerHUD() {
             <Link key={item.id} href={item.path}>
               <div className={`px-4 py-1.5 border transition-all flex items-center gap-2 group relative overflow-hidden ${
                 pathname === item.path 
-                  ? 'border-primary bg-primary/10 text-primary' 
+                  ? 'border-primary bg-primary/10 text-primary shadow-[0_0_15px_hsla(var(--primary),0.2)]' 
                   : 'border-white/5 text-primary/40 hover:border-primary/40 hover:text-primary'
               }`}>
                 <span className="text-[8px] font-code opacity-40">[{item.id}]</span>
