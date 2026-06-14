@@ -3,7 +3,7 @@
 
 import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Stars, Float, PerspectiveCamera, MeshDistortMaterial, Sphere } from '@react-three/drei';
+import { Stars, Float, PerspectiveCamera, MeshDistortMaterial, Sphere, Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 import { useUIStore } from '@/lib/store';
 
@@ -12,41 +12,46 @@ function DefensiveScene() {
   
   useFrame(({ clock }) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = clock.getElapsedTime() * 0.05;
+      groupRef.current.rotation.y = clock.getElapsedTime() * 0.1;
     }
   });
 
   return (
     <group ref={groupRef}>
-      {/* Central Core */}
-      <Sphere args={[2.5, 64, 64]}>
+      {/* Central Infrastructure Core */}
+      <Sphere args={[2, 64, 64]}>
         <MeshDistortMaterial
-          color="#00ffff"
+          color="#00d2ff"
           attach="material"
-          distort={0.3}
-          speed={2}
-          roughness={0}
+          distort={0.2}
+          speed={3}
+          roughness={0.1}
+          metalness={1}
           transparent
-          opacity={0.2}
+          opacity={0.4}
         />
       </Sphere>
       
-      {/* Shield Lattice */}
+      {/* Network Lattices */}
       <mesh>
         <sphereGeometry args={[4, 32, 32]} />
-        <meshBasicMaterial color="#00ffff" wireframe transparent opacity={0.05} />
+        <meshBasicMaterial color="#00ffff" wireframe transparent opacity={0.1} />
+      </mesh>
+      <mesh rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[5, 0.02, 16, 100]} />
+        <meshBasicMaterial color="#00ffff" transparent opacity={0.2} />
       </mesh>
 
-      {/* Floating Satellites */}
-      {Array.from({ length: 12 }).map((_, i) => (
-        <Float key={i} speed={2} rotationIntensity={2} floatIntensity={2}>
+      {/* Floating Server/Node Satellites */}
+      {Array.from({ length: 20 }).map((_, i) => (
+        <Float key={i} speed={1.5} rotationIntensity={0.5} floatIntensity={1}>
           <mesh position={[
-            Math.sin(i) * 6,
-            Math.cos(i) * 6,
-            Math.sin(i * 2) * 2
+            Math.sin(i * 0.5) * 6,
+            Math.cos(i * 0.5) * 6,
+            Math.sin(i) * 3
           ]}>
-            <boxGeometry args={[0.2, 0.2, 0.2]} />
-            <meshBasicMaterial color="#00ffff" />
+            <boxGeometry args={[0.3, 0.3, 0.3]} />
+            <meshStandardMaterial color="#00ffff" emissive="#00ffff" emissiveIntensity={2} />
           </mesh>
         </Float>
       ))}
@@ -55,51 +60,60 @@ function DefensiveScene() {
 }
 
 function OffensiveScene() {
-  const meshRef = useRef<THREE.InstancedMesh>(null);
-  const { mode } = useUIStore();
-  const count = 1000;
-  const dummy = useMemo(() => new THREE.Object3D(), []);
+  const meshRef = useRef<THREE.Points>(null);
+  const count = 3000;
   
-  const particles = useMemo(() => {
-    const temp = [];
+  const positions = useMemo(() => {
+    const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      temp.push({
-        x: (Math.random() - 0.5) * 40,
-        y: Math.random() * 40,
-        z: (Math.random() - 0.5) * 40,
-        speed: 0.2 + Math.random() * 0.5,
-      });
+      pos[i * 3] = (Math.random() - 0.5) * 30;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 30;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 30;
     }
-    return temp;
+    return pos;
   }, []);
 
   useFrame(({ clock }) => {
-    particles.forEach((p, i) => {
-      p.y -= p.speed;
-      if (p.y < -20) p.y = 20;
+    if (meshRef.current) {
+      meshRef.current.rotation.y = clock.getElapsedTime() * 0.2;
+      meshRef.current.rotation.x = clock.getElapsedTime() * 0.1;
       
-      // Add a bit of horizontal jitter for glitch effect
-      const jitter = Math.sin(clock.getElapsedTime() * 10 + i) * 0.05;
-      
-      dummy.position.set(p.x + jitter, p.y, p.z);
-      dummy.scale.set(0.1, 0.8, 0.1);
-      dummy.updateMatrix();
-      if (meshRef.current) meshRef.current.setMatrixAt(i, dummy.matrix);
-    });
-    if (meshRef.current) meshRef.current.instanceMatrix.needsUpdate = true;
+      // Glitch position scaling
+      const s = 1 + Math.sin(clock.getElapsedTime() * 20) * 0.02;
+      meshRef.current.scale.set(s, s, s);
+    }
   });
 
   return (
     <group>
-      <instancedMesh ref={meshRef} args={[new THREE.BoxGeometry(1, 1, 1), undefined, count]}>
-        <meshBasicMaterial color="#ff0000" transparent opacity={0.3} />
-      </instancedMesh>
+      <Points ref={meshRef} positions={positions} stride={3}>
+        <PointMaterial
+          transparent
+          color="#ff0000"
+          size={0.1}
+          sizeAttenuation={true}
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </Points>
       
-      {/* Central Glitch Core */}
-      <mesh rotation={[Math.PI / 4, 0, 0]}>
-        <octahedronGeometry args={[3, 0]} />
-        <meshBasicMaterial color="#ff0000" wireframe />
-      </mesh>
+      {/* Central Glitch Shard */}
+      <Float speed={5} rotationIntensity={2} floatIntensity={2}>
+        <mesh rotation={[Math.PI / 4, 0, 0]}>
+          <octahedronGeometry args={[2.5, 0]} />
+          <meshBasicMaterial color="#ff0000" wireframe />
+        </mesh>
+      </Float>
+
+      {/* Falling Binary Bits (Simulated with lines) */}
+      {Array.from({ length: 15 }).map((_, i) => (
+        <Float key={i} speed={4} rotationIntensity={0} floatIntensity={0}>
+          <mesh position={[(Math.random() - 0.5) * 20, 10, (Math.random() - 0.5) * 20]}>
+            <boxGeometry args={[0.05, 1, 0.05]} />
+            <meshBasicMaterial color="#ff3300" transparent opacity={0.4} />
+          </mesh>
+        </Float>
+      ))}
     </group>
   );
 }
@@ -110,17 +124,17 @@ export default function Hero3D() {
   return (
     <div className="absolute inset-0 z-0">
       <Canvas dpr={[1, 2]}>
-        <PerspectiveCamera makeDefault position={[0, 0, 12]} />
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} intensity={1} />
+        <PerspectiveCamera makeDefault position={[0, 0, 10]} />
+        <ambientLight intensity={0.4} />
+        <pointLight position={[10, 10, 10]} intensity={1.5} color={mode === 'offensive' ? '#ff0000' : '#00ffff'} />
         <Stars 
           radius={100} 
           depth={50} 
-          count={mode === 'offensive' ? 1000 : 5000} 
+          count={mode === 'offensive' ? 1000 : 7000} 
           factor={4} 
           saturation={0} 
           fade 
-          speed={mode === 'offensive' ? 5 : 1} 
+          speed={mode === 'offensive' ? 8 : 1} 
         />
         
         {mode === 'defensive' ? (
@@ -130,10 +144,9 @@ export default function Hero3D() {
         )}
 
         <gridHelper 
-          args={[100, 50, mode === 'offensive' ? 0xff0000 : 0x00ffff, 0x111111]} 
+          args={[100, 40, mode === 'offensive' ? 0xff0000 : 0x00ffff, 0x111111]} 
           position={[0, -10, 0]} 
-          rotation={[0, 0, 0]} 
-          opacity={0.1}
+          opacity={mode === 'offensive' ? 0.2 : 0.05}
           transparent
         />
       </Canvas>
