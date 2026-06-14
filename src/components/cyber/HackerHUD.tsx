@@ -32,7 +32,7 @@ export default function HackerHUD() {
   const [currentAlert, setCurrentAlert] = useState(0);
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
-  const { isVaultUnlocked } = useUIStore();
+  const { isVaultUnlocked, setTerminalOpen, terminalOpen } = useUIStore();
 
   useEffect(() => {
     setMounted(true);
@@ -68,6 +68,14 @@ export default function HackerHUD() {
         </div>
         
         <div className="flex items-center gap-4 pr-4">
+          <button 
+            onClick={() => setTerminalOpen(!terminalOpen)}
+            className="flex items-center gap-2 text-primary/60 hover:text-primary transition-colors tracking-widest uppercase border-r border-primary/10 pr-4 h-full"
+          >
+            <Terminal className="w-3 h-3" />
+            Terminal
+          </button>
+          
           <ThemeSwitcher />
           
           <AnimatePresence>

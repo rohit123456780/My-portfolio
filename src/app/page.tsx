@@ -13,7 +13,7 @@ import Hero3D from '@/components/cyber/Hero3D';
 const BootSequence = dynamic(() => import('@/components/cyber/BootSequence'), { ssr: false });
 
 export default function Home() {
-  const { isBooted, mode } = useUIStore();
+  const { isBooted, mode, setTerminalOpen, terminalOpen } = useUIStore();
   const [typedText, setTypedText] = useState('');
   
   const config = {
@@ -115,21 +115,31 @@ export default function Home() {
                   <StatusCard icon={ModeIcon} label="PRIMARY_DOMAIN" value={config.domain} mode={mode} />
                 </div>
 
-                <div className="flex flex-wrap gap-8">
+                <div className="flex flex-wrap gap-4 md:gap-8">
                   <Link href="/identity">
                     <motion.button 
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="px-12 py-5 bg-primary text-primary-foreground font-headline uppercase tracking-[0.3em] hover:bg-accent hover:text-accent-foreground transition-all flex items-center gap-4 group shadow-[0_0_40px_hsla(var(--primary),0.4)]"
+                      className="px-8 md:px-12 py-5 bg-primary text-primary-foreground font-headline uppercase tracking-[0.3em] hover:bg-accent hover:text-accent-foreground transition-all flex items-center gap-4 group shadow-[0_0_40px_hsla(var(--primary),0.4)] text-xs md:text-base"
                     >
                       {config.button} <ChevronRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
                     </motion.button>
                   </Link>
+
+                  <motion.button 
+                    onClick={() => setTerminalOpen(!terminalOpen)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-8 md:px-12 py-5 border-2 border-accent/40 text-accent font-headline uppercase tracking-[0.3em] hover:bg-accent/10 transition-all flex items-center gap-4 group text-xs md:text-base"
+                  >
+                    <Terminal className="w-5 h-5" /> TERMINAL CONSOLE
+                  </motion.button>
+
                   <Link href="/resume">
                     <motion.button 
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="px-12 py-5 border-2 border-primary/40 text-primary font-headline uppercase tracking-[0.3em] hover:bg-primary/10 transition-all flex items-center gap-4 group"
+                      className="px-8 md:px-12 py-5 border-2 border-primary/40 text-primary font-headline uppercase tracking-[0.3em] hover:bg-primary/10 transition-all flex items-center gap-4 group text-xs md:text-base"
                     >
                       <FileText className="w-5 h-5" /> RESUME SECTOR
                     </motion.button>

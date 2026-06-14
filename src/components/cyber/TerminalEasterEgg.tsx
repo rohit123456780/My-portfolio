@@ -28,7 +28,8 @@ export default function TerminalEasterEgg() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === '`inter' && e.ctrlKey) {
+      // Corrected shortcut listener to trigger on CTRL + `
+      if (e.key === '`' && e.ctrlKey) {
         e.preventDefault();
         setTerminalOpen(!terminalOpen);
       }
@@ -104,7 +105,8 @@ export default function TerminalEasterEgg() {
             {history.map((h, i) => (
               <div key={i} className={
                 h.type === 'cmd' ? 'text-primary' : 
-                h.type === 'error' ? 'text-red-400' : 'text-primary/60'
+                h.type === 'error' ? 'text-red-400' : 
+                h.type === 'resp' ? 'text-primary/60' : 'text-primary'
               }>
                 {h.text}
               </div>
