@@ -26,7 +26,6 @@ export default function AttackGlobeWidget() {
       const fetchInitialData = async () => {
         setLoading(true);
         try {
-          // Fetch more records to have a good buffer for shuffling
           const response = await fetch('https://cve.circl.lu/api/last/30');
           const data = await response.json();
           if (Array.isArray(data)) {
@@ -53,14 +52,12 @@ export default function AttackGlobeWidget() {
     }
   }, [mode]);
 
-  // Shuffling Logic: Every 4 seconds, pick a new random set of CVEs from the buffer
+  // Shuffling Logic
   useEffect(() => {
     if (mode === 'defensive' && cveBuffer.length > 0) {
       const shuffleInterval = setInterval(() => {
         const shuffled = [...cveBuffer].sort(() => 0.5 - Math.random());
         setDisplayedCves(shuffled.slice(0, 3));
-        
-        // Slightly increment total vulnerabilities to look live
         setTotalVulnerabilities(prev => prev + Math.floor(Math.random() * 2));
       }, 4000);
 
@@ -68,7 +65,6 @@ export default function AttackGlobeWidget() {
     }
   }, [mode, cveBuffer]);
 
-  // Jitter effect for diagnostics to make it look live-processing
   useEffect(() => {
     const jitter = setInterval(() => {
       setSyncRate(prev => {
@@ -84,7 +80,7 @@ export default function AttackGlobeWidget() {
   }, []);
 
   return (
-    <div className={`cyber-glass w-full max-w-[480px] aspect-square flex flex-col p-5 relative overflow-hidden group ${mode === 'offensive' ? 'border-red-500/40' : 'border-primary/30'}`}>
+    <div className={`cyber-glass w-full aspect-square max-w-[480px] flex flex-col p-4 md:p-5 relative overflow-hidden group ${mode === 'offensive' ? 'border-red-500/40' : 'border-primary/30'}`}>
       {/* Scanning Laser Beam */}
       <motion.div 
         animate={{ top: ['-10%', '110%'] }}
@@ -92,28 +88,28 @@ export default function AttackGlobeWidget() {
         className={`absolute left-0 right-0 h-0.5 z-20 pointer-events-none blur-[1px] ${mode === 'offensive' ? 'bg-red-500/60 shadow-[0_0_20px_red]' : 'bg-primary/60 shadow-[0_0_20px_cyan]'}`}
       />
 
-      <div className="flex justify-between items-center mb-6 z-10">
+      <div className="flex justify-between items-center mb-4 md:mb-6 z-10">
         <div className="flex flex-col">
           <div className="flex items-center gap-2">
             {mode === 'defensive' ? (
-              <Shield className="w-5 h-5 text-primary animate-pulse" />
+              <Shield className="w-4 h-4 md:w-5 md:h-5 text-primary animate-pulse" />
             ) : (
-              <Crosshair className="w-5 h-5 text-red-500 animate-pulse" />
+              <Crosshair className="w-4 h-4 md:w-5 md:h-5 text-red-500 animate-pulse" />
             )}
-            <span className="text-[10px] font-headline uppercase tracking-[0.3em] text-glow">
+            <span className="text-[8px] md:text-[10px] font-headline uppercase tracking-[0.2em] md:tracking-[0.3em] text-glow">
               {mode === 'defensive' ? 'Vulnerability_Registry_v4.5' : 'Infiltration_Matrix_v6.1'}
             </span>
           </div>
-          <span className="text-[7px] font-code text-primary/30 uppercase mt-1 tracking-widest">
+          <span className="text-[6px] md:text-[7px] font-code text-primary/30 uppercase mt-1 tracking-widest">
             {mode === 'defensive' ? 'Source: NVD / MITRE / CIRCL' : 'Node: Black_Ops_Proxy'}
           </span>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 md:gap-3">
           <div className="flex flex-col items-end">
-            <span className="text-[7px] font-code text-primary/40 uppercase">Latency</span>
-            <span className="text-[9px] font-code text-primary tabular-nums">{latency.toFixed(1)}ms</span>
+            <span className="text-[6px] md:text-[7px] font-code text-primary/40 uppercase">Latency</span>
+            <span className="text-[8px] md:text-[9px] font-code text-primary tabular-nums">{latency.toFixed(1)}ms</span>
           </div>
-          {loading ? <RefreshCw className="w-4 h-4 text-primary animate-spin" /> : <Zap className="w-4 h-4 text-accent animate-pulse" />}
+          {loading ? <RefreshCw className="w-3 h-3 md:w-4 md:h-4 text-primary animate-spin" /> : <Zap className="w-3 h-3 md:w-4 md:h-4 text-accent animate-pulse" />}
         </div>
       </div>
 
@@ -137,8 +133,8 @@ export default function AttackGlobeWidget() {
                 style={{ border: 'none' }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40 pointer-events-none" />
-              <div className="absolute top-4 left-4 flex gap-2">
-                <div className="bg-red-600 text-white text-[9px] font-bold px-3 py-1 animate-pulse uppercase tracking-widest border border-red-400">
+              <div className="absolute top-2 left-2 md:top-4 md:left-4 flex gap-2">
+                <div className="bg-red-600 text-white text-[7px] md:text-[9px] font-bold px-2 md:px-3 py-1 animate-pulse uppercase tracking-widest border border-red-400">
                   Live_Infiltration_Active
                 </div>
               </div>
@@ -149,22 +145,22 @@ export default function AttackGlobeWidget() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="w-full h-full p-6 flex flex-col relative z-10"
+              className="w-full h-full p-4 md:p-6 flex flex-col relative z-10"
             >
               {/* Diagnostic Top Readout */}
-              <div className="grid grid-cols-2 gap-4 mb-8">
-                <div className="space-y-2">
-                  <p className="text-[8px] font-code text-primary/40 uppercase tracking-widest">Global_Node_Registry</p>
-                  <h3 className="text-4xl font-headline text-glow text-primary tabular-nums tracking-tighter">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 md:mb-8">
+                <div className="space-y-1 md:space-y-2">
+                  <p className="text-[7px] md:text-[8px] font-code text-primary/40 uppercase tracking-widest">Global_Node_Registry</p>
+                  <h3 className="text-2xl md:text-4xl font-headline text-glow text-primary tabular-nums tracking-tighter">
                     {totalVulnerabilities.toLocaleString()}
                   </h3>
                 </div>
-                <div className="space-y-3">
+                <div className="space-y-2 md:space-y-3">
                   <div className="flex justify-between items-end">
-                    <span className="text-[8px] font-code text-accent uppercase">Neural_Link</span>
-                    <span className="text-[9px] font-code text-accent tabular-nums">{syncRate.toFixed(1)}%</span>
+                    <span className="text-[7px] md:text-[8px] font-code text-accent uppercase">Neural_Link</span>
+                    <span className="text-[8px] md:text-[9px] font-code text-accent tabular-nums">{syncRate.toFixed(1)}%</span>
                   </div>
-                  <div className="flex gap-1 h-2">
+                  <div className="flex gap-0.5 md:gap-1 h-1.5 md:h-2">
                     {Array.from({ length: 12 }).map((_, i) => {
                       const isActive = i / 12 < (syncRate - 80) / 20;
                       return (
@@ -185,43 +181,35 @@ export default function AttackGlobeWidget() {
               </div>
 
               {/* Dynamic Decryption Feed */}
-              <div className="flex-1 space-y-4 overflow-hidden">
-                <div className="flex items-center justify-between border-b border-primary/20 pb-2">
-                  <p className="text-[9px] font-bold text-accent uppercase tracking-widest flex items-center gap-2">
-                    <Activity className="w-3 h-3 animate-ping" /> Decrypting_Neural_Feed
+              <div className="flex-1 space-y-3 md:space-y-4 overflow-hidden">
+                <div className="flex items-center justify-between border-b border-primary/20 pb-1 md:pb-2">
+                  <p className="text-[7px] md:text-[9px] font-bold text-accent uppercase tracking-widest flex items-center gap-1 md:gap-2">
+                    <Activity className="w-2.5 h-2.5 md:w-3 md:h-3 animate-ping" /> Decrypting_Feed
                   </p>
-                  <span className="text-[7px] font-code text-primary/30 uppercase">RealTime_Sync</span>
+                  <span className="text-[6px] md:text-[7px] font-code text-primary/30 uppercase">Sync_Active</span>
                 </div>
                 
-                <div className="space-y-3 overflow-y-auto no-scrollbar max-h-[180px]">
+                <div className="space-y-2 md:space-y-3 overflow-y-auto no-scrollbar max-h-[120px] md:max-h-[180px]">
                   <AnimatePresence initial={false} mode="popLayout">
                     {displayedCves.length > 0 ? displayedCves.map((cve, i) => (
                       <motion.div 
                         key={cve.id}
-                        initial={{ opacity: 0, x: -20, filter: 'blur(10px)' }}
-                        animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                        exit={{ opacity: 0, x: 20, filter: 'blur(5px)' }}
-                        transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                        className="p-3 bg-primary/5 border-l-2 border-primary/40 relative group hover:bg-primary/10 transition-colors"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 10 }}
+                        className="p-2 md:p-3 bg-primary/5 border-l-2 border-primary/40 relative group hover:bg-primary/10 transition-colors"
                       >
-                        <div className="flex justify-between items-center mb-1">
-                          <span className="text-[10px] font-bold text-primary tracking-widest">{cve.id}</span>
-                          <span className="text-[8px] font-code text-primary/20 uppercase">Vector_Verified</span>
+                        <div className="flex justify-between items-center mb-0.5 md:mb-1">
+                          <span className="text-[8px] md:text-[10px] font-bold text-primary tracking-widest">{cve.id}</span>
                         </div>
-                        <p className="text-[9px] font-code text-primary/70 line-clamp-2 leading-relaxed italic">
+                        <p className="text-[7px] md:text-[9px] font-code text-primary/70 line-clamp-1 md:line-clamp-2 leading-relaxed italic">
                           "{cve.summary}"
                         </p>
-                        <div className="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <ExternalLink className="w-2 h-2 text-primary" />
-                        </div>
                       </motion.div>
                     )) : (
-                      <div className="flex flex-col items-center justify-center h-40 space-y-4">
-                        <div className="relative">
-                          <Server className="w-10 h-10 text-primary/20" />
-                          <Activity className="absolute inset-0 w-10 h-10 text-primary animate-pulse" />
-                        </div>
-                        <span className="text-[9px] font-code text-primary/40 uppercase tracking-[0.4em] animate-pulse">Establishing_Neural_Link...</span>
+                      <div className="flex flex-col items-center justify-center h-24 md:h-40 space-y-2 md:space-y-4">
+                        <Server className="w-6 h-6 md:w-10 md:h-10 text-primary/20 animate-pulse" />
+                        <span className="text-[7px] md:text-[9px] font-code text-primary/40 uppercase tracking-[0.2em] md:tracking-[0.4em] animate-pulse">Syncing...</span>
                       </div>
                     )}
                   </AnimatePresence>
@@ -232,31 +220,17 @@ export default function AttackGlobeWidget() {
         </AnimatePresence>
       </div>
 
-      <div className="mt-5 flex justify-between items-end z-10">
+      <div className="mt-4 md:mt-5 flex justify-between items-end z-10">
         <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <Cpu className="w-3 h-3 text-primary/30" />
-            <span className="text-[8px] font-code text-primary/40 uppercase tracking-widest">Operational_Status: Optimal</span>
+          <div className="flex items-center gap-1.5 md:gap-2">
+            <Cpu className="w-2.5 h-2.5 md:w-3 md:h-3 text-primary/30" />
+            <span className="text-[6px] md:text-[8px] font-code text-primary/40 uppercase tracking-widest">Status: Optimal</span>
           </div>
-          <p className="text-[7px] font-code text-primary/20 uppercase max-w-[280px]">
-            Simulated intelligence feed inspired by Cowrie telemetry. Live data synchronized via Global Vulnerability Registry (CIRCL).
+          <p className="text-[6px] md:text-[7px] font-code text-primary/20 uppercase max-w-[200px] md:max-w-[280px] hidden sm:block">
+            Simulated data stream via Global Vulnerability Registry (CIRCL).
           </p>
         </div>
-        <div className="flex gap-2">
-          <div className="p-2 border border-primary/20 hover:bg-primary/5 transition-colors cursor-help group relative">
-             <InfoNode label="NVD_SYNC" />
-          </div>
-        </div>
       </div>
-    </div>
-  );
-}
-
-function InfoNode({ label }: { label: string }) {
-  return (
-    <div className="flex flex-col items-center">
-      <div className="w-1 h-1 bg-primary mb-1 animate-pulse" />
-      <span className="text-[6px] font-code text-primary/40 uppercase tracking-tighter">{label}</span>
     </div>
   );
 }
