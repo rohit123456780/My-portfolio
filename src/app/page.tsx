@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { useUIStore } from '@/lib/store';
-import { Shield, Activity, ChevronRight, Cpu, Globe, FileText, Briefcase, Crosshair, Terminal, Zap, ShieldAlert, Lock, ZapOff, Server } from 'lucide-react';
+import { Shield, Activity, ChevronRight, Cpu, Globe, Briefcase, Crosshair, Terminal, Zap, ShieldAlert, ZapOff, Server, Lock, Database } from 'lucide-react';
 import Link from 'next/link';
 import AttackGlobeWidget from '@/components/cyber/AttackGlobeWidget';
 import Hero3D from '@/components/cyber/Hero3D';
@@ -72,6 +72,16 @@ export default function Home() {
             transition={{ duration: 1.5 }}
             className="relative z-10 min-h-screen p-6 md:p-12 flex flex-col"
           >
+            {/* Background Parallax HUD Decoration */}
+            <div className="absolute inset-0 pointer-events-none opacity-10 overflow-hidden">
+               <div className="absolute top-1/4 left-10 text-[80px] font-headline select-none vertical-text tracking-tighter text-primary">
+                 {mode === 'defensive' ? 'SYSTEM_STABLE' : 'BREACH_ACTIVE'}
+               </div>
+               <div className="absolute bottom-1/4 right-10 text-[80px] font-headline select-none vertical-text tracking-tighter text-primary rotate-180">
+                 {mode === 'defensive' ? 'GUARD_LINK' : 'X_EXPLOIT'}
+               </div>
+            </div>
+
             <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 pt-24 flex-1">
               <div className="w-full lg:w-2/3 space-y-12">
                 <div className="space-y-8">
@@ -84,8 +94,8 @@ export default function Home() {
                     {config.tag}
                   </motion.div>
                   
-                  <div className="relative">
-                    <h1 className={`text-7xl md:text-[11rem] font-headline tracking-tighter text-primary leading-[0.8] text-glow uppercase ${mode === 'offensive' ? 'italic' : ''}`}>
+                  <div className="relative group">
+                    <h1 className={`text-7xl md:text-[11rem] font-headline tracking-tighter text-primary leading-[0.8] text-glow uppercase transition-all duration-700 ${mode === 'offensive' ? 'italic scale-105' : 'group-hover:tracking-widest'}`}>
                       ROHIT<br/>ROY
                     </h1>
                     {mode === 'offensive' && (
@@ -93,9 +103,6 @@ export default function Home() {
                         {Array(100).fill('ERROR_404_DATA_CORRUPT ').map((t, i) => <span key={i}>{t}</span>)}
                       </div>
                     )}
-                    <div className={`absolute -top-4 -right-4 md:-right-12 text-[10px] font-code text-primary/20 vertical-text hidden md:block ${mode === 'defensive' ? 'animate-pulse' : ''}`}>
-                      {Array(10).fill(mode === 'defensive' ? 'SYSTEM_DIAGNOSTICS_OK ' : 'CRITICAL_BREACH_DETECTED ').join(' ')}
-                    </div>
                   </div>
 
                   <div className="space-y-6">
@@ -130,15 +137,17 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Tactical Dashboard Stats */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   <StatusCard icon={Activity} label="MISSION_STATUS" value={config.status} mode={mode} />
                   <StatusCard icon={mode === 'defensive' ? Shield : ShieldAlert} label="SECURITY_NODE" value={config.domain} mode={mode} />
+                  <StatusCard icon={mode === 'defensive' ? Database : Lock} label="DATA_INTEGRITY" value="OPTIMAL" mode={mode} />
                 </div>
 
                 <div className="flex flex-wrap gap-4 md:gap-8">
                   <Link href="/identity">
                     <motion.button 
-                      whileHover={{ scale: 1.05 }}
+                      whileHover={{ scale: 1.05, x: 10 }}
                       whileTap={{ scale: 0.95 }}
                       className={`px-8 md:px-12 py-5 bg-primary text-primary-foreground font-headline uppercase tracking-[0.3em] hover:bg-accent hover:text-accent-foreground transition-all flex items-center gap-4 group shadow-[0_0_40px_hsla(var(--primary),0.4)] text-xs md:text-base ${mode === 'offensive' ? 'skew-x-[-10deg]' : ''}`}
                     >
@@ -156,6 +165,7 @@ export default function Home() {
                   </motion.button>
                 </div>
 
+                {/* Quick Navigation Node Grid */}
                 <div className="flex gap-6 pt-8 relative overflow-x-auto pb-4 no-scrollbar">
                   <QuickLink href="/experience" icon={Briefcase} label="HISTORY" />
                   <QuickLink href="/projects" icon={Cpu} label="NODES" />
@@ -165,13 +175,16 @@ export default function Home() {
               </div>
 
               <div className="w-full lg:w-1/3 flex justify-center lg:justify-end">
-                <AttackGlobeWidget />
+                <div className="relative">
+                  <div className="absolute -inset-4 bg-primary/20 blur-2xl animate-pulse" />
+                  <AttackGlobeWidget />
+                </div>
               </div>
             </div>
 
             <footer className="max-w-7xl mx-auto w-full py-12 border-t border-primary/10 flex flex-col md:flex-row justify-between items-center gap-8 mt-auto">
               <div className="text-[11px] font-code text-primary/40 uppercase tracking-[0.3em]">
-                © 2024 ROHIT ROY // {mode.toUpperCase()}_PROTOCOL_v1.0 // SYSTEMS_GO
+                © 2024 ROHIT ROY // {mode.toUpperCase()}_PROTOCOL_v1.5 // SYSTEMS_GO
               </div>
               <div className="flex gap-10">
                 <div className="flex flex-col items-end">
@@ -195,13 +208,6 @@ export default function Home() {
           writing-mode: vertical-rl;
           text-orientation: mixed;
         }
-        .no-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .no-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
         .animate-glitch {
           animation: glitch-text 0.5s infinite linear alternate-reverse;
         }
@@ -218,7 +224,7 @@ export default function Home() {
 function StatusCard({ icon: Icon, label, value, mode }: { icon: any, label: string, value: string, mode: string }) {
   return (
     <motion.div 
-      whileHover={{ y: -5, scale: 1.02 }}
+      whileHover={{ y: -5, scale: 1.05 }}
       className={`cyber-glass p-6 group transition-all relative overflow-hidden ${mode === 'offensive' ? 'border-red-600' : 'border-primary/20'}`}
     >
       <div className="flex items-center gap-4 mb-3">
@@ -228,7 +234,7 @@ function StatusCard({ icon: Icon, label, value, mode }: { icon: any, label: stri
         <span className="text-[10px] font-code text-primary/40 uppercase tracking-[0.3em] font-bold">{label}</span>
       </div>
       <div className="text-xl font-headline tracking-[0.2em] text-primary group-hover:text-glow transition-all uppercase">{value}</div>
-      <div className="absolute -bottom-4 -right-4 opacity-5 pointer-events-none">
+      <div className="absolute -bottom-4 -right-4 opacity-5 pointer-events-none group-hover:opacity-10 transition-opacity">
         <Icon className="w-24 h-24" />
       </div>
     </motion.div>
@@ -240,10 +246,10 @@ function QuickLink({ href, icon: Icon, label }: { href: string, icon: any, label
   return (
     <Link href={href}>
       <motion.div 
-        whileHover={{ scale: 1.1, y: -5 }}
+        whileHover={{ scale: 1.15, y: -10 }}
         className="flex flex-col items-center gap-2 group cursor-pointer"
       >
-        <div className={`w-16 h-16 border-2 flex items-center justify-center backdrop-blur-md transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)] ${mode === 'offensive' ? 'border-red-500/20 bg-red-500/5 group-hover:border-red-500' : 'border-primary/20 bg-black/60 group-hover:border-primary group-hover:bg-primary/20'}`} style={{ borderRadius: 'var(--radius)' }}>
+        <div className={`w-16 h-16 border-2 flex items-center justify-center backdrop-blur-md transition-all shadow-[0_0_30px_rgba(0,0,0,0.5)] ${mode === 'offensive' ? 'border-red-500/20 bg-red-500/5 group-hover:border-red-500' : 'border-primary/20 bg-black/60 group-hover:border-primary group-hover:bg-primary/20'}`} style={{ borderRadius: 'var(--radius)' }}>
           <Icon className={`w-7 h-7 transition-colors ${mode === 'offensive' ? 'text-red-500/60 group-hover:text-red-500' : 'text-primary/60 group-hover:text-primary'}`} />
         </div>
         <span className="text-[9px] font-code text-primary/40 uppercase tracking-widest group-hover:text-primary transition-colors">{label}</span>

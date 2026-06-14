@@ -36,13 +36,10 @@
 
 @layer base {
   * {
-    @apply border-white/5 selection:bg-primary/30 selection:text-white transition-colors duration-200;
+    @apply border-white/5 selection:bg-primary/30 selection:text-white;
   }
   body {
     @apply bg-background text-foreground font-body overflow-x-hidden antialiased;
-    background-image: 
-      radial-gradient(circle at 2px 2px, hsla(var(--primary), 0.03) 1px, transparent 0);
-    background-size: 40px 40px;
   }
 }
 
@@ -54,15 +51,23 @@
     background-size: 50px 50px;
   }
   
+  /* Radar sweep effect for Defensive Mode */
+  [data-mode='defensive'] .cyber-grid::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to bottom, transparent 50%, hsla(var(--primary), 0.05) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    animation: radar-sweep 8s linear infinite;
+  }
+
   /* Scanline effect for Offensive Mode */
   [data-mode='offensive'] body::before {
     content: " ";
     display: block;
     position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    top: 0; left: 0; bottom: 0; right: 0;
     background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
                 linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.05));
     z-index: 999;
@@ -70,11 +75,6 @@
     pointer-events: none;
     opacity: 0.3;
     animation: scanline 10s linear infinite;
-  }
-
-  /* CRT Flicker for Offensive */
-  [data-mode='offensive'] .cyber-glass {
-    animation: flicker 0.15s infinite alternate;
   }
 
   .text-glow {
@@ -90,12 +90,12 @@
     @apply bg-black/60 backdrop-blur-xl border border-primary/20;
     border-radius: var(--radius);
     box-shadow: var(--card-shadow);
-    background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
   }
 
   [data-mode='defensive'] .cyber-glass {
     border: 1px solid hsla(var(--primary), 0.3);
     background: linear-gradient(135deg, rgba(0, 20, 40, 0.7) 0%, rgba(0, 5, 10, 0.8) 100%);
+    background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
   }
 
   [data-mode='offensive'] .cyber-glass {
@@ -103,14 +103,14 @@
     background: rgba(10, 0, 0, 0.9);
   }
 
+  @keyframes radar-sweep {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+  }
+
   @keyframes scanline {
     0% { background-position: 0 0; }
     100% { background-position: 0 100%; }
-  }
-
-  @keyframes flicker {
-    0% { opacity: 0.98; }
-    100% { opacity: 1; }
   }
 
   @keyframes extreme-glitch {
@@ -124,14 +124,19 @@
 
   .noise-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0; width: 100%; height: 100%;
     opacity: 0.05;
     z-index: 999;
     pointer-events: none;
     background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC42IiBudW1PY3RhdmVzPSIzIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI24pIi8+PC9zdmc+');
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 
