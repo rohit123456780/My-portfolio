@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -14,58 +13,73 @@ interface CVE {
 
 export default function AttackGlobeWidget() {
   const { mode } = useUIStore();
-  const [cves, setCves] = useState<CVE[]>([]);
+  const [cveBuffer, setCveBuffer] = useState<CVE[]>([]);
+  const [displayedCves, setDisplayedCves] = useState<CVE[]>([]);
   const [loading, setLoading] = useState(false);
   const [totalVulnerabilities, setTotalVulnerabilities] = useState(250142);
   const [syncRate, setSyncRate] = useState(98.4);
   const [latency, setLatency] = useState(12);
 
-  // Fetch real CVE data for Defensive Mode with live streaming feel
+  // Initial Fetch of real CVE data
   useEffect(() => {
     if (mode === 'defensive') {
-      const fetchCVEs = async () => {
+      const fetchInitialData = async () => {
         setLoading(true);
         try {
-          const response = await fetch('https://cve.circl.lu/api/last/8');
+          // Fetch more records to have a good buffer for shuffling
+          const response = await fetch('https://cve.circl.lu/api/last/30');
           const data = await response.json();
-          // Stagger the update to make it look like "discovery"
           if (Array.isArray(data)) {
-            setCves(data);
+            setCveBuffer(data);
+            setDisplayedCves(data.slice(0, 3));
           }
-          // Increment total counter slightly to look live
-          setTotalVulnerabilities(prev => prev + Math.floor(Math.random() * 3));
         } catch (error) {
           console.error('Failed to sync with CVE database', error);
-          // Fallback data if API is throttled
           const fallback = [
             { id: "CVE-2024-4421", summary: "Critical buffer overflow in kernel subsystem discovered by Aether-Node-7." },
             { id: "CVE-2024-1192", summary: "Zero-day exploitation vector identified in legacy SSL protocols." },
-            { id: "CVE-2024-0012", summary: "Unauthorized privilege escalation detected in cloud-native binaries." }
+            { id: "CVE-2024-0012", summary: "Unauthorized privilege escalation detected in cloud-native binaries." },
+            { id: "CVE-2024-9981", summary: "Remote code execution found in widespread IoT gateway firmwares." },
+            { id: "CVE-2024-7723", summary: "SQL injection vulnerability in enterprise resource planning modules." }
           ];
-          setCves(fallback);
+          setCveBuffer(fallback);
+          setDisplayedCves(fallback.slice(0, 3));
         } finally {
           setLoading(false);
         }
       };
 
-      fetchCVEs();
-      const interval = setInterval(fetchCVEs, 15000); // Refresh every 15s for live feel
-      return () => clearInterval(interval);
+      fetchInitialData();
     }
   }, [mode]);
+
+  // Shuffling Logic: Every 4 seconds, pick a new random set of CVEs from the buffer
+  useEffect(() => {
+    if (mode === 'defensive' && cveBuffer.length > 0) {
+      const shuffleInterval = setInterval(() => {
+        const shuffled = [...cveBuffer].sort(() => 0.5 - Math.random());
+        setDisplayedCves(shuffled.slice(0, 3));
+        
+        // Slightly increment total vulnerabilities to look live
+        setTotalVulnerabilities(prev => prev + Math.floor(Math.random() * 2));
+      }, 4000);
+
+      return () => clearInterval(shuffleInterval);
+    }
+  }, [mode, cveBuffer]);
 
   // Jitter effect for diagnostics to make it look live-processing
   useEffect(() => {
     const jitter = setInterval(() => {
       setSyncRate(prev => {
-        const delta = (Math.random() - 0.5) * 0.2;
-        return Math.max(94, Math.min(99.9, prev + delta));
+        const delta = (Math.random() - 0.5) * 0.4;
+        return Math.max(92, Math.min(99.9, prev + delta));
       });
       setLatency(prev => {
-        const delta = (Math.random() - 0.5) * 4;
-        return Math.max(6, Math.min(28, prev + delta));
+        const delta = (Math.random() - 0.5) * 6;
+        return Math.max(4, Math.min(32, prev + delta));
       });
-    }, 1500);
+    }, 1200);
     return () => clearInterval(jitter);
   }, []);
 
@@ -74,7 +88,7 @@ export default function AttackGlobeWidget() {
       {/* Scanning Laser Beam */}
       <motion.div 
         animate={{ top: ['-10%', '110%'] }}
-        transition={{ duration: 3.5, repeat: Infinity, ease: "linear" }}
+        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
         className={`absolute left-0 right-0 h-0.5 z-20 pointer-events-none blur-[1px] ${mode === 'offensive' ? 'bg-red-500/60 shadow-[0_0_20px_red]' : 'bg-primary/60 shadow-[0_0_20px_cyan]'}`}
       />
 
@@ -174,16 +188,16 @@ export default function AttackGlobeWidget() {
               <div className="flex-1 space-y-4 overflow-hidden">
                 <div className="flex items-center justify-between border-b border-primary/20 pb-2">
                   <p className="text-[9px] font-bold text-accent uppercase tracking-widest flex items-center gap-2">
-                    <Activity className="w-3 h-3 animate-ping" /> Decrypting_Latest_Nodes
+                    <Activity className="w-3 h-3 animate-ping" /> Decrypting_Neural_Feed
                   </p>
-                  <span className="text-[7px] font-code text-primary/30 uppercase">Live_Sync_Active</span>
+                  <span className="text-[7px] font-code text-primary/30 uppercase">RealTime_Sync</span>
                 </div>
                 
                 <div className="space-y-3 overflow-y-auto no-scrollbar max-h-[180px]">
                   <AnimatePresence initial={false} mode="popLayout">
-                    {cves.length > 0 ? cves.map((cve, i) => (
+                    {displayedCves.length > 0 ? displayedCves.map((cve, i) => (
                       <motion.div 
-                        key={`${cve.id}-${i}`}
+                        key={cve.id}
                         initial={{ opacity: 0, x: -20, filter: 'blur(10px)' }}
                         animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
                         exit={{ opacity: 0, x: 20, filter: 'blur(5px)' }}
@@ -207,7 +221,7 @@ export default function AttackGlobeWidget() {
                           <Server className="w-10 h-10 text-primary/20" />
                           <Activity className="absolute inset-0 w-10 h-10 text-primary animate-pulse" />
                         </div>
-                        <span className="text-[9px] font-code text-primary/40 uppercase tracking-[0.4em] animate-pulse">Syncing_Neural_Registry...</span>
+                        <span className="text-[9px] font-code text-primary/40 uppercase tracking-[0.4em] animate-pulse">Establishing_Neural_Link...</span>
                       </div>
                     )}
                   </AnimatePresence>
@@ -225,7 +239,7 @@ export default function AttackGlobeWidget() {
             <span className="text-[8px] font-code text-primary/40 uppercase tracking-widest">Operational_Status: Optimal</span>
           </div>
           <p className="text-[7px] font-code text-primary/20 uppercase max-w-[280px]">
-            Simulated intelligence feed inspired by Cowrie telemetry. Live data synchronized via Global Vulnerability Registry.
+            Simulated intelligence feed inspired by Cowrie telemetry. Live data synchronized via Global Vulnerability Registry (CIRCL).
           </p>
         </div>
         <div className="flex gap-2">
