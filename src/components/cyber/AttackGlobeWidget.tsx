@@ -27,8 +27,7 @@ export default function AttackGlobeWidget() {
           const response = await fetch('https://cve.circl.lu/api/last/5');
           const data = await response.json();
           setCves(data);
-          // Increment counter to simulate live discovery
-          setTotalVulnerabilities(prev => prev + Math.floor(Math.random() * 10));
+          setTotalVulnerabilities(prev => prev + Math.floor(Math.random() * 5));
         } catch (error) {
           console.error('Failed to sync with CVE database', error);
         } finally {
@@ -37,19 +36,19 @@ export default function AttackGlobeWidget() {
       };
 
       fetchCVEs();
-      const interval = setInterval(fetchCVEs, 30000); // Sync every 30s
+      const interval = setInterval(fetchCVEs, 30000);
       return () => clearInterval(interval);
     }
   }, [mode]);
 
   return (
-    <div className="cyber-glass w-full max-w-[450px] aspect-square flex flex-col p-4 relative overflow-hidden group">
+    <div className={`cyber-glass w-full max-w-[450px] aspect-square flex flex-col p-4 relative overflow-hidden group ${mode === 'offensive' ? 'border-red-500/30' : 'border-primary/20'}`}>
       <div className="flex justify-between items-center mb-4 z-10">
         <div className="flex items-center gap-2">
           {mode === 'defensive' ? (
             <Shield className="w-4 h-4 text-primary animate-pulse" />
           ) : (
-            <Crosshair className="w-4 h-4 text-primary animate-pulse" />
+            <Crosshair className="w-4 h-4 text-red-500 animate-pulse" />
           )}
           <span className="text-[10px] font-headline uppercase tracking-widest text-primary">
             {mode === 'defensive' ? 'Vulnerability_Registry_Live' : 'Live_Threat_Infiltration'}
@@ -63,29 +62,32 @@ export default function AttackGlobeWidget() {
         </div>
       </div>
 
-      <div className="flex-1 relative rounded-sm overflow-hidden bg-black/40 border border-primary/10">
+      <div className={`flex-1 relative rounded-sm overflow-hidden bg-black/40 border ${mode === 'offensive' ? 'border-red-500/20' : 'border-primary/10'}`}>
         <AnimatePresence mode="wait">
           {mode === 'offensive' ? (
             <motion.div 
               key="offensive-map"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               className="w-full h-full"
             >
               <iframe 
                 src="https://threatmap.checkpoint.com/" 
-                className="w-full h-full grayscale invert opacity-80 contrast-125"
+                className="w-full h-full grayscale invert opacity-70 contrast-150"
                 title="Checkpoint Live Threat Map"
                 style={{ border: 'none' }}
               />
-              <div className="absolute inset-0 pointer-events-none border border-primary/20" />
+              <div className="absolute inset-0 pointer-events-none border border-red-500/20" />
+              <div className="absolute top-2 left-2 bg-red-600 text-white text-[8px] font-bold px-2 py-0.5 animate-pulse uppercase">
+                Live_Feed_Hijacked
+              </div>
             </motion.div>
           ) : (
             <motion.div 
               key="defensive-intel"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               className="w-full h-full p-6 flex flex-col"
             >
@@ -141,21 +143,21 @@ export default function AttackGlobeWidget() {
       <div className="mt-4 flex justify-between items-end">
         <div className="space-y-1">
            <div className="text-[7px] font-code text-primary/30 uppercase tracking-[0.2em]">
-            Operational_Intelligence_v5.2
+            Operational_Intelligence_v6.0
           </div>
           <p className="text-[6px] font-code text-primary/20 uppercase">
             {mode === 'defensive' 
               ? 'Real-time CVE data provided by CIRCL.LU API' 
-              : 'Live Infiltration data piped via Checkpoint Security'}
+              : 'Target telemetry streamed via Checkpoint Network'}
           </p>
         </div>
         {mode === 'offensive' && (
            <a 
             href="https://threatmap.checkpoint.com/" 
             target="_blank" 
-            className="p-2 border border-primary/20 hover:bg-primary/10 transition-colors"
+            className="p-2 border border-red-500/20 hover:bg-red-500/10 transition-colors"
            >
-             <ExternalLink className="w-3 h-3 text-primary/40" />
+             <ExternalLink className="w-3 h-3 text-red-500" />
            </a>
         )}
       </div>
