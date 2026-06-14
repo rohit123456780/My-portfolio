@@ -3,97 +3,86 @@
 
 import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Stars, Float, PerspectiveCamera } from '@react-three/drei';
+import { Stars, Float, PerspectiveCamera, MeshDistortMaterial, Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 import { useUIStore } from '@/lib/store';
 
-function ThreatGlobe() {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const outerMeshRef = useRef<THREE.Mesh>(null);
-  const linesRef = useRef<THREE.Group>(null);
-  const { mode } = useUIStore();
+function DefensiveScene() {
+  const groupRef = useRef<THREE.Group>(null);
   
-  const color = mode === 'defensive' ? "#00ff9f" : "#ff003c";
-  const speedMult = mode === 'defensive' ? 1 : 4;
-
   useFrame(({ clock }) => {
-    const t = clock.getElapsedTime();
-    if (meshRef.current) {
-      meshRef.current.rotation.y = t * 0.1 * speedMult;
-      meshRef.current.rotation.x = t * 0.05 * speedMult;
-    }
-    if (outerMeshRef.current) {
-      outerMeshRef.current.rotation.y = -t * 0.15 * speedMult;
-    }
-    if (linesRef.current) {
-      linesRef.current.rotation.y = t * 0.08 * speedMult;
+    if (groupRef.current) {
+      groupRef.current.rotation.y = clock.getElapsedTime() * 0.05;
     }
   });
 
-  const nodes = useMemo(() => {
-    const temp = [];
-    for (let i = 0; i < 60; i++) {
-      const phi = Math.acos(-1 + (2 * i) / 60);
-      const theta = Math.sqrt(60 * Math.PI) * phi;
-      const x = 3.5 * Math.cos(theta) * Math.sin(phi);
-      const y = 3.5 * Math.sin(theta) * Math.sin(phi);
-      const z = 3.5 * Math.cos(phi);
-      temp.push([x, y, z]);
-    }
-    return temp;
-  }, []);
-
   return (
-    <group>
-      <mesh ref={meshRef}>
-        <sphereGeometry args={[3.5, 50, 50]} />
-        <meshBasicMaterial color={color} wireframe transparent opacity={0.15} />
-      </mesh>
+    <group ref={groupRef}>
+      {/* Central Core */}
+      <Sphere args={[2.5, 64, 64]}>
+        <MeshDistortMaterial
+          color="#00ffff"
+          attach="material"
+          distort={0.3}
+          speed={2}
+          roughness={0}
+          transparent
+          opacity={0.2}
+        />
+      </Sphere>
       
-      <mesh ref={outerMeshRef}>
-        <sphereGeometry args={[3.8, 25, 25]} />
-        <meshBasicMaterial color={color} wireframe transparent opacity={0.05} />
+      {/* Shield Lattice */}
+      <mesh>
+        <sphereGeometry args={[4, 32, 32]} />
+        <meshBasicMaterial color="#00ffff" wireframe transparent opacity={0.05} />
       </mesh>
-      
-      <group ref={linesRef}>
-        {nodes.map((pos, i) => (
-          <mesh key={i} position={pos as [number, number, number]}>
-            <sphereGeometry args={[0.04, 8, 8]} />
-            <meshBasicMaterial color={i % 7 === 0 ? "#ffffff" : color} />
+
+      {/* Floating Satellites */}
+      {Array.from({ length: 12 }).map((_, i) => (
+        <Float key={i} speed={2} rotationIntensity={2} floatIntensity={2}>
+          <mesh position={[
+            Math.sin(i) * 6,
+            Math.cos(i) * 6,
+            Math.sin(i * 2) * 2
+          ]}>
+            <boxGeometry args={[0.2, 0.2, 0.2]} />
+            <meshBasicMaterial color="#00ffff" />
           </mesh>
-        ))}
-      </group>
+        </Float>
+      ))}
     </group>
   );
 }
 
-function MatrixStream() {
-  const count = 1500;
+function OffensiveScene() {
   const meshRef = useRef<THREE.InstancedMesh>(null);
-  const dummy = useMemo(() => new THREE.Object3D(), []);
   const { mode } = useUIStore();
-
+  const count = 1000;
+  const dummy = useMemo(() => new THREE.Object3D(), []);
+  
   const particles = useMemo(() => {
     const temp = [];
     for (let i = 0; i < count; i++) {
       temp.push({
-        x: (Math.random() - 0.5) * 60,
-        y: (Math.random() - 0.5) * 60,
-        z: (Math.random() - 0.5) * 60,
-        speed: 0.1 + Math.random() * 0.2,
-        scale: 0.05 + Math.random() * 0.1,
+        x: (Math.random() - 0.5) * 40,
+        y: Math.random() * 40,
+        z: (Math.random() - 0.5) * 40,
+        speed: 0.2 + Math.random() * 0.5,
       });
     }
     return temp;
-  }, [count]);
+  }, []);
 
-  useFrame(() => {
-    const speedScale = mode === 'offensive' ? 2 : 0.5;
+  useFrame(({ clock }) => {
     particles.forEach((p, i) => {
-      p.y -= p.speed * speedScale;
-      if (p.y < -30) p.y = 30;
-      dummy.position.set(p.x, p.y, p.z);
-      dummy.scale.set(p.scale, p.scale, p.scale);
+      p.y -= p.speed;
+      if (p.y < -20) p.y = 20;
+      
+      // Add a bit of horizontal jitter for glitch effect
+      const jitter = Math.sin(clock.getElapsedTime() * 10 + i) * 0.05;
+      
+      dummy.position.set(p.x + jitter, p.y, p.z);
+      dummy.scale.set(0.1, 0.8, 0.1);
       dummy.updateMatrix();
       if (meshRef.current) meshRef.current.setMatrixAt(i, dummy.matrix);
     });
@@ -101,25 +90,52 @@ function MatrixStream() {
   });
 
   return (
-    <instancedMesh ref={meshRef} args={[new THREE.BoxGeometry(1, 1, 1), undefined, count]}>
-      <meshBasicMaterial color={mode === 'offensive' ? "#ff0000" : "#00ff9f"} transparent opacity={0.1} />
-    </instancedMesh>
+    <group>
+      <instancedMesh ref={meshRef} args={[new THREE.BoxGeometry(1, 1, 1), undefined, count]}>
+        <meshBasicMaterial color="#ff0000" transparent opacity={0.3} />
+      </instancedMesh>
+      
+      {/* Central Glitch Core */}
+      <mesh rotation={[Math.PI / 4, 0, 0]}>
+        <octahedronGeometry args={[3, 0]} />
+        <meshBasicMaterial color="#ff0000" wireframe />
+      </mesh>
+    </group>
   );
 }
 
 export default function Hero3D() {
+  const { mode } = useUIStore();
+
   return (
     <div className="absolute inset-0 z-0">
       <Canvas dpr={[1, 2]}>
-        <PerspectiveCamera makeDefault position={[0, 0, 10]} />
+        <PerspectiveCamera makeDefault position={[0, 0, 12]} />
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} intensity={1} />
-        <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-        <Float speed={2} rotationIntensity={1} floatIntensity={1}>
-          <ThreatGlobe />
-        </Float>
-        <MatrixStream />
-        <gridHelper args={[100, 40, 0x555555, 0x222222]} position={[0, -8, 0]} rotation={[0, 0, 0]} />
+        <Stars 
+          radius={100} 
+          depth={50} 
+          count={mode === 'offensive' ? 1000 : 5000} 
+          factor={4} 
+          saturation={0} 
+          fade 
+          speed={mode === 'offensive' ? 5 : 1} 
+        />
+        
+        {mode === 'defensive' ? (
+          <DefensiveScene />
+        ) : (
+          <OffensiveScene />
+        )}
+
+        <gridHelper 
+          args={[100, 50, mode === 'offensive' ? 0xff0000 : 0x00ffff, 0x111111]} 
+          position={[0, -10, 0]} 
+          rotation={[0, 0, 0]} 
+          opacity={0.1}
+          transparent
+        />
       </Canvas>
     </div>
   );

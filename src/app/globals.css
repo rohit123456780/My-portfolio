@@ -5,7 +5,7 @@
 
 @layer base {
   :root {
-    /* Defensive Mode Variables */
+    /* Defensive Mode Variables - The Aether */
     --background: 230 35% 5%;
     --foreground: 180 10% 95%;
     --primary: 185 100% 50%;
@@ -19,7 +19,7 @@
   }
 
   [data-mode='offensive'] {
-    /* Offensive Mode Variables */
+    /* Offensive Mode Variables - The Breach */
     --background: 0 0% 1%;
     --foreground: 0 0% 100%;
     --primary: 0 100% 50%;
@@ -29,7 +29,7 @@
     --radius: 0px;
     --font-headline: 'VT323', monospace;
     --font-body: 'Fira Code', monospace;
-    --card-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+    --card-shadow: 0 0 40px rgba(255, 0, 0, 0.5);
   }
 }
 
@@ -42,6 +42,7 @@
     background-image: 
       radial-gradient(circle at 2px 2px, hsla(var(--primary), 0.03) 1px, transparent 0);
     background-size: 40px 40px;
+    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
@@ -63,11 +64,17 @@
     bottom: 0;
     right: 0;
     background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+                linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.05));
     z-index: 999;
-    background-size: 100% 3px, 2px 100%;
+    background-size: 100% 2px, 3px 100%;
     pointer-events: none;
-    opacity: 0.4;
+    opacity: 0.2;
+    animation: scanline 10s linear infinite;
+  }
+
+  /* CRT Flicker for Offensive */
+  [data-mode='offensive'] .cyber-glass {
+    animation: flicker 0.15s infinite alternate;
   }
 
   .text-glow {
@@ -80,19 +87,30 @@
   }
 
   .cyber-glass {
-    @apply bg-black/40 backdrop-blur-xl border border-primary/20;
+    @apply bg-black/60 backdrop-blur-xl border border-primary/20;
     border-radius: var(--radius);
     box-shadow: var(--card-shadow);
     background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes scanline {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100%; }
+  }
+
+  @keyframes flicker {
+    0% { opacity: 0.97; }
+    100% { opacity: 1; }
   }
 
   @keyframes extreme-glitch {
-    0% { transform: translate(0); }
+    0% { transform: translate(0); filter: hue-rotate(0deg); }
     20% { transform: translate(-2px, 1px); }
-    40% { transform: translate(-2px, -1px); }
+    40% { transform: translate(-2px, -1px); filter: hue-rotate(90deg); }
     60% { transform: translate(2px, 1px); }
-    80% { transform: translate(2px, -1px); }
-    100% { transform: translate(0); }
+    80% { transform: translate(2px, -1px); filter: hue-rotate(180deg); }
+    100% { transform: translate(0); filter: hue-rotate(360deg); }
   }
 
   .noise-overlay {
@@ -101,7 +119,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.05;
+    opacity: 0.04;
     z-index: 999;
     pointer-events: none;
     background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC42IiBudW1PY3RhdmVzPSIzIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI24pIi8+PC9zdmc+');
